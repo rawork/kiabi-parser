@@ -9,5 +9,5 @@ $parser = new Kiabi\YandexParser();
 
 $parser->parse();
 
-//@unlink(FEED_CONVERTED_YANDEX_PATH);
-//@file_put_contents(FEED_CONVERTED_YANDEX_PATH, $parser->getXML());
+@unlink(FEED_CONVERTED_YANDEX_PATH);
+@file_put_contents(FEED_CONVERTED_YANDEX_PATH, $parser->getXML());

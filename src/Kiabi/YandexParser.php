@@ -26,10 +26,7 @@ class YandexParser
 	<categories>
 ';
 
-		foreach ($this->categories as $category) {
-			$content .= '		<category id="'.$category['id'].'" parentId="'.$category['parent_id'].'">'.$category['title'].'</category>
-';
-		}
+		$content .= file_get_contents(CP_CATEGORIES_PATH);
 
 		$content .= '	</categories>
 	<delivery-options>
@@ -60,38 +57,50 @@ class YandexParser
 			$sku = $skus->sku;
 		}
 
-//		var_dump($node, $sku);
-
 		$shipping = '';
 
 		if (isset($node->shipping)) {
-			$shipping = '<g:shipping>
-  			<g:country>'.$node->shipping->country.'</g:country>
-  			<g:service>'.$node->shipping->service.'</g:service>
-  			<g:price>'.$node->shipping->price.' RUB</g:price>
-		</g:shipping>';
+			$shipping = '<delivery-options>
+                <option cost="'.$node->shipping->price.'" days="31" order-before="24"/>
+            </delivery-options><g:shipping>
+  			';
+		}
+
+		$product_type = str_replace('/','&gt;',$node->product_type);
+		$types = explode('&gt;', $product_type);
+		if (count($types) > 1 && strpos($types[1], trim($types[0])) !== false) {
+			unset($types[1]);
+			$product_type = implode('&gt;', $types);
 		}
 
 
-
 		foreach ($sku as $skunode) {
-			$content .= '	
+
+			$available = $skunode->availability == 'In stock' ? 'true' : 'false';
+
+			$categoryId = 0;
+
+			$content .= '<offer id="'.$node->id.'" available="'.$available.'">
+                <url>'.$node->references->reference->link.'</url>
+                <price>'.$skunode->price.'</price>
+                <currencyId>RUB</currencyId>
+                <categoryId>'.$categoryId.'</categoryId>
+                <picture>'.$node->references->reference->image_link.'</picture>
+                <store>true</store>
+                <pickup>true</pickup>
+                <delivery>true</delivery>'.
+                $shipping
+                .'<vendor>'.$node->brand.'</vendor>
+                <description>'.htmlspecialchars($node->description).'</sales_notes>
+                <name>'.htmlspecialchars($node->title).'</name>
+                <oldprice>'.$skunode->sale_price.'</oldprice>
+                <param name="Цвет">'.$node->references->reference->color.'</param>
+                <param name="Размер">'.$skunode->size.'</param>
+            </offer>	
 	';
 		}
 
 		return $content;
-	}
-
-	public function generateCategory(\SimpleXMLElement $node)
-	{
-		$category = [];
-
-		$text = ' '.$node;
-		$productTypes = array_map('trim', explode('/', $text));
-
-		var_dump($text, $productTypes);
-
-		return $category;
 	}
 
 	public function getXML() {
@@ -100,20 +109,8 @@ class YandexParser
 
 	public function parse()
 	{
-		$reader = new \XMLReader();
-	 	$reader->open(FEED_GOOGLE_PATH);
 
-		// todo read categories
-		while($reader->read()) {
-			if($reader->nodeType == \XMLReader::ELEMENT) {
-				if($reader->localName == 'product_type') {
-					$this->categories[] = $this->generateCategory(new \SimpleXMLElement($reader->readOuterXml()));
-				}
-			}
-		}
 
-		$reader->close();
-		return;
 
 		$reader = new \XMLReader();
 		$reader->open(FEED_YANDEX_PATH);
