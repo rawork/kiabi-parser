@@ -4,7 +4,18 @@ namespace Kiabi;
 
 class YandexCategoryParser
 {
-	protected $types = [];
+	protected $types = [
+		0 => [],
+		1 => [],
+		2 => [],
+		3 => [],
+		4 => [],
+		5 => [],
+		6 => [],
+		7 => [],
+		8 => [],
+		9 => []
+	];
 	protected $categories = [];
 	protected $id = 0;
 
@@ -15,17 +26,18 @@ class YandexCategoryParser
 //		var_dump($types);
 
 		foreach ($types as $level => $type) {
-			if (array_key_exists($type, $this->types)) {
+//			var_dump($level);
+			if (array_key_exists($type, $this->types[$level])) {
 				continue;
 			}
 
-			$this->types[$type] = $this->getId();
+			$this->types[$level][$type] = $this->getId();
 
 			// todo проверить повторяемость названий вложенных категорий
 
-			if (!array_key_exists($this->types[$type], $this->categories)){
-				$this->categories[$this->types[$type]] = [
-					'id' => $this->types[$type],
+			if (!array_key_exists($this->types[$level][$type], $this->categories)){
+				$this->categories[$this->types[$level][$type]] = [
+					'id' => $this->types[$level][$type],
 					'title' => $type,
 					'parent_id' => 0,
 				];
@@ -33,7 +45,7 @@ class YandexCategoryParser
 
 
 			if ($level > 0) {
-				$this->categories[$this->types[$type]]['parent_id'] = $this->types[$types[$level-1]];
+				$this->categories[$this->types[$level][$type]]['parent_id'] = $this->types[$level-1][$types[$level-1]];
 			}
 		}
 	}
