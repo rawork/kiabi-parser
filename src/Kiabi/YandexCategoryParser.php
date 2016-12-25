@@ -33,8 +33,6 @@ class YandexCategoryParser
 
 			$this->types[$level][$type] = $this->getId();
 
-			// todo проверить повторяемость названий вложенных категорий
-
 			if (!array_key_exists($this->types[$level][$type], $this->categories)){
 				$this->categories[$this->types[$level][$type]] = [
 					'id' => $this->types[$level][$type],
