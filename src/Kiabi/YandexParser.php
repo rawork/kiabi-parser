@@ -7,7 +7,7 @@ class YandexParser
 	protected $content = '';
 	protected $categories = [];
 	protected $types = [];
-	protected $generateID = 400001;
+	protected $generateID = 1;
 
 
 	public function getHeader()
@@ -24,9 +24,14 @@ class YandexParser
 		<currency id="RUR" rate="1"/>
 	</currencies>
 	<categories>
-';
+		';
 
-		$content .= file_get_contents(CP_CATEGORIES_PATH);
+		$json = json_decode(file_get_contents(YANDEX_CATEGORIES_PATH), true);
+
+		foreach ($json as $category) {
+			$content .= '<category id="'.$category['id'].'" parentId="'.$category['parent_id'].'">'.$category['title'].'</category>
+		';
+		}
 
 		$content .= '	</categories>
 	<delivery-options>
@@ -61,9 +66,9 @@ class YandexParser
 
 		if (isset($node->shipping)) {
 			$shipping = '<delivery-options>
-                <option cost="'.$node->shipping->price.'" days="31" order-before="24"/>
-            </delivery-options><g:shipping>
-  			';
+                	<option cost="'.$node->shipping->price.'" days="31" order-before="24"/>
+            	</delivery-options>
+  				';
 		}
 
 		$product_type = str_replace('/','&gt;',$node->product_type);
@@ -80,7 +85,7 @@ class YandexParser
 
 			$categoryId = 0;
 
-			$content .= '<offer id="'.$node->id.'" available="'.$available.'">
+			$content .= '<offer id="'.$node->references->reference->item_group_id.'" available="'.$available.'">
                 <url>'.$node->references->reference->link.'</url>
                 <price>'.$skunode->price.'</price>
                 <currencyId>RUB</currencyId>
@@ -91,7 +96,8 @@ class YandexParser
                 <delivery>true</delivery>'.
                 $shipping
                 .'<vendor>'.$node->brand.'</vendor>
-                <description>'.htmlspecialchars($node->description).'</sales_notes>
+                <description>'.htmlspecialchars($node->description).'</description>
+                <sales_notes>Оплата наличными и банковской картой.</sales_notes>
                 <name>'.htmlspecialchars($node->title).'</name>
                 <oldprice>'.$skunode->sale_price.'</oldprice>
                 <param name="Цвет">'.$node->references->reference->color.'</param>
