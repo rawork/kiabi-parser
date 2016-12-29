@@ -5,12 +5,11 @@ namespace Kiabi;
 class YandexParser
 {
 	protected $content = '';
-	protected $categories = [];
+	protected $categories;
 	protected $types = [];
-	protected $generateID = 1;
+	protected $j = 0;
 
-
-	public function getHeader()
+	protected function getHeader()
 	{
 		$date = date('Y-m-d H:i');
 
@@ -26,10 +25,8 @@ class YandexParser
 	<categories>
 		';
 
-		$json = json_decode(file_get_contents(YANDEX_CATEGORIES_PATH), true);
-
-		foreach ($json as $category) {
-			$content .= '<category id="'.$category['id'].'" parentId="'.$category['parent_id'].'">'.$category['title'].'</category>
+		foreach ($this->categories as $category) {
+			$content .= '<category id="'.$category['id'].'" parentId="'.($category['parent_key'] ? $this->categories[$category['parent_key']]['id'] : 0).'">'.$category['title'].'</category>
 		';
 		}
 
@@ -43,24 +40,34 @@ class YandexParser
 		return $content;
 	}
 
-	public function getFooter()
+	protected function getFooter()
 	{
 		return '	</offers>
   </shop>
 </yml_catalog>';
 	}
 
+	private function sxiToArray($sxi){
+		$a = array();
+		for( $sxi->rewind(); $sxi->valid(); $sxi->next() ) {
+			if(!array_key_exists($sxi->key(), $a)){
+				$a[$sxi->key()] = array();
+			}
+			if($sxi->hasChildren()){
+				$a[$sxi->key()][] = $this->sxiToArray($sxi->current());
+			}
+			else{
+				$a[$sxi->key()][] = strval($sxi->current());
+			}
+		}
+		return $a;
+	}
 
-	public function generateItem(\SimpleXMLElement $node)
+	public function generateItem(\SimpleXMLIterator $node)
 	{
 		$content = '';
-		$skus = $node->references->reference->skus->children();
 
-		if ($skus->sku instanceof \SimpleXMLElement) {
-			$sku = [$skus->sku];
-		} else {
-			$sku = $skus->sku;
-		}
+		$references = $this->sxiToArray($node->references->children());
 
 		$shipping = '';
 
@@ -71,60 +78,84 @@ class YandexParser
   				';
 		}
 
-		$product_type = str_replace('/','&gt;',$node->product_type);
-		$types = explode('&gt;', $product_type);
-		if (count($types) > 1 && strpos($types[1], trim($types[0])) !== false) {
-			unset($types[1]);
-			$product_type = implode('&gt;', $types);
-		}
+		$product_type = str_replace(' / ', '|', $node->product_type);
+		$categories = $this->getCategories();
 
+		foreach ($references['reference'] as $reference) {
+			$skus = $reference['skus'][0]['sku'];
 
-		foreach ($sku as $skunode) {
+			foreach ($skus as $sku) {
 
-			$available = $skunode->availability == 'In stock' ? 'true' : 'false';
+				$available = $sku['availability'][0] == 'In stock' ? 'true' : 'false';
 
-			$categoryId = 0;
+				$category = $categories[md5($product_type)];
 
-			$content .= '<offer id="'.$node->references->reference->item_group_id.'" available="'.$available.'">
-                <url>'.$node->references->reference->link.'</url>
-                <price>'.$skunode->price.'</price>
-                <currencyId>RUB</currencyId>
+				$categoryId = $category['id'];
+
+				if (isset($sku['sale_price'])) {
+					$oldprice = '<oldprice>'.$sku['price'][0].'</oldprice>';
+					$price = $sku['sale_price'][0];
+				} else {
+					$price = $sku['price'][0];
+					$oldprice = '';
+				}
+
+				$content .= '<offer id="'.$node->references->reference->item_group_id.'" available="'.$available.'">
+                <url>'.$reference['link'][0].'</url>
+                <price>'.$price.'</price>'
+                .$oldprice.
+                '<currencyId>RUB</currencyId>
                 <categoryId>'.$categoryId.'</categoryId>
-                <picture>'.$node->references->reference->image_link.'</picture>
+                <picture>'.$reference['image_link'][0].'</picture>
                 <store>true</store>
                 <pickup>true</pickup>
                 <delivery>true</delivery>'.
-                $shipping
-                .'<vendor>'.$node->brand.'</vendor>
+					$shipping
+					.'<vendor>'.$node->brand.'</vendor>
                 <description>'.htmlspecialchars($node->description).'</description>
                 <sales_notes>Оплата наличными и банковской картой.</sales_notes>
                 <name>'.htmlspecialchars($node->title).'</name>
-                <oldprice>'.$skunode->sale_price.'</oldprice>
-                <param name="Цвет">'.$node->references->reference->color.'</param>
-                <param name="Размер">'.$skunode->size.'</param>
+                
+                <param name="Цвет">'.$reference['color'][0].'</param>
+                <param name="Размер">'.$sku['size'][0].'</param>
             </offer>	
 	';
+				$this->j++;
+			}
 		}
 
 		return $content;
 	}
 
-	public function getXML() {
+	public function getXML()
+	{
 		return $this->getHeader().$this->content.$this->getFooter();
+	}
+
+	public function getCategories()
+	{
+		if (!$this->categories) {
+			$this->categories = json_decode(file_get_contents(YANDEX_CATEGORIES_PATH), true);
+		}
+
+		return $this->categories;
 	}
 
 	public function parse()
 	{
 		$reader = new \XMLReader();
 		$reader->open(FEED_YANDEX_PATH);
+		$i = 0;
 
 		while($reader->read()) {
 			if($reader->nodeType == \XMLReader::ELEMENT) {
 				if($reader->localName == 'googleShoppingProduct') {
-					$this->content .= $this->generateItem(new \SimpleXMLElement($reader->readOuterXml()));
+					$i++;
+					$this->content .= $this->generateItem(new \SimpleXMLIterator($reader->readOuterXml()));
 				}
 			}
 		}
+		echo 'Feed file is parsed: products = '.$i.' pcs., skus = '.$this->j." pcs.\n";
 	}
 
 }

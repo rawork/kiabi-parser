@@ -4,47 +4,34 @@ namespace Kiabi;
 
 class YandexCategoryParser
 {
-	protected $types = [
-		0 => [],
-		1 => [],
-		2 => [],
-		3 => [],
-		4 => [],
-		5 => [],
-		6 => [],
-		7 => [],
-		8 => [],
-		9 => []
-	];
+	protected $types = [];
 	protected $categories = [];
 	protected $id = 0;
 
 	public function parseItem(\SimpleXMLElement $node)
 	{
-		$product_type = str_replace('/','&gt;',$node->product_type);
-		$types = array_map('trim', explode('&gt;', $product_type));
-//		var_dump($types);
+		$types = array_map('trim', explode('|', str_replace(' / ', '|', $node->product_type)));
 
 		foreach ($types as $level => $type) {
-//			var_dump($level);
-			if (array_key_exists($type, $this->types[$level])) {
+
+			$categoryText = implode('|', array_slice($types, 0, $level+1));
+			$categoryKey = md5($categoryText);
+
+			if (array_key_exists($categoryKey, $this->types)) {
 				continue;
 			}
 
-			$this->types[$level][$type] = $this->getId();
+			$this->types[$categoryKey] = $this->getId();
 
-			if (!array_key_exists($this->types[$level][$type], $this->categories)){
-				$this->categories[$this->types[$level][$type]] = [
-					'id' => $this->types[$level][$type],
+			if (!array_key_exists($categoryKey, $this->categories)){
+				$this->categories[$categoryKey] = [
+					'id' => $this->types[$categoryKey],
 					'title' => $type,
-					'parent_id' => 0,
+					'parent_key' => $level > 0 ? md5(implode('|', array_slice($types, 0, $level))) : 0,
+					'type' => implode('|', array_slice($types, 0, $level+1)),
 				];
 			}
 
-
-			if ($level > 0) {
-				$this->categories[$this->types[$level][$type]]['parent_id'] = $this->types[$level-1][$types[$level-1]];
-			}
 		}
 	}
 

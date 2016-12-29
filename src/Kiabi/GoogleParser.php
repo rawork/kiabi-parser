@@ -41,7 +41,6 @@ class GoogleParser
 		return $a;
 	}
 
-
 	public function generateItem(\SimpleXMLIterator $node)
 	{
 		$content = '';
@@ -65,11 +64,7 @@ class GoogleParser
 
 		foreach ($references['reference'] as $reference) {
 
-//			var_dump($reference);
-
 			$skus = $reference['skus'][0]['sku'];
-
-//			var_dump($skus);
 
 			foreach ($skus as $sku) {
 				$content .= '<entry>
@@ -118,7 +113,7 @@ class GoogleParser
 				}
 			}
 		}
-		echo 'Feed file parsed: products = '.$i.' pcs., skus = '.$this->j." pcs.\n";
+		echo 'Feed file is parsed: products = '.$i.' pcs., skus = '.$this->j." pcs.\n";
 	}
 
 }
