@@ -115,9 +115,6 @@ class YandexParser
 
 	public function parse()
 	{
-
-
-
 		$reader = new \XMLReader();
 		$reader->open(FEED_YANDEX_PATH);
 

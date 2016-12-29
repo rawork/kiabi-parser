@@ -5,6 +5,7 @@ namespace Kiabi;
 class GoogleParser
 {
 	protected $content = '';
+	protected $j = 0;
 
 	public function getHeader()
 	{
@@ -24,22 +25,29 @@ class GoogleParser
 		return '</feed>';
 	}
 
+	private function sxiToArray($sxi){
+		$a = array();
+		for( $sxi->rewind(); $sxi->valid(); $sxi->next() ) {
+			if(!array_key_exists($sxi->key(), $a)){
+				$a[$sxi->key()] = array();
+			}
+			if($sxi->hasChildren()){
+				$a[$sxi->key()][] = $this->sxiToArray($sxi->current());
+			}
+			else{
+				$a[$sxi->key()][] = strval($sxi->current());
+			}
+		}
+		return $a;
+	}
 
-	public function generateItem(\SimpleXMLElement $node)
+
+	public function generateItem(\SimpleXMLIterator $node)
 	{
 		$content = '';
-		$skus = $node->references->reference->skus->children();
-
-		if ($skus->sku instanceof \SimpleXMLElement) {
-			$sku = [$skus->sku];
-		} else {
-			$sku = $skus->sku;
-		}
-
-//		var_dump($node, $sku);
+		$references = $this->sxiToArray($node->references->children());
 
 		$shipping = '';
-
 		if (isset($node->shipping)) {
 			$shipping = '<g:shipping>
   			<g:country>'.$node->shipping->country.'</g:country>
@@ -55,28 +63,38 @@ class GoogleParser
 			$product_type = implode('&gt;', $types);
 		}
 
-		foreach ($sku as $skunode) {
-			$content .= '<entry>
+		foreach ($references['reference'] as $reference) {
+
+//			var_dump($reference);
+
+			$skus = $reference['skus'][0]['sku'];
+
+//			var_dump($skus);
+
+			foreach ($skus as $sku) {
+				$content .= '<entry>
 		<g:id>'.$node->id.'</g:id>
 		<g:title>'.htmlspecialchars($node->title).'</g:title>
 		<g:description>'.htmlspecialchars($node->description).'</g:description>
-		<g:link>'.$node->references->reference->link.'</g:link>
-		<g:mobile_link>'.$node->references->reference->mobile_link.'</g:mobile_link>
-		<g:image_link>'.$node->references->reference->image_link.'</g:image_link>
+		<g:link>'.$reference['link'][0].'</g:link>
+		<g:mobile_link>'.$reference['mobile_link'][0].'</g:mobile_link>
+		<g:image_link>'.$reference['image_link'][0].'</g:image_link>
 		<g:condition>'.$node->condition.'</g:condition>
-		<g:availability>'.$skunode->availability.'</g:availability>
-		<g:price>'.$skunode->price.' RUB</g:price>
-		<g:sale_price>'.$skunode->sale_price.' RUB</g:sale_price>
+		<g:availability>'.$sku['availability'][0].'</g:availability>
+		<g:price>'.$sku['price'][0].' RUB</g:price>
+		<g:sale_price>'.$sku['sale_price'][0].' RUB</g:sale_price>
 		<g:product_type>'.$product_type.'</g:product_type>
 		<g:brand>'.$node->brand.'</g:brand>
-		<g:color>'.$node->references->reference->color.'</g:color>
-		<g:size>'.$skunode->size.'</g:size>
-		<g:gtin>'.$skunode->gtin.'</g:gtin>
+		<g:color>'.$reference['color'][0].'</g:color>
+		<g:size>'.$sku['size'][0].'</g:size>
+		<g:gtin>'.$sku['gtin'][0].'</g:gtin>
 		<g:size_system>'.$node->system_size.'</g:size_system>
-		<g:item_group_id>'.$node->references->reference->item_group_id.'</g:item_group_id>
+		<g:item_group_id>'.$reference['item_group_id'][0].'</g:item_group_id>
 		'.$shipping.'
 	</entry>
 	';
+				$this->j++;
+			}
 		}
 
 		return $content;
@@ -90,14 +108,17 @@ class GoogleParser
 	{
 		$reader = new \XMLReader();
 		$reader->open(FEED_GOOGLE_PATH);
+		$i = 0;
 
 		while($reader->read()) {
 			if($reader->nodeType == \XMLReader::ELEMENT) {
 				if($reader->localName == 'googleShoppingProduct') {
-					$this->content .= $this->generateItem(new \SimpleXMLElement($reader->readOuterXml()));
+					$i++;
+					$this->content .= $this->generateItem(new \SimpleXMLIterator($reader->readOuterXml()));
 				}
 			}
 		}
+		echo 'Feed file parsed: products = '.$i.' pcs., skus = '.$this->j." pcs.\n";
 	}
 
 }
