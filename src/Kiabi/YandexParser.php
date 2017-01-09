@@ -100,7 +100,7 @@ class YandexParser
 					$oldprice = '';
 				}
 
-				$content .= '<offer id="'.$node->references->reference->item_group_id.'" available="'.$available.'">
+				$content .= '<offer id="'.$reference['item_group_id'][0].'-'.$sku['code'][0].'" available="'.$available.'">
                 <url>'.$reference['link'][0].'</url>
                 <price>'.$price.'</price>'
                 .$oldprice.
