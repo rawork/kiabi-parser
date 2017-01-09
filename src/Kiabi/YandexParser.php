@@ -72,7 +72,8 @@ class YandexParser
 		$shipping = '';
 
 		if (isset($node->shipping)) {
-			$shipping = '<delivery-options>
+			$shipping = '
+				<delivery-options>
                 	<option cost="'.$node->shipping->price.'" days="31" order-before="24"/>
             	</delivery-options>
   				';
@@ -92,8 +93,10 @@ class YandexParser
 
 				$categoryId = $category['id'];
 
-				if (isset($sku['sale_price'])) {
-					$oldprice = '<oldprice>'.$sku['price'][0].'</oldprice>';
+				if (isset($sku['sale_price']) && floatval($sku['sale_price'][0]) < floatval($sku['price'][0])) {
+					$oldprice = '
+				<oldprice>'.$sku['price'][0].'</oldprice>
+';
 					$price = $sku['sale_price'][0];
 				} else {
 					$price = $sku['price'][0];
