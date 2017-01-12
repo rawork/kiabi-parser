@@ -62,7 +62,8 @@ class GoogleParser
 			$product_type = implode('&gt;', $types);
 		}
 
-		$description = htmlspecialchars($node->description ? $node->description : $node->title);
+		$description = $node->description;
+		$description = htmlspecialchars($description ? $description : $node->title);
 
 		foreach ($references['reference'] as $reference) {
 			$skus = $reference['skus'][0]['sku'];
