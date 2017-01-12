@@ -62,6 +62,8 @@ class GoogleParser
 			$product_type = implode('&gt;', $types);
 		}
 
+		$description = htmlspecialchars($node->description ? $node->description : $node->title);
+
 		foreach ($references['reference'] as $reference) {
 			$skus = $reference['skus'][0]['sku'];
 
@@ -70,7 +72,7 @@ class GoogleParser
 				$content .= '<entry>
 		<g:id>'.$reference['item_group_id'][0].'-'.$sku['code'][0].'</g:id>
 		<g:title>'.htmlspecialchars($node->title).'</g:title>
-		<g:description>'.htmlspecialchars($node->description).'</g:description>
+		<g:description>'.$description.'</g:description>
 		<g:link>'.$reference['link'][0].'</g:link>
 		<g:mobile_link>'.$reference['mobile_link'][0].'</g:mobile_link>
 		<g:image_link>'.$reference['image_link'][0].'</g:image_link>
