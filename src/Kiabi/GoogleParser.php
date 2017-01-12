@@ -62,7 +62,7 @@ class GoogleParser
 			$product_type = implode('&gt;', $types);
 		}
 
-		$description = $node->description;
+		$description = trim($node->description);
 		$description = htmlspecialchars($description ? $description : $node->title);
 
 		foreach ($references['reference'] as $reference) {
