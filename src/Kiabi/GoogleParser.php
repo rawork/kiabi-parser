@@ -67,7 +67,7 @@ class GoogleParser
 
 			foreach ($skus as $sku) {
 				$content .= '<entry>
-		<g:id>'.$reference['item_group_id'][0].'-'.$sku['code'][0].'</g:id>
+		<g:id>'.$sku['code'][0].'</g:id>
 		<g:title>'.htmlspecialchars($node->title).'</g:title>
 		<g:description>'.htmlspecialchars($node->description).'</g:description>
 		<g:link>'.$reference['link'][0].'</g:link>
