@@ -40,7 +40,7 @@ class YandexParser
 
 		$content .= '	</categories>
 	<delivery-options>
-		<option cost="0" days="31" order-before="24"/>
+		<option cost="0" days="1-19" order-before="24"/>
 	</delivery-options>
 	<offers>
 ';
@@ -82,7 +82,7 @@ class YandexParser
 		if (isset($node->shipping)) {
 			$shipping = '
 				<delivery-options>
-                	<option cost="'.$node->shipping->price.'.00" days="31" order-before="24"/>
+                	<option cost="'.$node->shipping->price.'.00" days="1-19" order-before="24"/>
             	</delivery-options>
   				';
 		}
@@ -96,6 +96,15 @@ class YandexParser
 
 		foreach ($references['reference'] as $reference) {
 			$skus = $reference['skus'][0]['sku'];
+
+			$pictures = '';
+			for ($i = 1; $i <= 10; $i++) {
+				if (!empty($reference['additionnal_image_link'.$i][0])) {
+					$pictures .= '
+					<picture>'.$reference['additionnal_image_link'.$i][0].'</picture>
+					';
+				}
+			}
 
 			foreach ($skus as $sku) {
 
@@ -122,6 +131,8 @@ class YandexParser
                 '<currencyId>RUB</currencyId>
                 <categoryId>'.$categoryId.'</categoryId>
                 <picture>'.$reference['image_link'][0].'</picture>
+                '.$pictures
+				.'	
                 <store>true</store>
                 <pickup>true</pickup>
                 <delivery>true</delivery>'.
