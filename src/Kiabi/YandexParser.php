@@ -40,7 +40,7 @@ class YandexParser
 
 		$content .= '	</categories>
 	<delivery-options>
-		<option cost="0" days="1-19" order-before="24"/>
+		<option cost="0" days="17-19" order-before="24"/>
 	</delivery-options>
 	<offers>
 ';
@@ -82,7 +82,7 @@ class YandexParser
 		if (isset($node->shipping)) {
 			$shipping = '
 				<delivery-options>
-                	<option cost="'.$node->shipping->price.'.00" days="1-19" order-before="24"/>
+                	<option cost="'.$node->shipping->price.'.00" days="17-19" order-before="24"/>
             	</delivery-options>
   				';
 		}
