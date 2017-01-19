@@ -10,7 +10,11 @@ class YandexParser
 	protected $categories;
 	protected $types = [];
 	protected $j = 0;
+	protected $k = 0;
 	protected $cutter;
+
+	protected $intSizes = ['2XS', 'XS', 'S', 'M', 'L', 'XL', 'XXL', '2XL', 'XXXL', '3XL'];
+	protected $monthSize = 'm';
 
 	public function __construct(Cutter $cutter)
 	{
@@ -94,6 +98,8 @@ class YandexParser
 
 //		$title = $this->cutter->cut($node->title);
 
+		$sizeSystem = $node->system_size;
+
 		foreach ($references['reference'] as $reference) {
 			$skus = $reference['skus'][0]['sku'];
 
@@ -124,6 +130,15 @@ class YandexParser
 					$oldprice = '';
 				}
 
+				if (in_array(trim($sku['size'][0]), $this->intSizes)) {
+					$sizeSystem = 'INT';
+				}
+
+				if (strpos($sku['size'][0], $this->monthSize)) {
+					$sizeSystem = 'Months';
+					$this->k++;
+				}
+
 				$content .= '<offer id="'.$sku['code'][0].'" available="'.$available.'">
                 <url>'.$reference['link'][0].'</url>
                 <price>'.$price.'</price>'
@@ -143,7 +158,7 @@ class YandexParser
                 <name>'.htmlspecialchars($node->title).'</name>
                 
                 <param name="Цвет">'.$reference['color'][0].'</param>
-                <param name="Размер" unit="'.$node->system_size.'">'.$sku['size'][0].'</param>
+                <param name="Размер" unit="'.$sizeSystem.'">'.$sku['size'][0].'</param>
             </offer>	
 	';
 				$this->j++;
@@ -181,7 +196,8 @@ class YandexParser
 				}
 			}
 		}
-		echo 'Feed file is parsed: products = '.$i.' pcs., skus = '.$this->j." pcs.\n";
+
+		echo sprintf("Feed file is parsed: products = %d pcs., skus = %d pcs.\n", $i, $this->j);
 	}
 
 }

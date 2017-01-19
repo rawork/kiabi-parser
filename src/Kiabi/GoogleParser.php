@@ -116,7 +116,8 @@ class GoogleParser
 				}
 			}
 		}
-		echo 'Feed file is parsed: products = '.$i.' pcs., skus = '.$this->j." pcs.\n";
+
+		echo sprintf("Feed file is parsed: products = %d pcs., skus = %d pcs.\n", $i, $this->j);
 	}
 
 }
