@@ -2,12 +2,20 @@
 
 namespace Kiabi;
 
+use Kiabi\Cutter;
+
 class YandexParser
 {
 	protected $content = '';
 	protected $categories;
 	protected $types = [];
 	protected $j = 0;
+	protected $cutter;
+
+	public function __construct(Cutter $cutter)
+	{
+		$this->cutter = $cutter;
+	}
 
 	protected function getHeader()
 	{
@@ -82,12 +90,16 @@ class YandexParser
 		$product_type = str_replace(' / ', '|', $node->product_type);
 		$categories = $this->getCategories();
 
+
+
+//		$title = $this->cutter->cut($node->title);
+
 		foreach ($references['reference'] as $reference) {
 			$skus = $reference['skus'][0]['sku'];
 
 			foreach ($skus as $sku) {
 
-				$available = $sku['availability'][0] == 'In stock' ? 'true' : 'false';
+				$available = $sku['availability'][0] == 'in stock' ? 'true' : 'false';
 
 				$category = $categories[md5($product_type)];
 
@@ -120,7 +132,7 @@ class YandexParser
                 <name>'.htmlspecialchars($node->title).'</name>
                 
                 <param name="Цвет">'.$reference['color'][0].'</param>
-                <param name="Размер">'.$sku['size'][0].'</param>
+                <param name="Размер" unit="'.$node->system_size.'">'.$sku['size'][0].'</param>
             </offer>	
 	';
 				$this->j++;

@@ -5,7 +5,7 @@ set_time_limit(0);
 
 require_once __DIR__.'/../bootstrap.php';
 
-$parser = new Kiabi\YandexParser();
+$parser = new Kiabi\YandexParser(new \Kiabi\Cutter([]));
 
 $parser->parse();
 
