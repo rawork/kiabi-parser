@@ -6,14 +6,12 @@ namespace Kiabi;
 class Cutter
 {
 	protected $blacklist = [];
-	protected $whitelist = [];
 	protected $words = [];
 	protected $phrases = [];
 
-	public function __construct($blacklist, $whitelist = [])
+	public function __construct($blacklist)
 	{
 		$this->blacklist = $blacklist;
-		$this->whitelist = $whitelist;
 	}
 
 	public function clear($text)

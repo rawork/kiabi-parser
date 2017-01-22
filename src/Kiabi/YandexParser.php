@@ -10,15 +10,18 @@ class YandexParser
 	protected $categories;
 	protected $types = [];
 	protected $j = 0;
-	protected $k = 0;
 	protected $cutter;
+	protected $replacer;
 
 	protected $intSizes = ['2XS', 'XS', 'S', 'M', 'L', 'XL', 'XXL', '2XL', 'XXXL', '3XL'];
 	protected $monthSize = 'm';
 
-	public function __construct(Cutter $cutter)
+	protected $colors;
+
+	public function __construct(Cutter $cutter, Replacer $replacer)
 	{
 		$this->cutter = $cutter;
+		$this->replacer = $replacer;
 	}
 
 	protected function getHeader()
@@ -112,6 +115,11 @@ class YandexParser
 				}
 			}
 
+			$color = $reference['color'][0];
+			if ($this->replacer->analize($color)) {
+				$this->colors[md5($color)] = ['source' => $color];
+			}
+
 			foreach ($skus as $sku) {
 
 				$available = $sku['availability'][0] == 'in stock' ? 'true' : 'false';
@@ -136,7 +144,6 @@ class YandexParser
 
 				if (strpos($sku['size'][0], $this->monthSize)) {
 					$sizeSystem = 'Months';
-					$this->k++;
 				}
 
 				$content .= '<offer id="'.$sku['code'][0].'" available="'.$available.'">
