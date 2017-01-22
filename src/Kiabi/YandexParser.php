@@ -16,8 +16,6 @@ class YandexParser
 	protected $intSizes = ['2XS', 'XS', 'S', 'M', 'L', 'XL', 'XXL', '2XL', 'XXXL', '3XL'];
 	protected $monthSize = 'm';
 
-	protected $colors;
-
 	public function __construct(Cutter $cutter, Replacer $replacer)
 	{
 		$this->cutter = $cutter;
@@ -117,7 +115,7 @@ class YandexParser
 
 			$color = $reference['color'][0];
 			if ($this->replacer->analize($color)) {
-				$this->colors[md5($color)] = ['source' => $color];
+				$color = $this->replacer->replace($color);
 			}
 
 			foreach ($skus as $sku) {
@@ -164,7 +162,7 @@ class YandexParser
                 <sales_notes>Оплата наличными и банковской картой.</sales_notes>
                 <name>'.htmlspecialchars($node->title).'</name>
                 
-                <param name="Цвет">'.$reference['color'][0].'</param>
+                <param name="Цвет">'.$color.'</param>
                 <param name="Размер" unit="'.$sizeSystem.'">'.$sku['size'][0].'</param>
             </offer>	
 	';

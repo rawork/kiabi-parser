@@ -14,8 +14,10 @@ class ColorParser
 		$this->replacer = $replacer;
 	}
 
-	private function sxiToArray($sxi){
+	private function sxiToArray($sxi)
+	{
 		$a = array();
+
 		for( $sxi->rewind(); $sxi->valid(); $sxi->next() ) {
 			if(!array_key_exists($sxi->key(), $a)){
 				$a[$sxi->key()] = array();
@@ -27,6 +29,7 @@ class ColorParser
 				$a[$sxi->key()][] = strval($sxi->current());
 			}
 		}
+
 		return $a;
 	}
 
@@ -38,7 +41,7 @@ class ColorParser
 
 			$color = $reference['color'][0];
 			if ($this->replacer->analize($color)) {
-				$this->colors[md5($color)] = ['source' => $color];
+				$this->colors[md5($color)] = ['source' => $color, 'yandex' => ''];
 			}
 		}
 	}
@@ -46,6 +49,11 @@ class ColorParser
 	public function getJson()
 	{
 		return json_encode($this->colors);
+	}
+
+	public function getColors()
+	{
+		return $this->colors;
 	}
 
 	public function parse()

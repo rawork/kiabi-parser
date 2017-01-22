@@ -1,0 +1,4 @@
+AuthType Basic
+AuthName "KIABI Tools"
+AuthUserFile /Users/roman/Sites/kiabi-parser/app/passwords
+Require valid-user

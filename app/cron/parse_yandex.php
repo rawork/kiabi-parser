@@ -5,7 +5,10 @@ set_time_limit(0);
 
 require_once __DIR__.'/../bootstrap.php';
 
-$parser = new Kiabi\YandexParser(new \Kiabi\Cutter([]), new \Kiabi\Replacer());
+$parser = new Kiabi\YandexParser(
+	new \Kiabi\Cutter([]),
+	new \Kiabi\Replacer(json_decode(file_get_contents(YANDEX_COLORS_PATH), true))
+);
 
 $parser->parse();
 
