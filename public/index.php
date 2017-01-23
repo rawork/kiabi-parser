@@ -1,5 +1,5 @@
 <?php
-require_once 'app/bootstrap.php';
+require_once '../app/bootstrap.php';
 
 $colors = json_decode(file_get_contents(YANDEX_COLORS_PATH), true);
 $yandexColors = \Kiabi\Replacer::$colors;
