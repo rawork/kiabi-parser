@@ -6,7 +6,7 @@ namespace Kiabi;
 class ColorParser
 {
 	protected $replacer;
-	protected $colors;
+	protected $colors = [];
 	protected $j = 0;
 
 	public function __construct(Replacer $replacer)
@@ -41,7 +41,12 @@ class ColorParser
 
 			$color = $reference['color'][0];
 			if ($this->replacer->analize($color)) {
-				$this->colors[md5($color)] = ['source' => $color, 'yandex' => ''];
+				if (array_key_exists(md5($color), $this->colors)) {
+					$this->colors[md5($color)]['entry'][] = $reference['link'][0];
+				} else {
+					$this->colors[md5($color)] = ['entry' => [$reference['link'][0]], 'source' => $color, 'yandex' => ''];
+				}
+
 			}
 		}
 	}

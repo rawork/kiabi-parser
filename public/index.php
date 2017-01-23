@@ -40,11 +40,17 @@ if ('POST' == $_SERVER['REQUEST_METHOD']) {
 
 	<table class="table table-bordered table-responsive">
 		<tr>
-			<th>Оригинальный цвет</th>
-			<th>Вариант Яндекса</th>
+			<th width="70%">Товары</th>
+			<th width="15%">Оригинальный цвет</th>
+			<th width="15%">Вариант Яндекса</th>
 		</tr>
 		<?foreach ($colors as $key => $color):?>
 		<tr>
+			<td>
+				<?foreach($color['entry'] as $entry):?>
+				<a href="<?=$entry?>" target="_blank"><?=$entry?></a><br>
+				<?endforeach;?>
+			</td>
 			<td><?=$color['source']?></td>
 			<td><select class="form-control" name="<?=$key?>">
 					<option value="">Не определено</option>
