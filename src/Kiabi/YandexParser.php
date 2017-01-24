@@ -158,6 +158,7 @@ class YandexParser
                 <delivery>true</delivery>'.
 					$shipping
 					.'<vendor>'.$node->brand.'</vendor>
+				<vendorCode>'.$reference['item_group_id'][0].'</vendorCode>	
                 <description>'.htmlspecialchars($node->description).'</description>
                 <sales_notes>Оплата наличными и банковской картой.</sales_notes>
                 <name>'.htmlspecialchars($node->title).'</name>
