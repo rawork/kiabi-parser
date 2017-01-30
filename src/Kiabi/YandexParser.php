@@ -106,7 +106,6 @@ class YandexParser
 		} else if (preg_match('/'.implode('|', $this->titles2).'/', $title, $matches)) {
 			$title = $matches[0];
 		} else {
-			var_dump($title);
 			$this->k++;
 		}
 
@@ -242,7 +241,7 @@ class YandexParser
 			}
 		}
 
-		echo sprintf("Feed file is parsed: products = %d pcs., skus = %d pcs. titles = %d\n", $i, $this->j, $this->k);
+		echo sprintf("Feed file is parsed: products = %d pcs., skus = %d pcs. correct titles = %d pcs.\n", $i, $this->j, $this->k);
 	}
 
 }
