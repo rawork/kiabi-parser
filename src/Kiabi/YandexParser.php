@@ -241,7 +241,7 @@ class YandexParser
 			}
 		}
 
-		echo sprintf("Feed file is parsed: products = %d pcs., skus = %d pcs. correct titles = %d pcs.\n", $i, $this->j, $this->k);
+		echo sprintf("Feed file is parsed: products = %d pcs., skus = %d pcs. unparsed titles = %d pcs.\n", $i, $this->j, $this->k);
 	}
 
 }
