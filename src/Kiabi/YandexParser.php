@@ -12,14 +12,35 @@ class YandexParser
 	protected $j = 0;
 	protected $cutter;
 	protected $replacer;
+	protected $k = 0;
 
 	protected $intSizes = ['2XS', 'XS', 'S', 'M', 'L', 'XL', 'XXL', '2XL', 'XXXL', '3XL'];
 	protected $monthSize = 'm';
+	protected $titles = [
+		'балетки', 'боди', 'болеро', 'борсалино', 'ботинки', 'брюки', 'бюстгальтер',
+		'бетровка', 'водолазка', 'галстук-бабочка', 'галстук', 'джеггинсы', 'джегинсы',
+		'джемпер-пончо', 'джемпер', 'джинсы', 'жакет', 'жилет', 'зонт', 'капри', 'кардиган',
+		'кеды', 'кепка', 'колготки', 'комбинация', 'комбинезон', 'кроссовки', 'купальник',
+		'купальные трусики', 'куртка бомбер', 'куртка', 'леггинсы', 'легинсы', 'лонгслив', 'майка',
+		'митенки', 'мокасины', 'накидка', 'наматрасник', 'носки', 'ночная рубашка', 'пальто',
+		'парка', 'пиджак', 'пижама', 'плавки', 'платок', 'платье-джемпер', 'платье-колокольчик',
+		'платье-комбинезон', 'платье-рубашка', 'платье-футляр', 'платье', 'плащ-накидка', 'плащ',
+		'плед', 'повязка', 'покрывало', 'ползунки', 'поло', 'полотенце-накидка', 'полотенце',
+		'полусапоги', 'пончо', 'пояс', 'пуловер', 'пуховик', 'ремень', 'рубашка', 'рукавички',
+		'сандалии', 'сапоги', 'сапожки', 'сарафан', 'свитер', 'свитшот', 'слюнявчик',
+		'спортивный костюм', 'тапочки', 'толстовка', 'топ', 'трегинсы', 'тренч', 'тренчкот', 'трусики',
+		'трусики-стринги', 'трусики-танга', 'трусики-шортики', 'трусики-шорты', 'трусы-боксеры',
+		'туника', 'туфли', 'туфли-лодочки', 'футболка', 'халат', 'шапочка', 'шаровары', 'шарф',
+		'шляпа', 'шортики', 'шорты', 'юбка'
+	];
+	protected $titles2 = [];
 
 	public function __construct(Cutter $cutter, Replacer $replacer)
 	{
 		$this->cutter = $cutter;
 		$this->replacer = $replacer;
+
+		$this->titles2 = array_map( function($a) { return mb_convert_case($a, MB_CASE_TITLE); }, $this->titles);
 	}
 
 	protected function getHeader()
@@ -45,7 +66,7 @@ class YandexParser
 
 		$content .= '	</categories>
 	<delivery-options>
-		<option cost="0" days="17-19" order-before="24"/>
+		<option cost="0" days="1-2" order-before="24"/>
 	</delivery-options>
 	<offers>
 ';
@@ -76,9 +97,28 @@ class YandexParser
 		return $a;
 	}
 
+	public function getTitle($title)
+	{
+		$title = ''.$title;
+
+		if (preg_match("/".implode('|', $this->titles)."/", $title, $matches)) {
+			$title = mb_convert_case($matches[0], MB_CASE_TITLE);
+		} else if (preg_match('/'.implode('|', $this->titles2).'/', $title, $matches)) {
+			$title = $matches[0];
+		} else {
+			var_dump($title);
+			$this->k++;
+		}
+
+		return htmlspecialchars($title);
+	}
+
 	public function generateItem(\SimpleXMLIterator $node)
 	{
 		$content = '';
+
+		$title = $this->getTitle($node->title);
+		//		$title = $this->cutter->cut($node->title);
 
 		$references = $this->sxiToArray($node->references->children());
 
@@ -87,17 +127,13 @@ class YandexParser
 		if (isset($node->shipping)) {
 			$shipping = '
 				<delivery-options>
-                	<option cost="'.$node->shipping->price.'.00" days="17-19" order-before="24"/>
+                	<option cost="'.$node->shipping->price.'.00" days="1-2" order-before="24"/>
             	</delivery-options>
   				';
 		}
 
 		$product_type = str_replace(' / ', '|', $node->product_type);
 		$categories = $this->getCategories();
-
-
-
-//		$title = $this->cutter->cut($node->title);
 
 		$sizeSystem = $node->system_size;
 
@@ -164,7 +200,7 @@ class YandexParser
 				<vendorCode>'.$node->id.'</vendorCode>	
                 <description>'.htmlspecialchars($node->description).'</description>
                 <sales_notes>Оплата наличными и банковской картой.</sales_notes>
-                <name>'.htmlspecialchars($node->title).'</name>
+                <name>'.$title.'</name>
                 
                 <param name="Цвет">'.$color.'</param>
                 <param name="Размер" unit="'.$sizeSystem.'">'.$size.'</param>
@@ -206,7 +242,7 @@ class YandexParser
 			}
 		}
 
-		echo sprintf("Feed file is parsed: products = %d pcs., skus = %d pcs.\n", $i, $this->j);
+		echo sprintf("Feed file is parsed: products = %d pcs., skus = %d pcs. titles = %d\n", $i, $this->j, $this->k);
 	}
 
 }
