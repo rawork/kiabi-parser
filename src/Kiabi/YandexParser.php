@@ -105,8 +105,6 @@ class YandexParser
 			$title = mb_convert_case($matches[0], MB_CASE_TITLE);
 		} else if (preg_match('/'.implode('|', $this->titles2).'/', $title, $matches)) {
 			$title = $matches[0];
-		} else {
-			$this->k++;
 		}
 
 		return htmlspecialchars($title);
@@ -178,8 +176,9 @@ class YandexParser
 					$sizeSystem = 'INT';
 				}
 
-				if (strpos($size, $this->monthSize)) {
+				if (substr($size, -1) == $this->monthSize) {
 					$sizeSystem = 'Months';
+					$size = str_replace($this->monthSize, '', $size);
 				}
 
 				$content .= '<offer id="'.$sku['code'][0].'" available="'.$available.'">
@@ -241,7 +240,7 @@ class YandexParser
 			}
 		}
 
-		echo sprintf("Feed file is parsed: products = %d pcs., skus = %d pcs. unparsed titles = %d pcs.\n", $i, $this->j, $this->k);
+		echo sprintf("Feed file is parsed: products = %d pcs., skus = %d pcs.\n", $i, $this->j);
 	}
 
 }
