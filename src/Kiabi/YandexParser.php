@@ -136,11 +136,14 @@ class YandexParser
 					$oldprice = '';
 				}
 
-				if (in_array(trim($sku['size'][0]), $this->intSizes)) {
+				$sizes = explode('/', $sku['size'][0]);
+				$size = count($sizes) > 0 ? $sizes[0] : $sku['size'][0];
+
+				if (in_array(trim($size), $this->intSizes)) {
 					$sizeSystem = 'INT';
 				}
 
-				if (strpos($sku['size'][0], $this->monthSize)) {
+				if (strpos($size, $this->monthSize)) {
 					$sizeSystem = 'Months';
 				}
 
@@ -158,13 +161,13 @@ class YandexParser
                 <delivery>true</delivery>'.
 					$shipping
 					.'<vendor>'.$node->brand.'</vendor>
-				<vendorCode>'.$reference['item_group_id'][0].'</vendorCode>	
+				<vendorCode>'.$node->id.'</vendorCode>	
                 <description>'.htmlspecialchars($node->description).'</description>
                 <sales_notes>Оплата наличными и банковской картой.</sales_notes>
                 <name>'.htmlspecialchars($node->title).'</name>
                 
                 <param name="Цвет">'.$color.'</param>
-                <param name="Размер" unit="'.$sizeSystem.'">'.$sku['size'][0].'</param>
+                <param name="Размер" unit="'.$sizeSystem.'">'.$size.'</param>
             </offer>	
 	';
 				$this->j++;
