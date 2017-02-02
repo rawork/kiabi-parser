@@ -15,7 +15,7 @@ class YandexParser
 	protected $k = 0;
 
 	protected $intSizes = ['2XS', 'XS', 'S', 'M', 'L', 'XL', 'XXL', '2XL', 'XXXL', '3XL'];
-	protected $monthSize = 'm';
+	protected $monthSizes = ['m', 'M'];
 	protected $titles = [
 		'балетки', 'боди', 'болеро', 'борсалино', 'ботинки', 'брюки', 'бюстгальтер',
 		'бетровка', 'водолазка', 'галстук-бабочка', 'галстук', 'джеггинсы', 'джегинсы',
@@ -115,6 +115,7 @@ class YandexParser
 		$content = '';
 
 		$title = $this->getTitle($node->title);
+		$title .= ' '.$node->brand;
 		//		$title = $this->cutter->cut($node->title);
 
 		$references = $this->sxiToArray($node->references->children());
@@ -131,8 +132,6 @@ class YandexParser
 
 		$product_type = str_replace(' / ', '|', $node->product_type);
 		$categories = $this->getCategories();
-
-		$sizeSystem = $node->system_size;
 
 		foreach ($references['reference'] as $reference) {
 			$skus = $reference['skus'][0]['sku'];
@@ -152,6 +151,7 @@ class YandexParser
 			}
 
 			foreach ($skus as $sku) {
+				$sizeSystem = $node->system_size;
 
 				$available = $sku['availability'][0] == 'in stock' ? 'true' : 'false';
 
@@ -169,16 +169,21 @@ class YandexParser
 					$oldprice = '';
 				}
 
-				$sizes = explode('/', $sku['size'][0]);
-				$size = count($sizes) > 0 ? $sizes[0] : $sku['size'][0];
+//				if (strpos($sku['size'][0], 'a')) {
+//					var_dump($sku['size'][0]);
+//				}
 
-				if (in_array(trim($size), $this->intSizes)) {
+				$sizes = explode('/', $sku['size'][0]);
+
+				$size = trim(count($sizes) > 0 ? $sizes[0] : $sku['size'][0]);
+
+				if (in_array($size, $this->intSizes)) {
 					$sizeSystem = 'INT';
 				}
 
-				if (substr($size, -1) == $this->monthSize) {
+				if (in_array(substr($size, -1), $this->monthSizes) ) {
 					$sizeSystem = 'Months';
-					$size = str_replace($this->monthSize, '', $size);
+					$size = preg_replace('/'.$this->monthSizes[0].'/i', '', $size);
 				}
 
 				$content .= '<offer id="'.$sku['code'][0].'" available="'.$available.'">
