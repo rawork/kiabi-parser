@@ -7,6 +7,30 @@ class GoogleParser
 	protected $content = '';
 	protected $j = 0;
 
+	protected $titles = [
+		'балетки', 'боди', 'болеро', 'борсалино', 'ботинки', 'брюки', 'бюстгальтер',
+		'бетровка', 'водолазка', 'галстук-бабочка', 'галстук', 'джеггинсы', 'джегинсы',
+		'джемпер-пончо', 'джемпер', 'джинсы', 'жакет', 'жилет', 'зонт', 'капри', 'кардиган',
+		'кеды', 'кепка', 'колготки', 'комбинация', 'комбинезон', 'кроссовки', 'купальник',
+		'купальные трусики', 'куртка бомбер', 'куртка', 'леггинсы', 'легинсы', 'лонгслив', 'майка',
+		'митенки', 'мокасины', 'накидка', 'наматрасник', 'носки', 'ночная рубашка', 'пальто',
+		'парка', 'пиджак', 'пижама', 'плавки', 'платок', 'платье-джемпер', 'платье-колокольчик',
+		'платье-комбинезон', 'платье-рубашка', 'платье-футляр', 'платье', 'плащ-накидка', 'плащ',
+		'плед', 'повязка', 'покрывало', 'ползунки', 'поло', 'полотенце-накидка', 'полотенце',
+		'полусапоги', 'пончо', 'пояс', 'пуловер', 'пуховик', 'ремень', 'рубашка', 'рукавички',
+		'сандалии', 'сапоги', 'сапожки', 'сарафан', 'свитер', 'свитшот', 'слюнявчик',
+		'спортивный костюм', 'тапочки', 'толстовка', 'топ', 'трегинсы', 'тренч', 'тренчкот', 'трусики',
+		'трусики-стринги', 'трусики-танга', 'трусики-шортики', 'трусики-шорты', 'трусы-боксеры',
+		'туника', 'туфли', 'туфли-лодочки', 'футболка', 'халат', 'шапочка', 'шаровары', 'шарф',
+		'шляпа', 'шортики', 'шорты', 'юбка'
+	];
+	protected $titles2 = [];
+
+	public function __construct()
+	{
+		$this->titles2 = array_map( function($a) { return mb_convert_case($a, MB_CASE_TITLE); }, $this->titles);
+	}
+
 	public function getHeader()
 	{
 		$date = date('Y-m-d');
@@ -25,7 +49,8 @@ class GoogleParser
 		return '</feed>';
 	}
 
-	private function sxiToArray($sxi){
+	private function sxiToArray($sxi)
+	{
 		$a = array();
 		for( $sxi->rewind(); $sxi->valid(); $sxi->next() ) {
 			if(!array_key_exists($sxi->key(), $a)){
@@ -41,9 +66,26 @@ class GoogleParser
 		return $a;
 	}
 
+	public function getTitle($title)
+	{
+		$title = ''.$title;
+
+		if (preg_match("/".implode('|', $this->titles)."/", $title, $matches)) {
+			$title = mb_convert_case($matches[0], MB_CASE_TITLE);
+		} else if (preg_match('/'.implode('|', $this->titles2).'/', $title, $matches)) {
+			$title = $matches[0];
+		}
+
+		return htmlspecialchars($title);
+	}
+
 	public function generateItem(\SimpleXMLIterator $node)
 	{
 		$content = '';
+
+		$title = $this->getTitle($node->title);
+//		$title .= ' '.$node->brand;
+
 		$references = $this->sxiToArray($node->references->children());
 
 		$shipping = '';
@@ -72,7 +114,7 @@ class GoogleParser
 
 				$content .= '<entry>
 		<g:id>'.$reference['item_group_id'][0].'-'.$sku['code'][0].'</g:id>
-		<g:title>'.htmlspecialchars($node->title).'</g:title>
+		<g:title>'.$title.'</g:title>
 		<g:description>'.$description.'</g:description>
 		<g:link>'.$reference['link'][0].'</g:link>
 		<g:mobile_link>'.$reference['mobile_link'][0].'</g:mobile_link>
