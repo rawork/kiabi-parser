@@ -10,7 +10,7 @@ if (file_exists(YANDEX_CATEGORIES_PATH)) {
 	$categories = json_decode(file_get_contents(YANDEX_CATEGORIES_PATH), true);
 }
 
-$parser = new Kiabi\YandexCategoryParser();
+$parser = new Kiabi\YandexCategoryParser($categories);
 
 $parser->parse();
 

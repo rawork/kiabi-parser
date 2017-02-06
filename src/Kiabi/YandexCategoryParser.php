@@ -8,31 +8,47 @@ class YandexCategoryParser
 	protected $categories = [];
 	protected $id = 0;
 
+	public function __construct(array $categories)
+	{
+		$this->categories = $categories;
+
+		foreach ($this->categories as $category) {
+			if(intval($category['id']) > $this->id) {
+				$this->id = $category['id'];
+			}
+		}
+	}
+
 	public function parseItem(\SimpleXMLElement $node)
 	{
 		$types = array_map('trim', explode('|', str_replace(' / ', '|', $node->product_type)));
 
 		foreach ($types as $level => $type) {
 
-			$categoryText = implode('|', array_slice($types, 0, $level+1));
-			$categoryKey = md5($categoryText);
-
-			if (array_key_exists($categoryKey, $this->types)) {
+			$type = $this->getType($types, $level + 1);
+			$categoryKey = $this->getKey($type);
+			if (array_key_exists($categoryKey, $this->categories)) {
 				continue;
 			}
 
-			$this->types[$categoryKey] = $this->getId();
+			$this->categories[$categoryKey] = [
+				'id' => $this->getId(),
+				'title' => $type,
+				'parent_key' => $level > 0 ? $this->getKey($this->getType($types, $level)) : 0,
+				'type' => $type,
+			];
 
-			if (!array_key_exists($categoryKey, $this->categories)){
-				$this->categories[$categoryKey] = [
-					'id' => $this->types[$categoryKey],
-					'title' => $type,
-					'parent_key' => $level > 0 ? md5(implode('|', array_slice($types, 0, $level))) : 0,
-					'type' => implode('|', array_slice($types, 0, $level+1)),
-				];
-			}
-
+			echo sprintf("Found new category \"%s\"\n", $type);
 		}
+	}
+
+	public function getType($array, $length)
+	{
+		return implode('|', array_slice($array, 0, $length));
+	}
+
+	public function getKey($str) {
+		return md5($str);
 	}
 
 	public function getId()
