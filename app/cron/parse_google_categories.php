@@ -7,7 +7,7 @@ require_once __DIR__.'/../bootstrap.php';
 
 $categories = [];
 if (file_exists(GOOGLE_CATEGORIES_JSON_PATH)) {
-	$colors = json_decode(file_get_contents(GOOGLE_CATEGORIES_JSON_PATH), true);
+	$categories = json_decode(file_get_contents(GOOGLE_CATEGORIES_JSON_PATH), true);
 }
 
 $parser = new Kiabi\GoogleCategoryParser();

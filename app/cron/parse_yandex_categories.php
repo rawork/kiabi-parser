@@ -5,6 +5,11 @@ set_time_limit(0);
 
 require_once __DIR__.'/../bootstrap.php';
 
+$categories = [];
+if (file_exists(YANDEX_CATEGORIES_PATH)) {
+	$categories = json_decode(file_get_contents(YANDEX_CATEGORIES_PATH), true);
+}
+
 $parser = new Kiabi\YandexCategoryParser();
 
 $parser->parse();
