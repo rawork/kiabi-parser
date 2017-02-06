@@ -4,12 +4,14 @@ namespace Kiabi;
 
 class YandexCategoryParser
 {
+	protected $feedPath;
 	protected $types = [];
 	protected $categories = [];
 	protected $id = 0;
 
-	public function __construct(array $categories)
+	public function __construct($feedPath, array $categories)
 	{
+		$this->feedPath = $feedPath;
 		$this->categories = $categories;
 
 		foreach ($this->categories as $category) {
@@ -56,14 +58,20 @@ class YandexCategoryParser
 		return ++$this->id;
 	}
 
-	public function getJson() {
+	public function getJson()
+	{
 		return json_encode($this->categories);
+	}
+
+	public function getCategories()
+	{
+		return $this->categories;
 	}
 
 	public function parse()
 	{
 		$reader = new \XMLReader();
-		$reader->open(FEED_YANDEX_PATH);
+		$reader->open($this->feedPath);
 
 		while($reader->read()) {
 			if($reader->nodeType == \XMLReader::ELEMENT) {

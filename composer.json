@@ -14,6 +14,12 @@
         "phpoffice/phpexcel": "1.8.1"
     },
     "autoload": {
-        "psr-4": {"Kiabi\\": "src/Kiabi/"}
+        "psr-0": {"Kiabi\\": "src/"}
+    },
+    "autoload-dev": {
+        "psr-0": { "Kiabi\\Tests\\": "tests/" }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "5.7.11"
     }
 }
