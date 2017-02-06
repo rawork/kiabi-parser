@@ -25,6 +25,7 @@ class GoogleParser
 		'шляпа', 'шортики', 'шорты', 'юбка'
 	];
 	protected $titles2 = [];
+	protected $categories = [];
 
 	public function __construct()
 	{
@@ -99,6 +100,7 @@ class GoogleParser
 
 		$product_type = str_replace('/','&gt;',$node->product_type);
 		$types = explode('&gt;', $product_type);
+
 		if (count($types) > 1 && strpos($types[1], trim($types[0])) !== false) {
 			unset($types[1]);
 			$product_type = implode('&gt;', $types);
