@@ -35,13 +35,18 @@ class YandexCategoryParser
 
 			$this->categories[$categoryKey] = [
 				'id' => $this->getId(),
-				'title' => $type,
+				'title' => $this->getTitle($types, $level),
 				'parent_key' => $level > 0 ? $this->getKey($this->getType($types, $level)) : 0,
 				'type' => $type,
 			];
 
 			echo sprintf("Found new category \"%s\"\n", $type);
 		}
+	}
+
+	public function getTitle($array, $pos)
+	{
+		return $array[$pos];
 	}
 
 	public function getType($array, $length)

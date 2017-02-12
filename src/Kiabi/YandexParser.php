@@ -16,6 +16,8 @@ class YandexParser
 
 	protected $intSizes = ['2XS', 'XS', 'S', 'M', 'L', 'XL', 'XXL', '2XL', 'XXXL', '3XL'];
 	protected $monthSizes = ['m', 'M'];
+	protected $ages = ['Муж' => 'Взрослый', 'Жен' => 'Взрослый', 'Малыш' => 'Для малышей', 'Дев' => 'Детский', 'Мальч' => 'Детский'];
+	protected $gender = ['Муж' => 'Мужской', 'Жен' => 'Женский', 'Дев' => 'Женский', 'Мальч' => 'Мужской'];
 	protected $titles = [
 		'балетки', 'боди', 'болеро', 'борсалино', 'ботинки', 'брюки', 'бюстгальтер',
 		'бетровка', 'водолазка', 'галстук-бабочка', 'галстук', 'джеггинсы', 'джегинсы',
@@ -131,6 +133,23 @@ class YandexParser
 		}
 
 		$product_type = str_replace(' / ', '|', $node->product_type);
+		$genderParam = '';
+		$ageParam = '';
+
+		foreach ($this->gender as $key => $gender) {
+			if (mb_strpos($product_type, $key)) {
+				$genderParam = '<param name="Пол">'.$gender.'</param>';
+				break;
+			}
+		}
+
+		foreach ($this->ages as $key => $age) {
+			if (mb_strpos($product_type, $key)) {
+				$ageParam = '<param name="Возраст">'.$age.'</param>';
+				break;
+			}
+		}
+
 		$categories = $this->getCategories();
 
 		foreach ($references['reference'] as $reference) {
@@ -207,6 +226,9 @@ class YandexParser
                 
                 <param name="Цвет">'.$color.'</param>
                 <param name="Размер" unit="'.$sizeSystem.'">'.$size.'</param>
+                '.$genderParam.$ageParam
+				.'
+				<group_id>'.$reference['item_group_id'][0].'</group_id>
             </offer>	
 	';
 				$this->j++;
