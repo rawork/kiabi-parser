@@ -137,14 +137,14 @@ class YandexParser
 		$ageParam = '';
 
 		foreach ($this->gender as $key => $gender) {
-			if (mb_strpos($product_type, $key)) {
+			if (mb_strpos($product_type, $key) !== false) {
 				$genderParam = '<param name="Пол">'.$gender.'</param>';
 				break;
 			}
 		}
 
 		foreach ($this->ages as $key => $age) {
-			if (mb_strpos($product_type, $key)) {
+			if (mb_strpos($product_type, $key) !== false) {
 				$ageParam = '<param name="Возраст">'.$age.'</param>';
 				break;
 			}
