@@ -228,7 +228,6 @@ class YandexParser
                 <param name="Размер" unit="'.$sizeSystem.'">'.$size.'</param>
                 '.$genderParam.$ageParam
 				.'
-				<group_id>'.$reference['item_group_id'][0].'</group_id>
             </offer>	
 	';
 				$this->j++;
