@@ -26,10 +26,15 @@ class GoogleParser
 	];
 	protected $titles2 = [];
 	protected $categories = [];
+	protected $searchTexts = [
+		176 => 'галстук|Галстук', 179 => 'подтяжки|Подтяжки', 169 => 'ремен|Ремен',
+		2271 => 'плать|Плать', 1581 => 'юбк|Юбк', 5624=> 'варежк|Варежк|перчатк|Перчатк|шарф|Шарф', 5625 => 'шапк|Шапк|шапочк|Шапочк',
+	];
 
 	public function __construct()
 	{
 		$this->titles2 = array_map( function($a) { return mb_convert_case($a, MB_CASE_TITLE); }, $this->titles);
+		$this->getCategories();
 	}
 
 	public function getHeader()
@@ -80,6 +85,15 @@ class GoogleParser
 		return htmlspecialchars($title);
 	}
 
+	public function getCategories()
+	{
+		if (!$this->categories) {
+			$this->categories = json_decode(file_get_contents(GOOGLE_CATEGORIES_JSON_PATH), true);
+		}
+
+		return $this->categories;
+	}
+
 	public function generateItem(\SimpleXMLIterator $node)
 	{
 		$content = '';
@@ -105,6 +119,43 @@ class GoogleParser
 			unset($types[1]);
 			$product_type = implode('&gt;', $types);
 		}
+
+		$key = md5(implode('|', array_map('trim', $types)));
+
+		$googleProductCategory = '';
+		$age = '';
+		$gender = '';
+
+		if (array_key_exists($key, $this->categories)) {
+			$category = $this->categories[$key];
+
+			$ageGroup = $category['age'];
+			$genderGroup = $category['gender'];
+			$age = "<g:age_group>$ageGroup</g:age_group>";
+			$gender = "<g:gender>$genderGroup</g:gender>";
+
+			if ($category['google_id']){
+				$categoryId = 0;
+				$categoryIds = array_map('trim', explode(',', $category['google_id']));
+
+				if(count($categoryIds) == 1) {
+					$categoryId = $categoryIds[0];
+				} else {
+					foreach ($categoryIds as $key => $id) {
+						$searchText = $this->searchTexts[$id];
+						if (preg_match("/($searchText)/", $title, $matches)) {
+							$categoryId = $id;
+							break;
+						}
+					}
+				}
+
+				if ($categoryId != 0) {
+					$googleProductCategory = "<g:google_product_category>$categoryId</g:google_product_category>";
+				}
+			}
+		}
+
 
 		$description = trim($node->description);
 		$description = htmlspecialchars($description ? $description : $node->title);
@@ -132,7 +183,7 @@ class GoogleParser
 		<g:gtin>'.$sku['gtin'][0].'</g:gtin>
 		<g:size_system>'.$node->system_size.'</g:size_system>
 		<g:item_group_id>'.$reference['item_group_id'][0].'</g:item_group_id>
-		'.$shipping.'
+		'.$shipping.$age.$gender.$googleProductCategory.'
 	</entry>
 	';
 				$this->j++;

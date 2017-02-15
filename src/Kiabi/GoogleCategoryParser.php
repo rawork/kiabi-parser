@@ -37,4 +37,13 @@ class GoogleCategoryParser
 		}
 	}
 
+	public function apply(){
+
+	}
+
+	public function fullfill()
+	{
+
+	}
+
 }

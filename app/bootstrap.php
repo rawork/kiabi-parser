@@ -13,6 +13,8 @@ define('CP_CATEGORIES_PATH', __DIR__.'/../files/channel_pilot_categories.xml');
 
 define('GOOGLE_CATEGORIES_JSON_PATH', __DIR__.'/../files/categories_google.json');
 define('GOOGLE_CATEGORIES_XSLX_PATH', __DIR__.'/../files/categories_google.xlsx');
+define('GOOGLE_CATEGORIES_PARSED_PATH', __DIR__.'/../public/files/categories_google.xlsx');
+define('GOOGLE_TAXONOMY_PATH', __DIR__.'/../public/files/taxonomy_google.xls');
 
 define('FEED_YANDEX_PATH', __DIR__.'/../files/feed_original_for_yandex.xml');
 define('FEED_GOOGLE_PATH', __DIR__.'/../files/feed_original_for_google.xml');

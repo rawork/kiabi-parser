@@ -43,8 +43,6 @@ class YandexCategoryParserTest extends TestCase
 
 		$result = $parser->getCategories();
 
-		var_dump($result);
-
 		$this->assertEquals(8, count($result));
 	}
 }
