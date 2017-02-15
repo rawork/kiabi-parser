@@ -6,11 +6,19 @@ class GoogleCategoryParser
 {
 	protected $categories = [];
 
+	public function __construct($categories)
+	{
+		$this->categories = $categories;
+	}
+
 	public function parseItem(\SimpleXMLElement $node)
 	{
 		$type = implode('|', array_map('trim', explode('|', str_replace(' / ', '|', $node->product_type))));
 
-		$this->categories[md5($type)] = ['title' => $type, 'google_id' => '', 'google_title' => ''];
+		if (!array_key_exists(md5($type), $this->categories)) {
+			$this->categories[md5($type)] = ['title' => $type, 'google_id' => '0', 'google_title' => '-'];
+			echo sprintf("Found new category \"%s\"\n", $type);
+		}
 	}
 
 	public function getJson()

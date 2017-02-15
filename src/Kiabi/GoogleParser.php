@@ -6,6 +6,7 @@ class GoogleParser
 {
 	protected $content = '';
 	protected $j = 0;
+	protected $k = 0;
 
 	protected $titles = [
 		'балетки', 'боди', 'болеро', 'борсалино', 'ботинки', 'брюки', 'бюстгальтер',
@@ -112,15 +113,15 @@ class GoogleParser
 		</g:shipping>';
 		}
 
-		$product_type = str_replace('/','&gt;',$node->product_type);
-		$types = explode('&gt;', $product_type);
+		$product_type = str_replace(' / ','&gt;',$node->product_type);
+		$types  = $types0 = array_map('trim', explode('&gt;', $product_type));
 
 		if (count($types) > 1 && strpos($types[1], trim($types[0])) !== false) {
 			unset($types[1]);
-			$product_type = implode('&gt;', $types);
+			$product_type = implode(' &gt; ', array_map('ucfirst', $types));
 		}
 
-		$key = md5(implode('|', array_map('trim', $types)));
+		$key = md5(implode('|', $types0));
 
 		$googleProductCategory = '';
 		$age = '';
@@ -129,10 +130,14 @@ class GoogleParser
 		if (array_key_exists($key, $this->categories)) {
 			$category = $this->categories[$key];
 
-			$ageGroup = $category['age'];
-			$genderGroup = $category['gender'];
-			$age = "<g:age_group>$ageGroup</g:age_group>";
-			$gender = "<g:gender>$genderGroup</g:gender>";
+			if (isset($category['age'])) {
+				$ageGroup = $category['age'];
+				$age = "<g:age_group>$ageGroup</g:age_group>";
+			}
+			if (isset($category['gender'])) {
+				$genderGroup = $category['gender'];
+				$gender = "<g:gender>$genderGroup</g:gender>";
+			}
 
 			if ($category['google_id']){
 				$categoryId = 0;
@@ -156,12 +161,16 @@ class GoogleParser
 			}
 		}
 
-
 		$description = trim($node->description);
 		$description = htmlspecialchars($description ? $description : $node->title);
 
 		foreach ($references['reference'] as $reference) {
 			$skus = $reference['skus'][0]['sku'];
+
+			if (!$age || !$gender) {
+//				var_dump($title, $reference['link'][0], implode('|', array_map('trim', $types0)), $product_type, $age, $gender, $googleProductCategory);
+				$this->k++;
+			}
 
 			foreach ($skus as $sku) {
 
@@ -212,7 +221,7 @@ class GoogleParser
 			}
 		}
 
-		echo sprintf("Feed file is parsed: products = %d pcs., skus = %d pcs.\n", $i, $this->j);
+		echo sprintf("Feed file is parsed: products = %d pcs., skus = %d pcs. Wrong = %d\n", $i, $this->j, $this->k);
 	}
 
 }

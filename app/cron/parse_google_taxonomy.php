@@ -10,18 +10,18 @@ $proxy = [];
 $data = [];
 
 $objPHPExcel = \PHPExcel_IOFactory::createReader('Excel2007');
-$objPHPExcel = $objPHPExcel->load(GOOGLE_CATEGORIES_PARSED_PATH);
+$objPHPExcel = $objPHPExcel->load(GOOGLE_CATEGORIES_XSLX_PATH);
 $objPHPExcel->setActiveSheetIndex(0);
 
 $taxonomy = \PHPExcel_IOFactory::createReader('Excel5');
 $taxonomy = $taxonomy->load(GOOGLE_TAXONOMY_PATH);
 $taxonomy->setActiveSheetIndex(0);
 
-for ($i = 1; $i < $taxonomy->getActiveSheet()->getHighestRow(); $i++) {
+for ($i = 1; $i <= $taxonomy->getActiveSheet()->getHighestRow(); $i++) {
 	$proxy['c_'.trim($taxonomy->getActiveSheet()->getCell('A'.$i)->getValue())] = $i;
 }
 
-for ($i = 2; $i < $objPHPExcel->getActiveSheet()->getHighestRow(); $i++) {
+for ($i = 2; $i <= $objPHPExcel->getActiveSheet()->getHighestRow(); $i++) {
 	$idText = $objPHPExcel->getActiveSheet()->getCell('B'.$i)->getValue();
 	if (!$idText){
 		continue;
@@ -38,16 +38,6 @@ for ($i = 2; $i < $objPHPExcel->getActiveSheet()->getHighestRow(); $i++) {
 		if (!array_key_exists('c_'.$id, $data)) {
 
 			$data['c_'.$id] = ['num' => $proxy['c_'.$id], 'title' => '', 'path' => ''];
-//			foreach ($taxonomy->getActiveSheet()->getRowIterator() as $row) {
-//				$cellIterator = $row->getCellIterator();
-//				$cellIterator->setIterateOnlyExistingCells(true);
-//				foreach ($cellIterator as $cell) {
-//					if ($cell->getValue() == $id) {
-//
-//						break 2;
-//					}
-//				}
-//			}
 
 			$title = '';
 			$path = [];
@@ -78,6 +68,6 @@ for ($i = 2; $i < $objPHPExcel->getActiveSheet()->getHighestRow(); $i++) {
 
 // Save Excel 2007 file
 $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);
-$objWriter->save(GOOGLE_CATEGORIES_PARSED_PATH);
+$objWriter->save(GOOGLE_CATEGORIES_XSLX_PATH);
 
 echo "Taxomony parsed\n";
