@@ -206,7 +206,7 @@ class YandexParser
 				}
 
 				$content .= '<offer id="'.$sku['code'][0].'" available="'.$available.'">
-                <url>'.$reference['link'][0].'</url>
+                <url>'.$reference['link'][0].LINK_COUNTER_APPENDIX.'</url>
                 <price>'.$price.'</price>'
                 .$oldprice.
                 '<currencyId>RUB</currencyId>
