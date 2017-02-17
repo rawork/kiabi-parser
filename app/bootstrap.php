@@ -25,4 +25,4 @@ define('STORE_TITLE', 'Kiabi');
 define('COMPANY_TITLE', 'Kiabi Europe SAS');
 define('STORE_URL', 'http://www.kiabi.ru');
 
-define('LINK_COUNTER_APPENDIX', '#&ns_mchannel=cpc&ns_source=yandexmarket&ns_campaign={campaign_id}&utm_medium=cpc&utm_source=yandexmarket&utm_campaign={campaign_id}');
+define('LINK_COUNTER_APPENDIX', '#'.urlencode('&ns_mchannel=cpc&ns_source=yandexmarket&ns_campaign={campaign_id}&utm_medium=cpc&utm_source=yandexmarket&utm_campaign={campaign_id}'));
