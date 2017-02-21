@@ -62,8 +62,13 @@ class YandexParser
 		';
 
 		foreach ($this->categories as $category) {
-			$content .= '<category id="'.$category['id'].'" parentId="'.($category['parent_key'] ? $this->categories[$category['parent_key']]['id'] : 0).'">'.$category['title'].'</category>
-		';
+			if ($category['parent_key']) {
+				$content .= '<category id="'.$category['id'].'" parentId="'.$this->categories[$category['parent_key']]['id'].'">'.$category['title'].'</category>
+				';
+			} else {
+				$content .= '<category id="'.$category['id'].'">'.$category['title'].'</category>
+				';
+			}
 		}
 
 		$content .= '	</categories>
