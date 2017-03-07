@@ -66,6 +66,20 @@ if (file_exists(GOOGLE_CATEGORIES_XSLX_PATH)) {
 
 foreach ($categories as $category) {
 	if ('-' == $category['google_title']) {
+		$found = false;
+		foreach ($objPHPExcel->getActiveSheet()->getRowIterator() as $row) {
+			$cellIterator = $row->getCellIterator('A', 'A');
+			$cellIterator->setIterateOnlyExistingCells(true);
+			foreach ($cellIterator as $cell) {
+				if ($cell->getValue() == $category['title']) {
+					$found = true;
+					break 2;
+				}
+			}
+		}
+		if ($found) {
+			continue;
+		}
 		$objPHPExcel->getActiveSheet()->setCellValue('A'.$i, $category['title']);
 		$objPHPExcel->getActiveSheet()->setCellValue('B'.$i, $category['google_id']);
 		$objPHPExcel->getActiveSheet()->setCellValue('C'.$i, $category['google_title']);
