@@ -100,7 +100,7 @@ class GoogleParser
 		$content = '';
 
 		//$title = $this->getTitle($node->title);
-		$title = $node->title;
+		$title = htmlspecialchars($node->title);
 //		$title .= ' '.$node->brand;
 
 		$references = $this->sxiToArray($node->references->children());
