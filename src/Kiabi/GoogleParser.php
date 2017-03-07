@@ -114,12 +114,14 @@ class GoogleParser
 		</g:shipping>';
 		}
 
-		$product_type = str_replace(' / ','&gt;',$node->product_type);
+		$product_type = str_replace(' / ', '&gt;', $node->product_type);
 		$types  = $types0 = array_map('trim', explode('&gt;', $product_type));
 
 		if (count($types) > 1 && strpos($types[1], trim($types[0])) !== false) {
 			unset($types[1]);
 			$product_type = implode(' &gt; ', array_map('ucfirst', $types));
+		} else {
+			$product_type = str_replace('&gt;', ' &gt; ', $product_type);
 		}
 
 		$key = md5(implode('|', $types0));
