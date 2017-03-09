@@ -161,7 +161,7 @@ class YandexParser
 			$skus = $reference['skus'][0]['sku'];
 
 			$pictures = '';
-			for ($i = 1; $i <= 10; $i++) {
+			for ($i = 1; $i <= 5; $i++) {
 				if (!empty($reference['additionnal_image_link'.$i][0])) {
 					$pictures .= '
 					<picture>'.$reference['additionnal_image_link'.$i][0].'</picture>
@@ -173,6 +173,8 @@ class YandexParser
 			if ($this->replacer->analize($color)) {
 				$color = $this->replacer->replace($color);
 			}
+
+			$referenceSizes = [];
 
 			foreach ($skus as $sku) {
 				$sizeSystem = $node->system_size;
@@ -210,6 +212,12 @@ class YandexParser
 					$size = preg_replace('/'.$this->monthSizes[0].'/i', '', $size);
 				}
 
+				if (in_array($size, $referenceSizes)) {
+					continue;
+				}
+
+				$referenceSizes[] = $size;
+
 				$content .= '<offer id="'.$sku['code'][0].'" available="'.$available.'">
                 <url>'.$reference['link'][0].LINK_COUNTER_APPENDIX.'</url>
                 <price>'.$price.'</price>'
@@ -224,7 +232,7 @@ class YandexParser
                 <delivery>true</delivery>'.
 					$shipping
 					.'<vendor>'.$node->brand.'</vendor>
-				<vendorCode>'.$node->id.'</vendorCode>	
+				<vendorCode>'.trim($node->id).'</vendorCode>	
                 <description>'.htmlspecialchars($node->description).'</description>
                 <sales_notes>Оплата наличными и банковской картой.</sales_notes>
                 <name>'.$title.'</name>

@@ -101,6 +101,14 @@ class GoogleParser
 
 		//$title = $this->getTitle($node->title);
 		$title = htmlspecialchars($node->title);
+
+		// Проверка на наличие французский товаров
+//		if (preg_match("/[а-яё]/iu", $title, $matches, PREG_OFFSET_CAPTURE)) {
+//
+//		} else {
+//			echo $title."\n";
+//		}
+
 //		$title .= ' '.$node->brand;
 
 		$references = $this->sxiToArray($node->references->children());
