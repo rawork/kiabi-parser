@@ -50,6 +50,7 @@ class YandexParser
 		$date = date('Y-m-d H:i');
 
 		$content = '<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE yml_catalog SYSTEM "shops.dtd">
 <yml_catalog date="'.$date.'"> 
   <shop>
 	<name>'.STORE_TITLE.'</name>
@@ -63,18 +64,18 @@ class YandexParser
 
 		foreach ($this->categories as $category) {
 			if ($category['parent_key']) {
-				$content .= '<category id="'.$category['id'].'" parentId="'.$this->categories[$category['parent_key']]['id'].'">'.$category['title'].'</category>
+				$content .= '		<category id="'.$category['id'].'" parentId="'.$this->categories[$category['parent_key']]['id'].'">'.$category['title'].'</category>
 				';
 			} else {
-				$content .= '<category id="'.$category['id'].'">'.$category['title'].'</category>
+				$content .= '		<category id="'.$category['id'].'">'.$category['title'].'</category>
 				';
 			}
 		}
 
 		$content .= '	</categories>
-			<delivery-options>
-	   			<option cost="0" days="1-2" order-before="24"/>
-			</delivery-options>
+	<delivery-options>
+	   	<option cost="0" days="1-2" order-before="24"/>
+	</delivery-options>
 	<offers>
 ';
 
