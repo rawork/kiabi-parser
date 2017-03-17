@@ -74,7 +74,7 @@ class YandexParser
 
 		$content .= '	</categories>
 	<delivery-options>
-	   	<option cost="0" days="1-2" order-before="24"/>
+	   	<option cost="299" days="1-2" order-before="24"/>
 	</delivery-options>
 	<offers>
 ';
