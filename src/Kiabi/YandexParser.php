@@ -72,6 +72,9 @@ class YandexParser
 		}
 
 		$content .= '	</categories>
+			<delivery-options>
+	   			<option cost="0" days="1-2" order-before="24"/>
+			</delivery-options>
 	<offers>
 ';
 
@@ -130,13 +133,13 @@ class YandexParser
 
 		$shipping = '';
 
-		if (isset($node->shipping)) {
-			$shipping = '
-				<delivery-options>
-                	<option cost="'.$node->shipping->price.'" days="1-2" order-before="24"/>
-            	</delivery-options>
-  				';
-		}
+//		if (isset($node->shipping)) {
+//			$shipping = '
+//				<delivery-options>
+//                	<option cost="'.$node->shipping->price.'" days="1-2" order-before="24"/>
+//            	</delivery-options>
+//  				';
+//		}
 
 		$product_type = str_replace(' / ', '|', $node->product_type);
 		$genderParam = '';
