@@ -27,4 +27,4 @@ define('COMPANY_TITLE', 'Kiabi Europe SAS');
 define('STORE_URL', 'http://www.kiabi.ru');
 
 define('LINK_COUNTER_APPENDIX', '#'.urlencode('&ns_mchannel=cpc&ns_source=yandexmarket&ns_campaign={campaign_id}&utm_medium=cpc&utm_source=yandexmarket&utm_campaign={campaign_id}'));
-define('LINK_COUNTER_APPENDIX_AVITO', '#'.urlencode('utm_source=avito&utm_medium=cpc&utm_campaign={campaign_id}&utm_content={id}%3A%20{platform}%3A%20{pos}&ns_mchannel=display&ns_source=avito&ns_campaign=pma5'));
+define('LINK_COUNTER_APPENDIX_AVITO', '#'.urlencode('utm_source=avito&utm_medium=cpc&utm_campaign={campaign_id}&utm_content={id}_{platform}_{pos}&ns_mchannel=display&ns_source=avito&ns_campaign=pma5'));
