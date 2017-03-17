@@ -13,6 +13,7 @@ class YandexParser
 	protected $cutter;
 	protected $replacer;
 	protected $k = 0;
+	protected $deliveryPrice = 299;
 
 	protected $intSizes = ['2XS', 'XS', 'S', 'M', 'L', 'XL', 'XXL', '2XL', 'XXXL', '3XL'];
 	protected $monthSizes = ['m', 'M'];
@@ -74,7 +75,7 @@ class YandexParser
 
 		$content .= '	</categories>
 	<delivery-options>
-	   	<option cost="299" days="1-2" order-before="24"/>
+	   	<option cost="'.$this->deliveryPrice.'" days="1-2" order-before="24"/>
 	</delivery-options>
 	<offers>
 ';
@@ -134,13 +135,13 @@ class YandexParser
 
 		$shipping = '';
 
-//		if (isset($node->shipping)) {
-//			$shipping = '
-//				<delivery-options>
-//                	<option cost="'.$node->shipping->price.'" days="1-2" order-before="24"/>
-//            	</delivery-options>
-//  				';
-//		}
+		if (isset($node->shipping)) {
+			$shipping = '
+				<delivery-options>
+                	<option cost="'.$this->deliveryPrice.'" days="1-2" order-before="24"/>
+            	</delivery-options>
+  				';
+		}
 
 		$product_type = str_replace(' / ', '|', $node->product_type);
 		$genderParam = '';
