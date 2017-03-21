@@ -7,6 +7,7 @@ class GoogleParser
 	protected $content = '';
 	protected $j = 0;
 	protected $k = 0;
+	protected $deliveryPrice = 299;
 
 	protected $titles = [
 		'балетки', 'боди', 'болеро', 'борсалино', 'ботинки', 'брюки', 'бюстгальтер',
@@ -118,7 +119,7 @@ class GoogleParser
 			$shipping = '<g:shipping>
   			<g:country>'.$node->shipping->country.'</g:country>
   			<g:service>'.$node->shipping->service.'</g:service>
-  			<g:price>'.$node->shipping->price.' RUB</g:price>
+  			<g:price>'.$this->deliveryPrice.' RUB</g:price>
 		</g:shipping>';
 		}
 

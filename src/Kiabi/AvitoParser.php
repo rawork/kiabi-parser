@@ -12,6 +12,7 @@ class AvitoParser
 	protected $cutter;
 	protected $replacer;
 	protected $k = 0;
+	protected $deliveryPrice = 299;
 
 	protected $intSizes = ['2XS', 'XS', 'S', 'M', 'L', 'XL', 'XXL', '2XL', 'XXXL', '3XL'];
 	protected $monthSizes = ['m', 'M'];
@@ -72,7 +73,7 @@ class AvitoParser
 
 		$content .= '	</categories>
 	<delivery-options>
-		<option cost="299" days="1-2" order-before="24"/>
+		<option cost="'.$this->deliveryPrice.'" days="1-2" order-before="24"/>
 	</delivery-options>
 	<offers>
 ';
