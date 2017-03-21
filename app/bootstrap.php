@@ -20,6 +20,7 @@ define('FEED_GOOGLE_PATH', __DIR__.'/../files/feed_original_for_google.xml');
 
 define('FEED_CONVERTED_YANDEX_PATH', __DIR__.'/../files/feed_converted_yandex.xml');
 define('FEED_CONVERTED_AVITO_PATH', __DIR__.'/../files/feed_converted_avito.xml');
+define('FEED_CONVERTED_MAIL_PATH', __DIR__.'/../files/feed_converted_mail.xml');
 define('FEED_CONVERTED_GOOGLE_PATH', __DIR__.'/../files/feed_converted_google.xml');
 
 define('STORE_TITLE', 'Kiabi');

@@ -2,6 +2,7 @@
 
 namespace Kiabi;
 
+
 class AvitoParser
 {
 	protected $content = '';

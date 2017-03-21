@@ -3,7 +3,7 @@
 namespace Kiabi;
 
 
-class YandexParser
+class MailParser
 {
 	protected $content = '';
 	protected $categories;
@@ -51,7 +51,7 @@ class YandexParser
 
 		$content = '<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE yml_catalog SYSTEM "shops.dtd">
-<yml_catalog date="'.$date.'"> 
+<torg_price date="'.$date.'"> 
   <shop>
 	<name>'.STORE_TITLE.'</name>
 	<company>'.COMPANY_TITLE.'</company>
@@ -73,9 +73,6 @@ class YandexParser
 		}
 
 		$content .= '	</categories>
-	<delivery-options>
-	   	<option cost="'.$this->deliveryPrice.'" days="1-2" order-before="24"/>
-	</delivery-options>
 	<offers>
 ';
 
@@ -135,11 +132,7 @@ class YandexParser
 		$shipping = '';
 
 		if (isset($node->shipping)) {
-			$shipping = '
-				<delivery-options>
-                	<option cost="'.$this->deliveryPrice.'" days="1-2" order-before="24"/>
-            	</delivery-options>
-  				';
+			$shipping = '<local_delivery_cost>'.$this->deliveryPrice.'</local_delivery_cost>';
 		}
 
 		$product_type = str_replace(' / ', '|', $node->product_type);
