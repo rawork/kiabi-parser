@@ -209,7 +209,7 @@ class GoogleParser
 		<g:sale_price>'.$sku['sale_price'][0].' RUB</g:sale_price>
 		<g:product_type>'.$product_type.'</g:product_type>
 		<g:brand>'.$node->brand.'</g:brand>
-		<g:color>'.$reference['color'][0].'</g:color>
+		<g:color>'.$standardColor.'</g:color>
 		<g:size>'.$sku['size'][0].'</g:size>
 		<g:gtin>'.$sku['gtin'][0].'</g:gtin>
 		<g:size_system>'.$node->system_size.'</g:size_system>
