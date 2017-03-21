@@ -103,6 +103,10 @@ class GoogleParser
 		//$title = $this->getTitle($node->title);
 		$title = htmlspecialchars($node->title);
 
+		if (!$title) {
+			return '';
+		}
+
 		// Проверка на наличие французский товаров
 //		if (preg_match("/[а-яё]/iu", $title, $matches, PREG_OFFSET_CAPTURE)) {
 //
@@ -188,7 +192,7 @@ class GoogleParser
 
 				$content .= '<entry>
 		<g:id>'.$reference['item_group_id'][0].'-'.$sku['code'][0].'</g:id>
-		<g:title>'.$title.' - '.$reference['color'][0].'</g:title>
+		<g:title>'.$title.($title ? ' - '.$reference['color'][0] : '').'</g:title>
 		<g:description>'.$description.'</g:description>
 		<g:link>'.$reference['link'][0].'</g:link>
 		<g:mobile_link>'.$reference['mobile_link'][0].'</g:mobile_link>
