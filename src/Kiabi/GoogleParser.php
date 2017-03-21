@@ -243,7 +243,7 @@ class GoogleParser
 			}
 		}
 
-		echo sprintf("Feed file is parsed: products = %d pcs., skus = %d pcs. Wrong = %d\n", $i, $this->j, $this->k);
+		echo sprintf("Feed file is parsed: products = %d pcs., skus = %d pcs. NO AGE & GENDER = %d\n", $i, $this->j, $this->k);
 	}
 
 }
