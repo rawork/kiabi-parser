@@ -128,6 +128,10 @@ class YandexParser
 
 		$title = $this->getTitle($node->title);
 		$title .= ' '.$node->brand;
+
+		$description = trim($node->description);
+		$description = htmlspecialchars($description ? $node->title."\n".$description : $node->title);
+		
 		//		$title = $this->cutter->cut($node->title);
 
 		$references = $this->sxiToArray($node->references->children());
@@ -238,7 +242,7 @@ class YandexParser
 					$shipping
 					.'<vendor>'.$node->brand.'</vendor>
 				<vendorCode>'.trim($node->id).'</vendorCode>	
-                <description>'.htmlspecialchars($node->description).'</description>
+                <description>'.$description.'</description>
                 <sales_notes>Оплата наличными и банковской картой.</sales_notes>
                 <name>'.$title.'</name>
                 
