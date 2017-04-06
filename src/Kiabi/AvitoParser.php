@@ -222,7 +222,7 @@ class AvitoParser
                 <url>'.$reference['link'][0].LINK_COUNTER_APPENDIX_AVITO.'</url>
                 <price>'.$price.'</price>'
                 .$oldprice.
-                '<currencyId>RUB</currencyId>
+                '<currencyId>RUR</currencyId>
                 <categoryId>'.$categoryId.'</categoryId>
                 <picture>'.$reference['image_link'][0].'</picture>
                 '.$pictures
