@@ -22,6 +22,7 @@ define('FEED_CONVERTED_YANDEX_PATH', __DIR__.'/../files/feed_converted_yandex.xm
 define('FEED_CONVERTED_AVITO_PATH', __DIR__.'/../files/feed_converted_avito.xml');
 define('FEED_CONVERTED_MAIL_PATH', __DIR__.'/../files/feed_converted_mail.xml');
 define('FEED_CONVERTED_GOOGLE_PATH', __DIR__.'/../files/feed_converted_google.xml');
+define('FEED_CONVERTED_CRITEO_PATH', __DIR__.'/../files/feed_converted_criteo.xml');
 
 define('STORE_TITLE', 'Kiabi');
 define('COMPANY_TITLE', 'Kiabi Europe SAS');
