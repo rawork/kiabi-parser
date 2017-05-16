@@ -37,6 +37,11 @@ for ($i = 2; $i <= $objPHPExcel->getActiveSheet()->getHighestRow(); $i++) {
 
 		if (!array_key_exists('c_'.$id, $data)) {
 
+		    if (!array_key_exists('c_'.$id, $proxy)) {
+				echo "Google product category with ID=".$id." not found in taxonomy!\n";
+		        continue;
+            }
+
 			$data['c_'.$id] = ['num' => $proxy['c_'.$id], 'title' => '', 'path' => ''];
 
 			$title = '';
