@@ -544,7 +544,7 @@ class GoogleParser
 				}
 			}
 
-			echo $color.' - '.$title.' => '.$currentTitle."\n";
+//			echo $color.' - '.$title.' => '.$currentTitle."\n";
 
 			foreach ($skus as $sku) {
 
