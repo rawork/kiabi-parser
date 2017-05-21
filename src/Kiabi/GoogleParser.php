@@ -517,7 +517,7 @@ class GoogleParser
 			$currentTitle = $title;
 			if($nounFound && $title && !$multipleColor) {
 				$nounRoot = $this->morphy->getPseudoRoot(mb_strtoupper($standardColor));
-				if ($nounRoot[0] != 'ДЖИНСОВ' || $nounRoot[0] != '' || mb_strlen($nounRoot[0]) != 1) {
+				if ($nounRoot[0] != 'ДЖИНСОВ' && $nounRoot[0] != null && mb_strlen($nounRoot[0]) != 1) {
 					$nounEnding = $nounRoot[0] == 'СИН' ? 1 : 0;
 					if (count($this->endings[$nounIndex]) > 0) {
 						if ($nounPosition === 0) {
@@ -544,7 +544,7 @@ class GoogleParser
 				}
 			}
 
-//			echo $title.' => '.$currentTitle."\n";
+			echo $color.' - '.$title.' => '.$currentTitle."\n";
 
 			foreach ($skus as $sku) {
 
