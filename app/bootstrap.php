@@ -30,3 +30,28 @@ define('STORE_URL', 'http://www.kiabi.ru');
 
 define('LINK_COUNTER_APPENDIX', '#'.urlencode('&ns_mchannel=cpc&ns_source=yandexmarket&ns_campaign={campaign_id}&utm_medium=cpc&utm_source=yandexmarket&utm_campaign={campaign_id}'));
 define('LINK_COUNTER_APPENDIX_AVITO', '#'.urlencode('utm_source=avito&utm_medium=cpc&utm_campaign={campaign_id}&utm_content={id}_{platform}_{pos}&ns_mchannel=display&ns_source=avito&ns_campaign=pma5'));
+
+
+
+if(!function_exists('mb_ucfirst'))
+{
+	function mb_ucfirst($str, $encoding = "UTF-8", $lower_str_end = true) {
+		$first_letter = mb_strtoupper(mb_substr($str, 0, 1, $encoding), $encoding);
+		$str_end = "";
+		if ($lower_str_end) {
+			$str_end = mb_strtolower(mb_substr($str, 1, mb_strlen($str, $encoding), $encoding), $encoding);
+		}
+		else {
+			$str_end = mb_substr($str, 1, mb_strlen($str, $encoding), $encoding);
+		}
+		$str = $first_letter . $str_end;
+		return $str;
+	}
+}
+if (!function_exists('mb_substr_replace'))
+{
+	function mb_substr_replace($output, $replace, $posOpen, $posClose)
+	{
+		return mb_substr($output, 0, $posOpen).$replace.mb_strtolower(mb_substr($output, $posClose));
+	}
+}

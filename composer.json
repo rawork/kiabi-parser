@@ -11,7 +11,8 @@
     "minimum-stability": "dev",
     "require": {
         "curl/curl": "^1.5",
-        "phpoffice/phpexcel": "1.8.1"
+        "phpoffice/phpexcel": "1.8.1",
+        "cijic/phpmorphy": "dev-master"
     },
     "autoload": {
         "psr-0": {"Kiabi\\": "src/"}

@@ -2,16 +2,20 @@
 
 namespace Kiabi;
 
+use cijic\phpMorphy\Morphy;
+
 class GoogleParser
 {
 	protected $content = '';
 	protected $j = 0;
 	protected $k = 0;
+	protected $m = 0;
 	protected $deliveryPrice = 299;
+	protected $morphy;
 
 	protected $titles = [
 		'балетки', 'боди', 'болеро', 'борсалино', 'ботинки', 'брюки', 'бюстгальтер',
-		'бетровка', 'водолазка', 'галстук-бабочка', 'галстук', 'джеггинсы', 'джегинсы',
+		'ветровка', 'водолазка', 'галстук-бабочка', 'галстук', 'джеггинсы', 'джегинсы',
 		'джемпер-пончо', 'джемпер', 'джинсы', 'жакет', 'жилет', 'зонт', 'капри', 'кардиган',
 		'кеды', 'кепка', 'колготки', 'комбинация', 'комбинезон', 'кроссовки', 'купальник',
 		'купальные трусики', 'куртка бомбер', 'куртка', 'леггинсы', 'легинсы', 'лонгслив', 'майка',
@@ -26,6 +30,284 @@ class GoogleParser
 		'туника', 'туфли', 'туфли-лодочки', 'футболка', 'халат', 'шапочка', 'шаровары', 'шарф',
 		'шляпа', 'шортики', 'шорты', 'юбка'
 	];
+
+	protected $nouns = [
+		'БАЛЕТКИ', 'БЕЙСБОЛКА', 'БЕРЕТ', 'БЕРМУДЫ', 'БЛУЗКА', 'БОДИ', 'БОЛЕРО', 'БОРСАЛИНО',
+		'БОРТИК', 'БОСОНОЖКИ', 'БОТИНКИ', 'БРЮКИ', 'БЮСТГАЛЬТЕР', 'БЮСТЬЕ', 'ВЕТРОВКА', 'ВОДОЛАЗКА',
+		'ВЬЕТНАМКИ', 'ГАЛСТУК', 'ДЖЕГГИНСЫ', 'ДЖЕГИНСЫ', 'ДЖЕМПЕР', 'ДЖИНСЫ', 'ЖАКЕТ', 'ЖИЛЕТ',
+		'ЗОНТ',  'КАПРИ', 'КАРДИГАН', 'КЕДЫ', 'КЕПКА', 'КЛЕЕНКА', 'КОЛГОТКИ', 'КОМБИНЕЗОН',
+		'КОНВЕРТ', 'КОСТЮМ', 'КОРОБКА', 'КРОССОВКИ', 'КУПАЛЬНИК', 'КУРТКА', 'ЛЕГГИНСЫ',
+		'ЛЕГИНСЫ', 'ЛОДОЧКИ', 'МАЙКА', 'МОКАСИНЫ', 'НАГРУДНИК', 'НАМАТРАСНИК', 'ОДИ', ' ОЧКИ',
+		'ПАЛЬТО', 'ПАНАМА', 'ПАРКА', 'ПЕНЬЮАР', 'ПЕСОЧНИК', 'ПИДЖАК', 'ПИЖАМА', 'ПЛАВКИ',
+		'ПЛАТОК', 'ПЛАТЬЕ', 'ПЛАЩ', 'ПЛЕД', 'ПОВЯЗКА',   'ПОКРЫВАЛО', 'ПОЛО ', 'ПОЛОТЕНЦЕ',
+		'ПУЛОВЕР', 'ПОЯС', 'ПУХОВИК', 'РЕМЕНЬ', 'РУБАШКА', 'РУКАВИЧКИ', 'РЮКЗАК', 'САНДАЛИИ', 'САПОГИ',
+		'САПОЖКИ', 'САРАФАН', 'СВИТЕР', 'СВИТШОТ', 'СЛЮНЯВЧИК', 'СОРОЧКА', 'СУМКА', 'СУМОЧКА',
+		'ТАПОЧКИ', 'ТЕРМОБЕЛЬЁ', 'ТОЛСТОВКА', 'ТОП ', 'ТРЕГИНСЫ', 'ТРЕНЧ', 'ТРУСИКИ', 'ТРУСЫ',
+		'ТУНИКА', 'ТУФЛИ', 'ФУТБОЛКА', 'ХАЛАТ', 'ШАПКА', 'ШАПОЧКА', 'ШАРОВАРЫ', 'ШАРФ', 'ШЛЯПА',
+		'ШОРТЫ', 'ШТАНЫ', 'ЭСПАДРИЛЬИ', 'ЮБКА',
+
+		'КОЛГОТОК',
+		'ЛЕГИНС',
+		'МАЕК',
+		'НОСКОВ',
+		'ПЕЛЕНОК',
+		'ПИЖАМ',
+		'ПОЛОТЕНЦА',
+		'ПРОСТЫНЕЙ',
+		'РЕМНЕЙ',
+		'ТРУСИКОВ',
+		'ТРУСОВ',
+		'ТУНИК',
+		'ФУТБОЛОК',
+		'ФУТБОЛКИ',
+		'ШОРТ',
+		'ТОПОВ',
+		'МИТЕНОК',
+	];
+
+	protected $endings = [
+		['ые', 'ие'],
+		['ая', 'яя'],
+		[],
+		['ые', 'ие'],
+		['ая', 'яя'],
+		['ое', 'ее'],
+		['ое', 'ее'],
+		['ое', 'ее'],
+		[],
+		['ые', 'ие'],
+		['ые', 'ие'],
+		['ые', 'ие'],
+		[],
+		['ое', 'ее'],
+		['ая', 'яя'],
+		['ая', 'яя'],
+		['ые', 'ие'],
+		[],
+		['ые', 'ие'],
+		['ые', 'ие'],
+		[],
+		['ые', 'ие'],
+		[],
+		[],
+		[],
+		['ые', 'ие'],
+		[],
+		['ые', 'ие'],
+		['ая', 'яя'],
+		['ая', 'яя'],
+		['ые', 'ие'],
+		[],
+		[],
+		[],
+		['ая', 'яя'],
+		['ые', 'ие'],
+		[],
+		['ая', 'яя'],
+		['ые', 'ие'],
+		['ые', 'ие'],
+		['ые', 'ие'],
+		['ая', 'яя'],
+		['ые', 'ие'],
+		[],
+		[],
+		['ое', 'ее'],
+		['ые', 'ие'],
+		['ое', 'ее'],
+		['ая', 'яя'],
+		['ая', 'яя'],
+		[],
+		[],
+		[],
+		['ая', 'яя'],
+		['ые', 'ие'],
+		[],
+		['ое', 'ее'],
+		[],
+		[],
+		[],
+		['ое', 'ее'],
+		['ое', 'ее'],
+		['ое', 'ее'],
+		[],
+		[],
+		[],
+		[],
+		['ая', 'яя'],
+		['ые', 'ие'],
+		[],
+		['ые', 'ие'],
+		['ые', 'ие'],
+		['ые', 'ие'],
+		[],
+		[],
+		[],
+		[],
+		['ая', 'яя'],
+		['ая', 'яя'],
+		['ая', 'яя'],
+		['ые', 'ие'],
+		['ое', 'ее'],
+		['ая', 'яя'],
+		[],
+		['ые', 'ие'],
+		[],
+		['ые', 'ие'],
+		['ые', 'ие'],
+		['ая', 'яя'],
+		['ые', 'ие'],
+		['ая', 'яя'],
+		[],
+		['ая', 'яя'],
+		['ая', 'яя'],
+		['ые', 'ие'],
+		[],
+		['ая', 'яя'],
+		['ые', 'ие'],
+		['ые', 'ие'],
+		['ые', 'ие'],
+		['ая', 'яя'],
+		['ых', 'их'],
+		['ых', 'их'],
+		['ых', 'их'],
+		['ых', 'их'],
+		['ых', 'их'],
+		['ых', 'их'],
+		[], // ПОЛОТЕНЦА
+		['ых', 'их'],
+		['ых', 'их'],
+		['ых', 'их'],
+		['ых', 'их'],
+		['ых', 'их'],
+		['ых', 'их'],
+		['ой', 'ей'], // ФУТБОЛКИ
+		['ых', 'их'],
+		['ых', 'их'],
+		['ых', 'их'],
+	];
+
+	protected $genders = [
+		['male' => 'мужские', 'female' => 'женские', 'unisex' => 'унисекс'],
+		['male' => 'мужская', 'female' => 'женская', 'unisex' => 'унисекс'],
+		['male' => 'мужский', 'female' => 'женский', 'unisex' => 'унисекс'],
+		['male' => 'мужские', 'female' => 'женские', 'unisex' => 'унисекс'],
+		['male' => 'мужская', 'female' => 'женская', 'unisex' => 'унисекс'],
+		['male' => 'мужское', 'female' => 'женское', 'unisex' => 'унисекс'],
+		['male' => 'мужское', 'female' => 'женское', 'unisex' => 'унисекс'],
+		['male' => 'мужское', 'female' => 'женское', 'unisex' => 'унисекс'],
+		['male' => 'мужской', 'female' => 'женский', 'unisex' => 'унисекс'],
+		['male' => 'мужские', 'female' => 'женские', 'unisex' => 'унисекс'],
+		['male' => 'мужские', 'female' => 'женские', 'unisex' => 'унисекс'],
+		['male' => 'мужские', 'female' => 'женские', 'unisex' => 'унисекс'],
+		['male' => 'мужской', 'female' => 'женский', 'unisex' => 'унисекс'],
+		['male' => 'мужское', 'female' => 'женское', 'unisex' => 'унисекс'],
+		['male' => 'мужская', 'female' => 'женская', 'unisex' => 'унисекс'],
+		['male' => 'мужская', 'female' => 'женская', 'unisex' => 'унисекс'],
+		['male' => 'мужские', 'female' => 'женские', 'unisex' => 'унисекс'],
+		['male' => 'мужской', 'female' => 'женский', 'unisex' => 'унисекс'],
+		['male' => 'мужские', 'female' => 'женские', 'unisex' => 'унисекс'],
+		['male' => 'мужские', 'female' => 'женские', 'unisex' => 'унисекс'],
+		['male' => 'мужской', 'female' => 'женский', 'unisex' => 'унисекс'],
+		['male' => 'мужские', 'female' => 'женские', 'unisex' => 'унисекс'],
+		['male' => 'мужской', 'female' => 'женский', 'unisex' => 'унисекс'],
+		['male' => 'мужской', 'female' => 'женский', 'unisex' => 'унисекс'],
+		['male' => 'мужской', 'female' => 'женский', 'unisex' => 'унисекс'],
+		['male' => 'мужские', 'female' => 'женские', 'unisex' => 'унисекс'],
+		['male' => 'мужской', 'female' => 'женский', 'unisex' => 'унисекс'],
+		['male' => 'мужские', 'female' => 'женские', 'unisex' => 'унисекс'],
+		['male' => 'мужская', 'female' => 'женская', 'unisex' => 'унисекс'],
+		['male' => 'мужская', 'female' => 'женская', 'unisex' => 'унисекс'],
+		['male' => 'мужские', 'female' => 'женские', 'unisex' => 'унисекс'],
+		['male' => 'мужской', 'female' => 'женский', 'unisex' => 'унисекс'],
+		['male' => 'мужской', 'female' => 'женский', 'unisex' => 'унисекс'],
+		['male' => 'мужской', 'female' => 'женский', 'unisex' => 'унисекс'],
+		['male' => 'мужская', 'female' => 'женская', 'unisex' => 'унисекс'],
+		['male' => 'мужские', 'female' => 'женские', 'unisex' => 'унисекс'],
+		['male' => 'мужской', 'female' => 'женский', 'unisex' => 'унисекс'],
+		['male' => 'мужская', 'female' => 'женская', 'unisex' => 'унисекс'],
+		['male' => 'мужские', 'female' => 'женские', 'unisex' => 'унисекс'],
+		['male' => 'мужские', 'female' => 'женские', 'unisex' => 'унисекс'],
+		['male' => 'мужские', 'female' => 'женские', 'unisex' => 'унисекс'],
+		['male' => 'мужская', 'female' => 'женская', 'unisex' => 'унисекс'],
+		['male' => 'мужские', 'female' => 'женские', 'unisex' => 'унисекс'],
+		['male' => 'мужской', 'female' => 'женский', 'unisex' => 'унисекс'],
+		['male' => 'мужской', 'female' => 'женский', 'unisex' => 'унисекс'],
+		['male' => 'мужское', 'female' => 'женское', 'unisex' => 'унисекс'],
+		['male' => 'мужские', 'female' => 'женские', 'unisex' => 'унисекс'],
+		['male' => 'мужское', 'female' => 'женское', 'unisex' => 'унисекс'],
+		['male' => 'мужская', 'female' => 'женская', 'unisex' => 'унисекс'],
+		['male' => 'мужская', 'female' => 'женская', 'unisex' => 'унисекс'],
+		['male' => 'мужской', 'female' => 'женский', 'unisex' => 'унисекс'],
+		['male' => 'мужской', 'female' => 'женский', 'unisex' => 'унисекс'],
+		['male' => 'мужской', 'female' => 'женский', 'unisex' => 'унисекс'],
+		['male' => 'мужская', 'female' => 'женская', 'unisex' => 'унисекс'],
+		['male' => 'мужские', 'female' => 'женские', 'unisex' => 'унисекс'],
+		['male' => 'мужской', 'female' => 'женский', 'unisex' => 'унисекс'],
+		['male' => 'мужское', 'female' => 'женское', 'unisex' => 'унисекс'],
+		['male' => 'мужской', 'female' => 'женский', 'unisex' => 'унисекс'],
+		['male' => 'мужской', 'female' => 'женский', 'unisex' => 'унисекс'],
+		['male' => 'мужская', 'female' => 'женская', 'unisex' => 'унисекс'],
+		['male' => 'мужское', 'female' => 'женское', 'unisex' => 'унисекс'],
+		['male' => 'мужское', 'female' => 'женское', 'unisex' => 'унисекс'],
+		['male' => 'мужское', 'female' => 'женское', 'unisex' => 'унисекс'],
+		['male' => 'мужской', 'female' => 'женский', 'unisex' => 'унисекс'],
+		['male' => 'мужской', 'female' => 'женский', 'unisex' => 'унисекс'],
+		['male' => 'мужской', 'female' => 'женский', 'unisex' => 'унисекс'],
+		['male' => 'мужской', 'female' => 'женский', 'unisex' => 'унисекс'],
+		['male' => 'мужская', 'female' => 'женская', 'unisex' => 'унисекс'],
+		['male' => 'мужские', 'female' => 'женские', 'unisex' => 'унисекс'],
+		['male' => 'мужской', 'female' => 'женский', 'unisex' => 'унисекс'],
+		['male' => 'мужские', 'female' => 'женские', 'unisex' => 'унисекс'],
+		['male' => 'мужские', 'female' => 'женские', 'unisex' => 'унисекс'],
+		['male' => 'мужские', 'female' => 'женские', 'unisex' => 'унисекс'],
+		['male' => 'мужской', 'female' => 'женский', 'unisex' => 'унисекс'],
+		['male' => 'мужской', 'female' => 'женский', 'unisex' => 'унисекс'],
+		['male' => 'мужской', 'female' => 'женский', 'unisex' => 'унисекс'],
+		['male' => 'мужской', 'female' => 'женский', 'unisex' => 'унисекс'],
+		['male' => 'мужская', 'female' => 'женская', 'unisex' => 'унисекс'],
+		['male' => 'мужская', 'female' => 'женская', 'unisex' => 'унисекс'],
+		['male' => 'мужская', 'female' => 'женская', 'unisex' => 'унисекс'],
+		['male' => 'мужские', 'female' => 'женские', 'unisex' => 'унисекс'],
+		['male' => 'мужское', 'female' => 'женское', 'unisex' => 'унисекс'],
+		['male' => 'мужская', 'female' => 'женская', 'unisex' => 'унисекс'],
+		['male' => 'мужской', 'female' => 'женский', 'unisex' => 'унисекс'],
+		['male' => 'мужские', 'female' => 'женские', 'unisex' => 'унисекс'],
+		['male' => 'мужской', 'female' => 'женский', 'unisex' => 'унисекс'],
+		['male' => 'мужские', 'female' => 'женские', 'unisex' => 'унисекс'],
+		['male' => 'мужские', 'female' => 'женские', 'unisex' => 'унисекс'],
+		['male' => 'мужская', 'female' => 'женская', 'unisex' => 'унисекс'],
+		['male' => 'мужские', 'female' => 'женские', 'unisex' => 'унисекс'],
+		['male' => 'мужская', 'female' => 'женская', 'unisex' => 'унисекс'],
+		['male' => 'мужской', 'female' => 'женский', 'unisex' => 'унисекс'],
+		['male' => 'мужская', 'female' => 'женская', 'unisex' => 'унисекс'],
+		['male' => 'мужская', 'female' => 'женская', 'unisex' => 'унисекс'],
+		['male' => 'мужские', 'female' => 'женские', 'unisex' => 'унисекс'],
+		['male' => 'мужской', 'female' => 'женский', 'unisex' => 'унисекс'],
+		['male' => 'мужская', 'female' => 'женская', 'unisex' => 'унисекс'],
+		['male' => 'мужские', 'female' => 'женские', 'unisex' => 'унисекс'],
+		['male' => 'мужские', 'female' => 'женские', 'unisex' => 'унисекс'],
+		['male' => 'мужские', 'female' => 'женские', 'unisex' => 'унисекс'],
+		['male' => 'мужская', 'female' => 'женская', 'unisex' => 'унисекс'],
+
+		['male' => 'мужских', 'female' => 'женских', 'unisex' => 'унисекс'],
+		['male' => 'мужских', 'female' => 'женских', 'unisex' => 'унисекс'],
+		['male' => 'мужских', 'female' => 'женских', 'unisex' => 'унисекс'],
+		['male' => 'мужских', 'female' => 'женских', 'unisex' => 'унисекс'],
+		['male' => 'мужских', 'female' => 'женских', 'unisex' => 'унисекс'],
+		['male' => 'мужских', 'female' => 'женских', 'unisex' => 'унисекс'],
+		['male' => 'мужское', 'female' => 'женское', 'unisex' => 'унисекс'],
+		['male' => 'мужских', 'female' => 'женских', 'unisex' => 'унисекс'],
+		['male' => 'мужских', 'female' => 'женских', 'unisex' => 'унисекс'],
+		['male' => 'мужских', 'female' => 'женских', 'unisex' => 'унисекс'],
+		['male' => 'мужских', 'female' => 'женских', 'unisex' => 'унисекс'],
+		['male' => 'мужских', 'female' => 'женских', 'unisex' => 'унисекс'],
+		['male' => 'мужских', 'female' => 'женских', 'unisex' => 'унисекс'],
+		['male' => 'мужское', 'female' => 'женское', 'unisex' => 'унисекс'],
+		['male' => 'мужских', 'female' => 'женских', 'unisex' => 'унисекс'],
+		['male' => 'мужских', 'female' => 'женских', 'unisex' => 'унисекс'],
+		['male' => 'мужских', 'female' => 'женских', 'unisex' => 'унисекс'],
+	];
+
 	protected $titles2 = [];
 	protected $categories = [];
 	protected $searchTexts = [
@@ -37,6 +319,7 @@ class GoogleParser
 	{
 		$this->titles2 = array_map( function($a) { return mb_convert_case($a, MB_CASE_TITLE); }, $this->titles);
 		$this->getCategories();
+		$this->morphy = new Morphy('ru');
 	}
 
 	public function getHeader()
@@ -103,6 +386,27 @@ class GoogleParser
 		//$title = $this->getTitle($node->title);
 		$title = htmlspecialchars($node->title);
 
+		// Ищем главное слово-товар в названии для подстановки пола и цвета
+		$nounFound = false;
+		$nounPosition = -1;
+		$nounIndex = -1;
+		$searchTitle =  mb_strtoupper($title);
+		foreach ($this->nouns as $nounKey => $noun) {
+			$nounPosition = mb_strpos($searchTitle, $noun);
+			$nounIndex = $nounKey;
+			if ($noun && $nounPosition !== false) {
+				$nounFound = true;
+				//echo $noun."\n";
+				break;
+			}
+		}
+
+		if (!$nounFound) {
+			// todo collect all titles with ids and send by email
+			echo $node->id.' Title = '.$title."\n";
+			$this->m++;
+		}
+
 		if (!$title) {
 			return '';
 		}
@@ -113,8 +417,6 @@ class GoogleParser
 //		} else {
 //			echo $title."\n";
 //		}
-
-//		$title .= ' '.$node->brand;
 
 		$references = $this->sxiToArray($node->references->children());
 
@@ -142,6 +444,7 @@ class GoogleParser
 		$googleProductCategory = '';
 		$age = '';
 		$gender = '';
+		$genderGroup = '';
 
 		if (array_key_exists($key, $this->categories)) {
 			$category = $this->categories[$key];
@@ -163,6 +466,10 @@ class GoogleParser
 					$categoryId = $categoryIds[0];
 				} else {
 					foreach ($categoryIds as $key => $id) {
+						// todo correct this $id not found for some products
+						if (!array_key_exists($id, $this->searchTexts)) {
+							continue;
+						}
 						$searchText = $this->searchTexts[$id];
 						if (preg_match("/($searchText)/", $title, $matches)) {
 							$categoryId = $id;
@@ -184,21 +491,66 @@ class GoogleParser
 			$skus = $reference['skus'][0]['sku'];
 
 			if (!$age || !$gender) {
-//				var_dump($title, $reference['link'][0], implode('|', array_map('trim', $types0)), $product_type, $age, $gender, $googleProductCategory);
 				$this->k++;
 			}
 
+			// формируем корректный цвет в соответствии со спецификацией
+			$multipleColor = false;
 			$color = $standardColor = $reference['color'][0];
-			$colors = explode('-', $color);
-			if (count($colors) > 1) {
-				$standardColor = $colors[1];
+			if (mb_strstr($color, '/')) {
+				$multipleColor = true;
+			} else {
+				// ищем составной цвет, например, светло-синий
+				$colors = explode('-', $color);
+				if (count($colors) > 1) {
+					$standardColor = $colors[1];
+//				echo 'Var 1:'.$color.'='.$standardColor."\n";
+				} else {
+					//  ищем цвет-свловосочетание, как правило, первое слово - это цвет
+					$colors2 = explode(' ', $color);
+					$standardColor = mb_strlen($colors2[0]) > 1 ? $colors2[0] : (isset($colors2[1]) ? $colors2[1] : $color);
+//				echo 'Var 2:'.$color.'='.$standardColor."\n";
+				}
 			}
+
+			// насыщаем название предложения цветом и полом
+			$currentTitle = $title;
+			if($nounFound && $title && !$multipleColor) {
+				$nounRoot = $this->morphy->getPseudoRoot(mb_strtoupper($standardColor));
+				if ($nounRoot[0] != 'ДЖИНСОВ' || $nounRoot[0] != '' || mb_strlen($nounRoot[0]) != 1) {
+					$nounEnding = $nounRoot[0] == 'СИН' ? 1 : 0;
+					if (count($this->endings[$nounIndex]) > 0) {
+						if ($nounPosition === 0) {
+							$nounColorRoot = mb_ucfirst($nounRoot[0]);
+						} else {
+							$nounColorRoot = mb_strtolower($nounRoot[0]);
+						}
+						$currentTitle = trim(mb_substr_replace($currentTitle, $nounColorRoot.($nounRoot[0] != mb_strtoupper($standardColor) ? $this->endings[$nounIndex][$nounEnding] : '').' ', $nounPosition, $nounPosition));
+					} else {
+						$currentTitle = trim(mb_substr_replace($currentTitle, ($nounPosition === 0 ? $standardColor : mb_strtolower($standardColor)).' ', $nounPosition, $nounPosition));
+					}
+
+					$currentTitle = mb_ucfirst($currentTitle);
+
+//				var_dump($nounColorRoot, $nounEnding, $currentTitle);
+
+				}
+
+			}
+
+			if ($title && $nounFound && $genderGroup && $genderGroup != 'unisex') {
+				if ($this->genders[$nounIndex][$genderGroup] != '') {
+					$currentTitle .= ', '.$this->genders[$nounIndex][$genderGroup];
+				}
+			}
+
+//			echo $title.' => '.$currentTitle."\n";
 
 			foreach ($skus as $sku) {
 
 				$content .= '<entry>
 		<g:id>'.$reference['item_group_id'][0].'-'.$sku['code'][0].'</g:id>
-		<g:title>'.$title.($title ? ' - '.$standardColor : '').'</g:title>
+		<g:title>'.$currentTitle.'</g:title>
 		<g:description>'.$description.'</g:description>
 		<g:link>'.$reference['link'][0].'</g:link>
 		<g:mobile_link>'.$reference['mobile_link'][0].'</g:mobile_link>
@@ -244,6 +596,7 @@ class GoogleParser
 		}
 
 		echo sprintf("Feed file is parsed: products = %d pcs., skus = %d pcs. NO AGE & GENDER = %d\n", $i, $this->j, $this->k);
+		echo sprintf("Titles without color & gender %d pcs.\n", $this->m);
 	}
 
 }
