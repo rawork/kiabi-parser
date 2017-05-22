@@ -308,6 +308,30 @@ class GoogleParser
 		['male' => 'мужских', 'female' => 'женских', 'unisex' => 'унисекс'],
 	];
 
+	protected $materials = [
+		'ХЛОПОК',
+		'ПОЛИЭСТЕР',
+		'ЭЛАСТАН',
+		'ПОЛИАМИД',
+		'ТКАНЬ',
+		'ЭЛАСТОДИН',
+		'ВИСКОЗА',
+		'НЕЙЛОН',
+		'АКРИЛ',
+		'МЕТАЛЛИЧЕСКОЕ ВОЛОКНО',
+		'НАТУРАЛЬНАЯ КОЖА',
+		'БУМАГА',
+		'СОЛОМА',
+		'КАРТОН',
+		'ЛИОСЕЛ',
+		'КОЖА',
+		'ПЛАСТИК',
+		'МЕТАЛЛ',
+		'МОДАЛ',
+//		'ХИМИЧЕСКИЕ МАТЕРИАЛЫ',
+		'ВОЛОКНА'
+	];
+
 	protected $titles2 = [];
 	protected $categories = [];
 	protected $searchTexts = [
@@ -490,6 +514,32 @@ class GoogleParser
 		foreach ($references['reference'] as $reference) {
 			$skus = $reference['skus'][0]['sku'];
 
+			$material = $reference['material'][0];
+			$materialTag = '';
+
+			if ($material) {
+				$searchMaterial = mb_strtoupper($material);
+				$realMaterials = [];
+				foreach ($this->materials as $materialVariant) {
+					if (mb_strstr($searchMaterial, $materialVariant)) {
+						$realMaterials[] = mb_ucfirst($materialVariant);
+						if (count($realMaterials) >=3 ) {
+							break;
+						}
+					}
+				}
+
+				if (count($realMaterials) > 0) {
+					$realMaterial = implode('/', $realMaterials);
+					$materialTag = '<g:material>'.$realMaterial.'</g:material>';
+				} else {
+//					echo 'Not found: '.$material."\n";
+				}
+
+			}
+
+//			echo $reference['material'][0]."\n";
+
 			if (!$age || !$gender) {
 				$this->k++;
 			}
@@ -566,7 +616,7 @@ class GoogleParser
 		<g:gtin>'.$sku['gtin'][0].'</g:gtin>
 		<g:size_system>'.$node->system_size.'</g:size_system>
 		<g:item_group_id>'.$reference['item_group_id'][0].'</g:item_group_id>
-		'.$shipping.$age.$gender.$googleProductCategory.'
+		'.$shipping.$age.$gender.$googleProductCategory.$materialTag.'
 	</entry>
 	';
 				$this->j++;

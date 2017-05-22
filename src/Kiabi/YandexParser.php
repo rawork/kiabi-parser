@@ -35,6 +35,31 @@ class YandexParser
 		'туника', 'туфли', 'туфли-лодочки', 'футболка', 'халат', 'шапочка', 'шаровары', 'шарф',
 		'шляпа', 'шортики', 'шорты', 'юбка'
 	];
+
+	protected $materials = [
+		'ХЛОПОК',
+		'ПОЛИЭСТЕР',
+		'ЭЛАСТАН',
+		'ПОЛИАМИД',
+		'ТКАНЬ',
+		'ЭЛАСТОДИН',
+		'ВИСКОЗА',
+		'НЕЙЛОН',
+		'АКРИЛ',
+		'МЕТАЛЛИЧЕСКОЕ ВОЛОКНО',
+		'НАТУРАЛЬНАЯ КОЖА',
+		'БУМАГА',
+		'СОЛОМА',
+		'КАРТОН',
+		'ЛИОСЕЛ',
+		'КОЖА',
+		'ПЛАСТИК',
+		'МЕТАЛЛ',
+		'МОДАЛ',
+//		'ХИМИЧЕСКИЕ МАТЕРИАЛЫ',
+		'ВОЛОКНА'
+	];
+
 	protected $titles2 = [];
 
 	public function __construct(Cutter $cutter, Replacer $replacer)
@@ -169,6 +194,33 @@ class YandexParser
 		foreach ($references['reference'] as $reference) {
 			$skus = $reference['skus'][0]['sku'];
 
+			$material = $reference['material'][0];
+			$materialTag = '';
+
+			if ($material) {
+				$searchMaterial = mb_strtoupper($material);
+				$realMaterials = [];
+				foreach ($this->materials as $materialVariant) {
+					if (mb_strstr($searchMaterial, $materialVariant)) {
+						$realMaterials[] = mb_ucfirst($materialVariant);
+						if (count($realMaterials) >=3 ) {
+							break;
+						}
+					}
+				}
+
+				if (count($realMaterials) > 0) {
+					$realMaterial = implode(', ', $realMaterials);
+					$materialTag = '<param name="Материал">'.$realMaterial.'</param>';
+				} else {
+//					echo 'Not found: '.$material."\n";
+				}
+
+			}
+
+//			echo $reference['material'][0]."\n";
+
+
 			$pictures = '';
 			for ($i = 1; $i <= 5; $i++) {
 				if (!empty($reference['additionnal_image_link'.$i][0])) {
@@ -248,7 +300,7 @@ class YandexParser
                 
                 <param name="Цвет">'.$color.'</param>
                 <param name="Размер" unit="'.$sizeSystem.'">'.$size.'</param>
-                '.$genderParam.$ageParam
+                '.$genderParam.$ageParam.$materialTag
 				.'
             </offer>	
 	';
