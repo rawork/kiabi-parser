@@ -602,7 +602,7 @@ class GoogleParser
 				}
 			}
 
-			echo $title.' => '.$currentTitle."\n";
+//			echo $title.' => '.$currentTitle."\n";
 
 			foreach ($skus as $sku) {
 
