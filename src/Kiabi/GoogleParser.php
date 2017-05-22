@@ -469,6 +469,7 @@ class GoogleParser
 		$age = '';
 		$gender = '';
 		$genderGroup = '';
+		$ageGroup = '';
 
 		if (array_key_exists($key, $this->categories)) {
 			$category = $this->categories[$key];
@@ -589,12 +590,19 @@ class GoogleParser
 			}
 
 			if ($title && $nounFound && $genderGroup && $genderGroup != 'unisex') {
-				if ($this->genders[$nounIndex][$genderGroup] != '') {
+				if ($ageGroup && $ageGroup == 'adult' && $this->genders[$nounIndex][$genderGroup] != '') {
 					$currentTitle .= ', '.$this->genders[$nounIndex][$genderGroup];
+				} else {
+					if($genderGroup == 'male') {
+						$currentTitle .= ', для мальчиков';
+					}
+					if($genderGroup == 'female') {
+						$currentTitle .= ', для девочек';
+					}
 				}
 			}
 
-//			echo $color.' - '.$title.' => '.$currentTitle."\n";
+			echo $title.' => '.$currentTitle."\n";
 
 			foreach ($skus as $sku) {
 
