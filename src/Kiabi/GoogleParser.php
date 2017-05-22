@@ -63,6 +63,7 @@ class GoogleParser
 		'ШОРТ',
 		'ТОПОВ',
 		'МИТЕНОК',
+		'ПЛАТЬЕМ',
 	];
 
 	protected $endings = [
@@ -184,6 +185,7 @@ class GoogleParser
 		['ых', 'их'],
 		['ых', 'их'],
 		['ых', 'их'],
+		['ым', 'им'],
 	];
 
 	protected $genders = [
@@ -306,6 +308,7 @@ class GoogleParser
 		['male' => 'мужских', 'female' => 'женских', 'unisex' => 'унисекс'],
 		['male' => 'мужских', 'female' => 'женских', 'unisex' => 'унисекс'],
 		['male' => 'мужских', 'female' => 'женских', 'unisex' => 'унисекс'],
+		['male' => 'мужской', 'female' => 'женский', 'unisex' => 'унисекс'],
 	];
 
 	protected $materials = [
