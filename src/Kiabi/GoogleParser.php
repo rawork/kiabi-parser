@@ -573,15 +573,21 @@ class GoogleParser
 				$nounRoot = $this->morphy->getPseudoRoot(mb_strtoupper($standardColor));
 				if ($nounRoot[0] != 'ДЖИНСОВ' && $nounRoot[0] != null && mb_strlen($nounRoot[0]) != 1) {
 					$nounEnding = $nounRoot[0] == 'СИН' ? 1 : 0;
-					if (count($this->endings[$nounIndex]) > 0) {
-						if ($nounPosition === 0) {
-							$nounColorRoot = mb_ucfirst($nounRoot[0]);
+
+					if (!mb_strstr($searchTitle, ' '.$nounRoot[0])) {
+						if (count($this->endings[$nounIndex]) > 0) {
+							if ($nounPosition === 0) {
+								$nounColorRoot = mb_ucfirst($nounRoot[0]);
+							} else {
+								$nounColorRoot = mb_strtolower($nounRoot[0]);
+							}
+
+							$currentTitle = trim(mb_substr_replace($currentTitle, $nounColorRoot.($nounRoot[0] != mb_strtoupper($standardColor) ? $this->endings[$nounIndex][$nounEnding] : '').' ', $nounPosition, $nounPosition));
 						} else {
-							$nounColorRoot = mb_strtolower($nounRoot[0]);
+							$currentTitle = trim(mb_substr_replace($currentTitle, ($nounPosition === 0 ? $standardColor : mb_strtolower($standardColor)).' ', $nounPosition, $nounPosition));
 						}
-						$currentTitle = trim(mb_substr_replace($currentTitle, $nounColorRoot.($nounRoot[0] != mb_strtoupper($standardColor) ? $this->endings[$nounIndex][$nounEnding] : '').' ', $nounPosition, $nounPosition));
 					} else {
-						$currentTitle = trim(mb_substr_replace($currentTitle, ($nounPosition === 0 ? $standardColor : mb_strtolower($standardColor)).' ', $nounPosition, $nounPosition));
+						echo $searchTitle.' => '.$currentTitle."\n";
 					}
 
 					$currentTitle = mb_ucfirst($currentTitle);
@@ -605,7 +611,7 @@ class GoogleParser
 				}
 			}
 
-			echo $title.' => '.$currentTitle."\n";
+//			echo $title.' => '.$currentTitle."\n";
 
 			foreach ($skus as $sku) {
 
