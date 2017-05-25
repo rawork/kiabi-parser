@@ -39,7 +39,7 @@ class GoogleParser
 		'КОНВЕРТ', 'КОСТЮМ', 'КОРОБКА', 'КРОССОВКИ', 'КУПАЛЬНИК', 'КУРТКА', 'ЛЕГГИНСЫ',
 		'ЛЕГИНСЫ', 'ЛОДОЧКИ', 'МАЙКА', 'МОКАСИНЫ', 'НАГРУДНИК', 'НАМАТРАСНИК', 'ОДИ', ' ОЧКИ',
 		'ПАЛЬТО', 'ПАНАМА', 'ПАРКА', 'ПЕНЬЮАР', 'ПЕСОЧНИК', 'ПИДЖАК', 'ПИЖАМА', 'ПЛАВКИ',
-		'ПЛАТОК', 'ПЛАТЬЕ ', 'ПЛАЩ', 'ПЛЕД', 'ПОВЯЗКА',   'ПОКРЫВАЛО', 'ПОЛО ', 'ПОЛОТЕНЦЕ',
+		'ПЛАТОК', 'ПЛАТЬЕ', 'ПЛАЩ', 'ПЛЕД', 'ПОВЯЗКА',   'ПОКРЫВАЛО', 'ПОЛО ', 'ПОЛОТЕНЦЕ',
 		'ПУЛОВЕР', 'ПОЯС', 'ПУХОВИК', 'РЕМЕНЬ', 'РУБАШКА', 'РУКАВИЧКИ', 'РЮКЗАК', 'САНДАЛИИ', 'САПОГИ',
 		'САПОЖКИ', 'САРАФАН', 'СВИТЕР', 'СВИТШОТ', 'СЛЮНЯВЧИК', 'СОРОЧКА', 'СУМКА', 'СУМОЧКА',
 		'ТАПОЧКИ', 'ТЕРМОБЕЛЬЁ', 'ТОЛСТОВКА', 'ТОП ', 'ТРЕГИНСЫ', 'ТРЕНЧ', 'ТРУСИКИ', 'ТРУСЫ',
@@ -64,6 +64,9 @@ class GoogleParser
 		'ТОПОВ',
 		'МИТЕНОК',
 		'ПЛАТЬЕМ',
+		'ПЛАТЬЕВ',
+		'КОСМЕТИЧКА',
+		'ТЕЛЬНЯШКА',
 	];
 
 	protected $endings = [
@@ -186,6 +189,9 @@ class GoogleParser
 		['ых', 'их'],
 		['ых', 'их'],
 		['ым', 'им'],
+		['ых', 'их'],
+		['ая', 'яя'],
+		['ая', 'яя'],
 	];
 
 	protected $genders = [
@@ -309,6 +315,9 @@ class GoogleParser
 		['male' => 'мужских', 'female' => 'женских', 'unisex' => 'унисекс'],
 		['male' => 'мужских', 'female' => 'женских', 'unisex' => 'унисекс'],
 		['male' => 'мужской', 'female' => 'женский', 'unisex' => 'унисекс'],
+		['male' => 'мужских', 'female' => 'женских', 'unisex' => 'унисекс'],
+		['male' => 'мужская', 'female' => 'женская', 'unisex' => 'унисекс'],
+		['male' => 'мужская', 'female' => 'женская', 'unisex' => 'унисекс'],
 	];
 
 	protected $materials = [
@@ -413,18 +422,28 @@ class GoogleParser
 		//$title = $this->getTitle($node->title);
 		$title = htmlspecialchars($node->title);
 
+//		echo $title."\n";
+
 		// Ищем главное слово-товар в названии для подстановки пола и цвета
 		$nounFound = false;
 		$nounPosition = -1;
 		$nounIndex = -1;
 		$searchTitle =  mb_strtoupper($title);
 		foreach ($this->nouns as $nounKey => $noun) {
-			$nounPosition = mb_strpos($searchTitle, $noun);
-			$nounIndex = $nounKey;
+			$nounPosition = mb_strpos($searchTitle, $noun.' ');
 			if ($noun && $nounPosition !== false) {
 				$nounFound = true;
+				$nounIndex = $nounKey;
 				//echo $noun."\n";
 				break;
+			} else {
+				$nounPosition = mb_strpos($searchTitle, ''.$noun);
+				if ($noun && $nounPosition !== false) {
+					$nounFound = true;
+					$nounIndex = $nounKey;
+					//echo $noun."\n";
+					break;
+				}
 			}
 		}
 
@@ -571,10 +590,13 @@ class GoogleParser
 			$currentTitle = $title;
 			if($nounFound && $title && !$multipleColor) {
 				$nounRoot = $this->morphy->getPseudoRoot(mb_strtoupper($standardColor));
+
 				if ($nounRoot[0] != 'ДЖИНСОВ' && $nounRoot[0] != null && mb_strlen($nounRoot[0]) != 1) {
 					$nounEnding = $nounRoot[0] == 'СИН' ? 1 : 0;
 
-					if (!mb_strstr($searchTitle, ' '.$nounRoot[0])) {
+					if (!mb_strstr($searchTitle, ' '.$nounRoot[0])
+						&& !mb_strstr($searchTitle, $nounRoot[0].'ЫЕ')
+						&& !mb_strstr($searchTitle, $nounRoot[0].'АЯ')) {
 						if (count($this->endings[$nounIndex]) > 0) {
 							if ($nounPosition === 0) {
 								$nounColorRoot = mb_ucfirst($nounRoot[0]);
@@ -587,7 +609,7 @@ class GoogleParser
 							$currentTitle = trim(mb_substr_replace($currentTitle, ($nounPosition === 0 ? $standardColor : mb_strtolower($standardColor)).' ', $nounPosition, $nounPosition));
 						}
 					} else {
-						echo $searchTitle.' => '.$currentTitle."\n";
+						echo 'COLOR IN TITLE: '.$searchTitle.' => '.$currentTitle."\n";
 					}
 
 					$currentTitle = mb_ucfirst($currentTitle);
