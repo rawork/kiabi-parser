@@ -7,28 +7,28 @@ use cijic\phpMorphy\Morphy;
 class GoogleParser
 {
 	protected $content = '';
-	protected $j = 0;
-	protected $k = 0;
-	protected $m = 0;
+	protected $skuAmount = 0;
 	protected $deliveryPrice = 299;
 	protected $morphy;
 
 	protected $titles = [
-		'балетки', 'боди', 'болеро', 'борсалино', 'ботинки', 'брюки', 'бюстгальтер',
-		'ветровка', 'водолазка', 'галстук-бабочка', 'галстук', 'джеггинсы', 'джегинсы',
-		'джемпер-пончо', 'джемпер', 'джинсы', 'жакет', 'жилет', 'зонт', 'капри', 'кардиган',
-		'кеды', 'кепка', 'колготки', 'комбинация', 'комбинезон', 'кроссовки', 'купальник',
-		'купальные трусики', 'куртка бомбер', 'куртка', 'леггинсы', 'легинсы', 'лонгслив', 'майка',
-		'митенки', 'мокасины', 'накидка', 'наматрасник', 'носки', 'ночная рубашка', 'пальто',
-		'парка', 'пиджак', 'пижама', 'плавки', 'платок', 'платье-джемпер', 'платье-колокольчик',
+		'балетки', 'бейсболка', 'берет', 'бермуды-чинос', 'бермуды', 'блузка', 'боди', 'болеро', 'борсалино', 'босоножки',
+		'ботинки', 'пижамные брюки', 'брюки-шаровары', 'брюки-чинос', 'брюки', 'бюстгальтер-бандо','бюстгальтер', 'бюстье',
+		'ветровка', 'водолазка', 'вьетнамки', 'галстук-бабочка', 'галстук', 'джеггинсы', 'джегинсы',
+		'джемпер-пончо', 'джемпер', 'джинсы', 'жакет', 'жилет', 'зонт', 'капри-шаровары', 'капри', 'кардиган',
+		'кеды', 'кепка', 'колготки', 'комбинация', 'комбинезон-шорты', 'комбинезон', 'косметичка', 'кроссовки', 'купальник',
+		'купальные трусики', 'куртка бомбер', 'куртка-бомбер','куртка', 'леггинсы', 'легинсы', 'лонгслив', 'майка',
+		'митенки', 'мокасины', 'накидка', 'наматрасник', 'носки', 'ночная рубашка', 'пальто', 'панама',
+		'парка', 'пеньюар', 'пиджак', 'пижама', 'плавки', 'платок', 'платье-джемпер', 'платье-колокольчик',
 		'платье-комбинезон', 'платье-рубашка', 'платье-футляр', 'платье', 'плащ-накидка', 'плащ',
-		'плед', 'повязка', 'покрывало', 'ползунки', 'поло', 'полотенце-накидка', 'полотенце',
-		'полусапоги', 'пончо', 'пояс', 'пуловер', 'пуховик', 'ремень', 'рубашка', 'рукавички',
+		'плед', 'повязка', 'покрывало', 'ползунки', 'шарф-снуд', 'футболка', 'ночная рубашка', 'рубашка', 'рубашка-поло',
+		'полотенце-накидка', 'полотенце', 'полусапоги', 'пончо',  'пуловер', 'пуховик', 'ремень', 'рукавички', 'рюкзак',
 		'сандалии', 'сапоги', 'сапожки', 'сарафан', 'свитер', 'свитшот', 'слюнявчик',
-		'спортивный костюм', 'тапочки', 'толстовка', 'топ', 'трегинсы', 'тренч', 'тренчкот', 'трусики',
-		'трусики-стринги', 'трусики-танга', 'трусики-шортики', 'трусики-шорты', 'трусы-боксеры',
-		'туника', 'туфли', 'туфли-лодочки', 'футболка', 'халат', 'шапочка', 'шаровары', 'шарф',
-		'шляпа', 'шортики', 'шорты', 'юбка'
+		'спортивный костюм', 'сумка', 'сумочка', 'тапочки-сапожки', 'тапочки', 'тельняшка', 'толстовка', 'топ', 'трегинсы', 'тренч',
+		'тренчкот',
+		'купальные трусики', 'трусики-стринги', 'трусики-танга', 'трусики-шортики', 'трусики-шортики', 'трусики-шорты',
+		'трусики', 'трусы-боксеры', 'туника', 'туфли-лодочки', 'туфли', 'халат', 'шапка', 'шапочка', 'шаровары', 'шарф',
+		'шляпа', 'шортики', 'шорты-бермуды', 'шорты', 'штаны', 'эспадрильи', 'юбка', 'пояс', 'поло',
 	];
 
 	protected $nouns = [
@@ -39,10 +39,10 @@ class GoogleParser
 		'КОНВЕРТ', 'КОСТЮМ', 'КОРОБКА', 'КРОССОВКИ', 'КУПАЛЬНИК', 'КУРТКА', 'ЛЕГГИНСЫ',
 		'ЛЕГИНСЫ', 'ЛОДОЧКИ', 'МАЙКА', 'МОКАСИНЫ', 'НАГРУДНИК', 'НАМАТРАСНИК', 'ОДИ', ' ОЧКИ',
 		'ПАЛЬТО', 'ПАНАМА', 'ПАРКА', 'ПЕНЬЮАР', 'ПЕСОЧНИК', 'ПИДЖАК', 'ПИЖАМА', 'ПЛАВКИ',
-		'ПЛАТОК', 'ПЛАТЬЕ', 'ПЛАЩ', 'ПЛЕД', 'ПОВЯЗКА',   'ПОКРЫВАЛО', 'ПОЛО ', 'ПОЛОТЕНЦЕ',
+		'ПЛАТОК', 'ПЛАТЬЕ', 'ПЛАЩ', 'ПЛЕД', 'ПОВЯЗКА',   'ПОКРЫВАЛО', 'ПОЛО', 'ПОЛОТЕНЦЕ',
 		'ПУЛОВЕР', 'ПОЯС', 'ПУХОВИК', 'РЕМЕНЬ', 'РУБАШКА', 'РУКАВИЧКИ', 'РЮКЗАК', 'САНДАЛИИ', 'САПОГИ',
 		'САПОЖКИ', 'САРАФАН', 'СВИТЕР', 'СВИТШОТ', 'СЛЮНЯВЧИК', 'СОРОЧКА', 'СУМКА', 'СУМОЧКА',
-		'ТАПОЧКИ', 'ТЕРМОБЕЛЬЁ', 'ТОЛСТОВКА', 'ТОП ', 'ТРЕГИНСЫ', 'ТРЕНЧ', 'ТРУСИКИ', 'ТРУСЫ',
+		'ТАПОЧКИ', 'ТЕРМОБЕЛЬЁ', 'ТОЛСТОВКА', 'ТОП', 'ТРЕГИНСЫ', 'ТРЕНЧ', 'ТРУСИКИ', 'ТРУСЫ',
 		'ТУНИКА', 'ТУФЛИ', 'ФУТБОЛКА', 'ХАЛАТ', 'ШАПКА', 'ШАПОЧКА', 'ШАРОВАРЫ', 'ШАРФ', 'ШЛЯПА',
 		'ШОРТЫ', 'ШТАНЫ', 'ЭСПАДРИЛЬИ', 'ЮБКА',
 
@@ -67,6 +67,8 @@ class GoogleParser
 		'ПЛАТЬЕВ',
 		'КОСМЕТИЧКА',
 		'ТЕЛЬНЯШКА',
+		'НАКИДКА',
+		'ЛОНГСЛИВ',
 	];
 
 	protected $endings = [
@@ -192,6 +194,8 @@ class GoogleParser
 		['ых', 'их'],
 		['ая', 'яя'],
 		['ая', 'яя'],
+		['ая', 'яя'],
+		[],
 	];
 
 	protected $genders = [
@@ -318,6 +322,8 @@ class GoogleParser
 		['male' => 'мужских', 'female' => 'женских', 'unisex' => 'унисекс'],
 		['male' => 'мужская', 'female' => 'женская', 'unisex' => 'унисекс'],
 		['male' => 'мужская', 'female' => 'женская', 'unisex' => 'унисекс'],
+		['male' => 'мужская', 'female' => 'женская', 'unisex' => 'унисекс'],
+		['male' => 'мужской', 'female' => 'женский', 'unisex' => 'унисекс'],
 	];
 
 	protected $materials = [
@@ -344,7 +350,13 @@ class GoogleParser
 		'ВОЛОКНА'
 	];
 
-	protected $titles2 = [];
+	protected $messages = [
+		'cut' => [],
+		'titles' => [],
+		'colors' => [],
+		'age_gender' => [],
+	];
+
 	protected $categories = [];
 	protected $searchTexts = [
 		176 => 'галстук|Галстук', 179 => 'подтяжки|Подтяжки', 169 => 'ремен|Ремен',
@@ -353,7 +365,6 @@ class GoogleParser
 
 	public function __construct()
 	{
-		$this->titles2 = array_map( function($a) { return mb_convert_case($a, MB_CASE_TITLE); }, $this->titles);
 		$this->getCategories();
 		$this->morphy = new Morphy('ru');
 	}
@@ -397,11 +408,21 @@ class GoogleParser
 	{
 		$title = ''.$title;
 
-		if (preg_match("/".implode('|', $this->titles)."/", $title, $matches)) {
-			$title = mb_convert_case($matches[0], MB_CASE_TITLE);
-		} else if (preg_match('/'.implode('|', $this->titles2).'/', $title, $matches)) {
-			$title = $matches[0];
+		if (mb_strstr($title, 'Комплект') || mb_strstr($title, 'комплект')) {
+			return htmlspecialchars($title);
 		}
+
+		if (mb_strstr($title, 'Набор') || mb_strstr($title, 'набор')) {
+			return htmlspecialchars($title);
+		}
+
+		foreach ($this->titles as $titleVariant) {
+			if (mb_strstr($title, $titleVariant) || mb_strstr($title, mb_ucfirst($titleVariant))) {
+				return htmlspecialchars(mb_ucfirst($titleVariant));
+			}
+		}
+
+		$this->messages['cut'][] = 'TITLE NOT CUT: '.$title;
 
 		return htmlspecialchars($title);
 	}
@@ -419,8 +440,11 @@ class GoogleParser
 	{
 		$content = '';
 
-		//$title = $this->getTitle($node->title);
-		$title = htmlspecialchars($node->title);
+		$title = $this->getTitle($node->title);
+
+//		echo $node->title." => ".$title."\n";
+
+//		$title = htmlspecialchars($node->title);
 
 //		echo $title."\n";
 
@@ -448,9 +472,7 @@ class GoogleParser
 		}
 
 		if (!$nounFound) {
-			// todo collect all titles with ids and send by email
-			echo $node->id.' Title = '.$title."\n";
-			$this->m++;
+			$this->messages['titles'][] = 'NOUN NOT FOUND: ID = '.$node->id.', TITLE = '.$title;
 		}
 
 		if (!$title) {
@@ -564,7 +586,7 @@ class GoogleParser
 //			echo $reference['material'][0]."\n";
 
 			if (!$age || !$gender) {
-				$this->k++;
+				$this->messages['age_gender'][] = 'CATEGORY AGE & GENDER EMPTY:'.$reference['item_group_id'][0];
 			}
 
 			// формируем корректный цвет в соответствии со спецификацией
@@ -588,28 +610,25 @@ class GoogleParser
 
 			// насыщаем название предложения цветом и полом
 			$currentTitle = $title;
-			if($nounFound && $title && !$multipleColor) {
+			if($nounFound && $title && !$multipleColor && !mb_strstr($title, 'Комплект') && !mb_strstr($title, 'Набор')) {
 				$nounRoot = $this->morphy->getPseudoRoot(mb_strtoupper($standardColor));
 
-				if ($nounRoot[0] != 'ДЖИНСОВ' && $nounRoot[0] != null && mb_strlen($nounRoot[0]) != 1) {
+				if ($nounRoot[0] != null && mb_strlen($nounRoot[0]) != 1) {
 					$nounEnding = $nounRoot[0] == 'СИН' ? 1 : 0;
 
 					if (!mb_strstr($searchTitle, ' '.$nounRoot[0])
 						&& !mb_strstr($searchTitle, $nounRoot[0].'ЫЕ')
 						&& !mb_strstr($searchTitle, $nounRoot[0].'АЯ')) {
 						if (count($this->endings[$nounIndex]) > 0) {
-							if ($nounPosition === 0) {
-								$nounColorRoot = mb_ucfirst($nounRoot[0]);
-							} else {
-								$nounColorRoot = mb_strtolower($nounRoot[0]);
-							}
+
+							$nounColorRoot = mb_strtolower($nounRoot[0]);
 
 							$currentTitle = trim(mb_substr_replace($currentTitle, $nounColorRoot.($nounRoot[0] != mb_strtoupper($standardColor) ? $this->endings[$nounIndex][$nounEnding] : '').' ', $nounPosition, $nounPosition));
 						} else {
 							$currentTitle = trim(mb_substr_replace($currentTitle, ($nounPosition === 0 ? $standardColor : mb_strtolower($standardColor)).' ', $nounPosition, $nounPosition));
 						}
 					} else {
-						echo 'COLOR IN TITLE: '.$searchTitle.' => '.$currentTitle."\n";
+						$this->messages['colors'][] = 'COLOR IN TITLE: '.$searchTitle.' => '.$currentTitle;
 					}
 
 					$currentTitle = mb_ucfirst($currentTitle);
@@ -633,7 +652,7 @@ class GoogleParser
 				}
 			}
 
-//			echo $title.' => '.$currentTitle."\n";
+//			echo $node->title." => ".$title.' => '.$currentTitle."\n";
 
 			foreach ($skus as $sku) {
 
@@ -658,7 +677,7 @@ class GoogleParser
 		'.$shipping.$age.$gender.$googleProductCategory.$materialTag.'
 	</entry>
 	';
-				$this->j++;
+				$this->skuAmount++;
 			}
 		}
 
@@ -684,8 +703,28 @@ class GoogleParser
 			}
 		}
 
-		echo sprintf("Feed file is parsed: products = %d pcs., skus = %d pcs. NO AGE & GENDER = %d\n", $i, $this->j, $this->k);
-		echo sprintf("Titles without color & gender %d pcs.\n", $this->m);
+		foreach ($this->messages['cut'] as $message) {
+			echo $message."\n";
+		}
+
+		foreach ($this->messages['titles'] as $message) {
+			echo $message."\n";
+		}
+
+		foreach ($this->messages['colors'] as $message) {
+			echo $message."\n";
+		}
+
+//		foreach ($this->messages['age_gender'] as $message) {
+//			echo $message."\n";
+//		}
+
+		echo sprintf("Feed file is parsed: products = %d pcs., skus = %d pcs.\n", $i, $this->skuAmount);
+		echo sprintf("Title is not cut = %d pcs.\n", count($this->messages['cut']));
+		echo sprintf("Age & Gender not found = %d pcs.\n", count($this->messages['age_gender']));
+		echo sprintf("Titles without color & gender = %d pcs.\n", count($this->messages['colors']));
+
+		return $this->messages;
 	}
 
 }
