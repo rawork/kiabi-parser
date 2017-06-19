@@ -12,7 +12,9 @@
     "require": {
         "curl/curl": "^1.5",
         "phpoffice/phpexcel": "1.8.1",
-        "cijic/phpmorphy": "dev-master"
+        "cijic/phpmorphy": "dev-master",
+        "doctrine/dbal": "2.5.*",
+        "monolog/monolog": "1.22.*"
     },
     "autoload": {
         "psr-0": {"Kiabi\\": "src/"}

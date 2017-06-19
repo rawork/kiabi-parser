@@ -3,6 +3,7 @@
 
 /files/*
 !/files/channel_pilot_categories.xml
+/app/config/config.php
 /vendor
 composer.lock
 passwords
