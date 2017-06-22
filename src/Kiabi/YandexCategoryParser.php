@@ -7,6 +7,7 @@ class YandexCategoryParser
 	protected $feedPath;
 	protected $types = [];
 	protected $categories = [];
+	protected $rootCategories = [];
 	protected $id = 0;
 
 	public function __construct($feedPath, array $categories)
@@ -24,12 +25,20 @@ class YandexCategoryParser
 	public function parseItem(\SimpleXMLElement $node)
 	{
 		$types = array_map('trim', explode('|', str_replace(' / ', '|', $node->product_type)));
-
+		$rootKey = '';
 		foreach ($types as $level => $type) {
 
-			$type = $this->getType($types, $level + 1);
-			$categoryKey = $this->getKey($type);
+			$typePath = $this->getType($types, $level + 1);
+			$categoryKey = $this->getKey($typePath);
+			if (0 == $level) {
+				$rootKey = $categoryKey;
+			}
 			if (array_key_exists($categoryKey, $this->categories)) {
+				$this->categories[$categoryKey]['is_root'] = $level == 0;
+				if	(!array_key_exists('root_key', $this->categories[$categoryKey])) {
+					$this->categories[$categoryKey]['root_key'] = $rootKey;
+				}
+
 				continue;
 			}
 
@@ -37,10 +46,12 @@ class YandexCategoryParser
 				'id' => $this->getId(),
 				'title' => $this->getTitle($types, $level),
 				'parent_key' => $level > 0 ? $this->getKey($this->getType($types, $level)) : 0,
-				'type' => $type,
+				'root_key' => $rootKey,
+				'is_root' => $level == 0,
+				'type' => $typePath,
 			];
 
-			echo sprintf("Found new category \"%s\"\n", $type);
+			echo sprintf("Found new category \"%s\"\n", $typePath);
 		}
 	}
 
