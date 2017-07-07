@@ -21,6 +21,7 @@ define('FEED_GOOGLE_PATH', __DIR__.'/../../files/feed_original_for_google.xml');
 define('FEED_CONVERTED_YANDEX_PATH', __DIR__.'/../../files/feed_converted_yandex.xml');
 define('FEED_CONVERTED_AVITO_PATH', __DIR__.'/../../files/feed_converted_avito.xml');
 define('FEED_CONVERTED_PRICE_PATH', __DIR__.'/../../files/feed_converted_price.xml');
+define('FEED_CONVERTED_PUSH4SITE_PATH', __DIR__.'/../../files/feed_converted_push4site.xml');
 define('FEED_CONVERTED_MAIL_PATH', __DIR__.'/../../files/feed_converted_mail.xml');
 define('FEED_CONVERTED_GOOGLE_PATH', __DIR__.'/../../files/feed_converted_google.xml');
 define('FEED_CONVERTED_CRITEO_PATH', __DIR__.'/../../files/feed_converted_criteo.xml');
