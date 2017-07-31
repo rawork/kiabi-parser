@@ -30,9 +30,9 @@ define('STORE_TITLE', 'Kiabi');
 define('COMPANY_TITLE', 'Kiabi Europe SAS');
 define('STORE_URL', 'http://www.kiabi.ru');
 
-define('LINK_COUNTER_APPENDIX', '#'.urlencode('&ns_mchannel=cpc&ns_source=yandexmarket&ns_campaign={campaign_id}&utm_medium=cpc&utm_source=yandexmarket&utm_campaign={campaign_id}'));
-define('LINK_COUNTER_APPENDIX_AVITO', '#'.urlencode('utm_source=avito&utm_medium=cpc&utm_campaign={campaign_id}&utm_content={id}_{platform}_{pos}&ns_mchannel=display&ns_source=avito&ns_campaign=pma5'));
-define('LINK_COUNTER_APPENDIX_PRICE', '#'.urlencode('#&ns_mchannel=cpc&ns_source=priceru&ns_campaign={campaign_id}&utm_medium=cpc&utm_source=priceru&utm_campaign={campaign_id}'));
+define('LINK_COUNTER_APPENDIX', '#'.urlencode('&ns_mchannel=cpc&ns_source=yandexmarket&ns_campaign=SHOP&utm_medium=cpc&utm_source=yandexmarket&utm_campaign=SHOP&utm_content={offer_id}_{product_id}'));
+define('LINK_COUNTER_APPENDIX_AVITO', '#'.urlencode('&ns_mchannel=cpc&ns_source=Avito_context&ns_campaign={campaignid}&utm_source=AvitoContext&utm_medium=cpc&utm_campaign={campaignid}&utm_term={platform}&utm_content={id}_{pos}'));
+define('LINK_COUNTER_APPENDIX_PRICE', '#'.urlencode('&ns_mchannel=cpc&ns_source=priceru&ns_campaign={campaign_id}&utm_medium=cpc&utm_source=priceru&utm_campaign={campaign_id}'));
 
 define('DB_HOST', 'localhost');
 define('DB_BASE', '');
