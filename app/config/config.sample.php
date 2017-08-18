@@ -34,6 +34,8 @@ define('LINK_COUNTER_APPENDIX', '#'.urlencode('&ns_mchannel=cpc&ns_source=yandex
 define('LINK_COUNTER_APPENDIX_AVITO', '#'.urlencode('&ns_mchannel=cpc&ns_source=Avito_context&ns_campaign={campaignid}&utm_source=AvitoContext&utm_medium=cpc&utm_campaign={campaignid}&utm_term={platform}&utm_content={id}_{pos}'));
 define('LINK_COUNTER_APPENDIX_PRICE', '#'.urlencode('&ns_mchannel=cpc&ns_source=priceru&ns_campaign={campaign_id}&utm_medium=cpc&utm_source=priceru&utm_campaign={campaign_id}'));
 
+define('LINK_COUNTER_APPENDIX_GOOGLE', '#'.urlencode('&ns_mchannel=cpc&ns_source=google&ns_campaign=SHOP&utm_medium=cpc&utm_source=google&utm_campaign={campaignid}&utm_content={adtype}{adgroupid}{product_channel}{productid}{product_partition_id}'));
+
 define('DB_HOST', 'localhost');
 define('DB_BASE', '');
 define('DB_USER', '');
