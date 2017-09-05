@@ -151,6 +151,13 @@ class PriceParser
 	{
 		$content = '';
 
+        if (preg_match('/[а-яё]/iu', $node->title)) {
+
+        } else {
+            echo 'NOT RUSSIAN TITLE: ID = '.$node->id.', TITLE = '.$node->title."\n";
+            return '';
+        }
+
 		$title = $this->getTitle($node->title);
 		$title .= ' '.$node->brand;
 

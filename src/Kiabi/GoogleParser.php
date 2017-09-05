@@ -449,6 +449,13 @@ class GoogleParser
 	{
 		$content = '';
 
+		if (preg_match('/[а-яё]/iu', $node->title)) {
+
+        } else {
+            $this->messages['titles'][] = 'NOT RUSSIAN TITLE: ID = '.$node->id.', TITLE = '.$node->title;
+		    return '';
+        }
+
 		$title = $this->getTitle($node->title);
 
 //		echo $node->title." => ".$title."\n";
