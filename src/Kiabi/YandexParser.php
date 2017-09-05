@@ -163,13 +163,13 @@ class YandexParser
 
 		$shipping = '';
 
-		if (isset($node->shipping)) {
-			$shipping = '
-				<delivery-options>
-                	<option cost="'.$this->deliveryPrice.'" days="1-2" order-before="24"/>
-            	</delivery-options>
-  				';
-		}
+//		if (isset($node->shipping)) {
+//			$shipping = '
+//				<delivery-options>
+//                	<option cost="'.$this->deliveryPrice.'" days="1-2" order-before="24"/>
+//            	</delivery-options>
+//  				';
+//		}
 
 		$product_type = str_replace(' / ', '|', $node->product_type);
 		$genderParam = '';
