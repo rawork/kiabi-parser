@@ -685,7 +685,7 @@ class GoogleParser
 		<g:id>'.$reference['item_group_id'][0].'-'.$sku['code'][0].'</g:id>
 		<g:title>'.$currentTitle.'</g:title>
 		<g:description>'.$description.'</g:description>
-		<g:link>'.$reference['link'][0].LINK_COUNTER_APPENDIX_GOOGLE.'</g:link>
+		<g:link>'.$reference['link'][0].'</g:link>
 		<g:mobile_link>'.$reference['mobile_link'][0].'</g:mobile_link>
 		<g:image_link>'.$reference['image_link'][0].'</g:image_link>
 		<g:condition>'.$node->condition.'</g:condition>
