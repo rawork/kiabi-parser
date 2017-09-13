@@ -225,8 +225,10 @@ class AvitoParser
 
 				$referenceSizes[] = $size;
 
+                // .LINK_COUNTER_APPENDIX_AVITO
+
 				$content .= '<offer id="'.$sku['code'][0].'" available="'.$available.'">
-                <url>'.$reference['link'][0].LINK_COUNTER_APPENDIX_AVITO.'</url>
+                <url>'.$reference['link'][0].'</url>
                 <price>'.$price.'</price>'
                 .$oldprice.
                 '<currencyId>RUR</currencyId>
