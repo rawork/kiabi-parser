@@ -287,7 +287,7 @@ class YandexParser
 				$referenceSizes[] = $size;
 
 				$content .= '<offer id="'.$sku['code'][0].'" available="'.$available.'">
-                <url>'.$reference['link'][0].LINK_COUNTER_APPENDIX.'</url>
+                <url>'.$reference['link'][0].'</url>
                 <price>'.$price.'</price>'
                 .$oldprice.
                 '<currencyId>RUR</currencyId>
