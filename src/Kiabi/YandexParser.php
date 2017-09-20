@@ -138,11 +138,11 @@ class YandexParser
 	{
 		$title = ''.$title;
 
-		if (preg_match("/".implode('|', $this->titles)."/", $title, $matches)) {
-			$title = mb_convert_case($matches[0], MB_CASE_TITLE);
-		} else if (preg_match('/'.implode('|', $this->titles2).'/', $title, $matches)) {
-			$title = $matches[0];
-		}
+//		if (preg_match("/".implode('|', $this->titles)."/", $title, $matches)) {
+//			$title = mb_convert_case($matches[0], MB_CASE_TITLE);
+//		} else if (preg_match('/'.implode('|', $this->titles2).'/', $title, $matches)) {
+//			$title = $matches[0];
+//		}
 
 		return htmlspecialchars($title);
 	}
