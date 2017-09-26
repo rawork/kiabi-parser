@@ -209,9 +209,9 @@ class CriteoParser
 		<g:id>'.$reference['item_group_id'][0].'-'.$sku['code'][0].'</g:id>
 		<g:title>'.$title.'</g:title>
 		<g:description>'.$description.'</g:description>
-		<g:link>'.$reference['link'][0].'</g:link>
+		<g:link>'.$reference['link_https'][0].'</g:link>
 		<g:mobile_link>'.$reference['mobile_link'][0].'</g:mobile_link>
-		<g:image_link>'.$reference['image_link'][0].'</g:image_link>
+		<g:image_link>'.$reference['image_link_https'][0].'</g:image_link>
 		<g:condition>'.$node->condition.'</g:condition>
 		<g:availability>'.$sku['availability'][0].'</g:availability>
 		<g:price>'.$sku['price'][0].' RUB</g:price>

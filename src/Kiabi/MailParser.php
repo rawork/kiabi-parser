@@ -167,9 +167,9 @@ class MailParser
 
 			$pictures = '';
 			for ($i = 1; $i <= 5; $i++) {
-				if (!empty($reference['additionnal_image_link'.$i][0])) {
+				if (!empty($reference['additionnal_image_link'.$i.'_https'][0])) {
 					$pictures .= '
-					<picture>'.$reference['additionnal_image_link'.$i][0].'</picture>
+					<picture>'.$reference['additionnal_image_link'.$i.'_https'][0].'</picture>
 					';
 				}
 			}
@@ -224,12 +224,12 @@ class MailParser
 				$referenceSizes[] = $size;
 
 				$content .= '<offer id="'.$sku['code'][0].'" available="'.$available.'">
-                <url>'.$reference['link'][0].LINK_COUNTER_APPENDIX.'</url>
+                <url>'.$reference['link_https'][0].LINK_COUNTER_APPENDIX.'</url>
                 <price>'.$price.'</price>'
                 .$oldprice.
                 '<currencyId>RUR</currencyId>
                 <categoryId>'.$categoryId.'</categoryId>
-                <picture>'.$reference['image_link'][0].'</picture>
+                <picture>'.$reference['image_link_https'][0].'</picture>
                 '.$pictures
 				.'	
                 <store>true</store>
