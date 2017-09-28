@@ -5,6 +5,11 @@ namespace Kiabi;
 
 class AvitoDividedParser
 {
+    protected $feedPath;
+    protected $categoriesPath;
+    protected $utmMark;
+    protected $addUtmMark;
+
 	protected $content = '';
 	protected $categories;
 	protected $rootCategories;
@@ -38,9 +43,13 @@ class AvitoDividedParser
 	];
 	protected $titles2 = [];
 
-	public function __construct(Cutter $cutter, Replacer $replacer)
+	public function __construct($feedPath, $categoriesPath, $utmMark,  Cutter $cutter, Replacer $replacer, $addUtmMark = true)
 	{
-		$this->cutter = $cutter;
+        $this->feedPath = $feedPath;
+        $this->categoriesPath = $categoriesPath;
+        $this->utmMark = $utmMark;
+        $this->addUtmMark = $addUtmMark;
+	    $this->cutter = $cutter;
 		$this->replacer = $replacer;
 
 		$this->titles2 = array_map( function($a) { return mb_convert_case($a, MB_CASE_TITLE); }, $this->titles);
@@ -77,10 +86,12 @@ class AvitoDividedParser
 		}
 
 		$content .= '	</categories>
-	<delivery-options>
-		<option cost="'.$this->deliveryPrice.'" days="1-2" order-before="24"/>
-	</delivery-options>
-	<offers>
+	';
+//	    $content .= '<delivery-options>
+//		<option cost="'.$this->deliveryPrice.'" days="1-2" order-before="24"/>
+//	</delivery-options>
+//	';
+        $content .= '    <offers>
 ';
 
 		return $content;
@@ -113,11 +124,11 @@ class AvitoDividedParser
 	{
 		$title = ''.$title;
 
-		if (preg_match("/".implode('|', $this->titles)."/", $title, $matches)) {
-			$title = mb_convert_case($matches[0], MB_CASE_TITLE);
-		} else if (preg_match('/'.implode('|', $this->titles2).'/', $title, $matches)) {
-			$title = $matches[0];
-		}
+//		if (preg_match("/".implode('|', $this->titles)."/", $title, $matches)) {
+//			$title = mb_convert_case($matches[0], MB_CASE_TITLE);
+//		} else if (preg_match('/'.implode('|', $this->titles2).'/', $title, $matches)) {
+//			$title = $matches[0];
+//		}
 
 		return htmlspecialchars($title);
 	}
@@ -140,7 +151,6 @@ class AvitoDividedParser
 		$references = $this->sxiToArray($node->references->children());
 
 		$shipping = '';
-
 //		if (isset($node->shipping)) {
 //			$shipping = '
 //				<delivery-options>
@@ -212,10 +222,6 @@ class AvitoDividedParser
 					$oldprice = '';
 				}
 
-//				if (strpos($sku['size'][0], 'a')) {
-//					var_dump($sku['size'][0]);
-//				}
-
 				$sizes = explode('/', $sku['size'][0]);
 
 				$size = trim(count($sizes) > 0 ? $sizes[0] : $sku['size'][0]);
@@ -235,10 +241,8 @@ class AvitoDividedParser
 
 				$referenceSizes[] = $size;
 
-				// .LINK_COUNTER_APPENDIX_AVITO
-
 				$this->rootCategories[$rootCategoryKey]['content'] .= '<offer id="'.$sku['code'][0].'" available="'.$available.'">
-                <url>'.$reference['link_https'][0].'</url>  
+                <url>'.$reference['link_https'][0].($this->addUtmMark ? $this->utmMark : '').'</url>  
                 <price>'.$price.'</price>'
                 .$oldprice.
                 '<currencyId>RUR</currencyId>
@@ -283,7 +287,7 @@ class AvitoDividedParser
 	public function getCategories()
 	{
 		if (!$this->categories) {
-			$this->categories = json_decode(file_get_contents(YANDEX_CATEGORIES_PATH), true);
+			$this->categories = json_decode(file_get_contents($this->categoriesPath), true);
 		}
 
 		return $this->categories;
@@ -309,7 +313,7 @@ class AvitoDividedParser
 		$this->getRootCategories();
 
 		$reader = new \XMLReader();
-		$reader->open(FEED_YANDEX_PATH);
+		$reader->open($this->feedPath);
 		$i = 0;
 
 		while($reader->read()) {

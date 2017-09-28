@@ -14,7 +14,8 @@
         "phpoffice/phpexcel": "1.8.1",
         "cijic/phpmorphy": "dev-master",
         "doctrine/dbal": "2.5.*",
-        "monolog/monolog": "1.22.*"
+        "monolog/monolog": "1.22.*",
+        "symfony/console": "3.4.x-dev"
     },
     "autoload": {
         "psr-0": {"Kiabi\\": "src/"}

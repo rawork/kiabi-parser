@@ -16,7 +16,6 @@ define('GOOGLE_CATEGORIES_XSLX_PATH', __DIR__.'/../../files/categories_google.xl
 define('GOOGLE_TAXONOMY_PATH', __DIR__.'/../../public/files/taxonomy_google.xls');
 
 define('FEED_YANDEX_PATH', __DIR__.'/../../files/feed_original_for_yandex.xml');
-define('FEED_GOOGLE_PATH', __DIR__.'/../../files/feed_original_for_google.xml');
 
 define('FEED_CONVERTED_YANDEX_PATH', __DIR__.'/../../files/feed_converted_yandex.xml');
 define('FEED_CONVERTED_YANDEX0_PATH', __DIR__.'/../../files/feed_converted_yandex0.xml');
@@ -31,12 +30,11 @@ define('STORE_TITLE', 'Kiabi');
 define('COMPANY_TITLE', 'Kiabi Europe SAS');
 define('STORE_URL', 'http://www.kiabi.ru');
 
-define('LINK_COUNTER_APPENDIX', '#'.urlencode('&ns_mchannel=cpc&ns_source=yandexmarket&ns_campaign=SHOP&utm_medium=cpc&utm_source=yandexmarket&utm_campaign=SHOP&utm_content={offer_id}_{product_id}'));
-define('LINK_COUNTER_APPENDIX_AVITO', '#'.urlencode('&ns_mchannel=cpc&ns_source=Avito_context&ns_campaign={campaignid}&utm_source=AvitoContext&utm_medium=cpc&utm_campaign={campaignid}&utm_term={platform}&utm_content={id}_{pos}'));
-define('LINK_COUNTER_APPENDIX_PRICE', '#'.urlencode('&ns_mchannel=cpc&ns_source=priceru&ns_campaign={campaign_id}&utm_medium=cpc&utm_source=priceru&utm_campaign={campaign_id}'));
-
-define('LINK_COUNTER_APPENDIX_GOOGLE', '#'.urlencode('&ns_mchannel=cpc&ns_source=google&ns_campaign=SHOP&utm_medium=cpc&utm_source=google&utm_campaign={campaignid}&utm_content={adtype}{adgroupid}{product_channel}{productid}{product_partition_id}'));
-define('LINK_COUNTER_APPENDIX_YANDEX', '#'.urlencode('&utm_source=YandexMarket&utm_medium=cpc'));
+define('LINK_COUNTER_APPENDIX', '#'.htmlspecialchars('&ns_mchannel=cpc&ns_source=yandexmarket&ns_campaign={campaign_id}&utm_medium=cpc&utm_source=yandexmarket&utm_campaign={campaign_id}'));
+define('LINK_COUNTER_APPENDIX_AVITO', '#'.htmlspecialchars('&utm_source=avito&utm_medium=cpc&utm_campaign={campaign_id}&utm_content={id}_{platform}_{pos}&ns_mchannel=display&ns_source=avito&ns_campaign=pma5'));
+define('LINK_COUNTER_APPENDIX_PRICE', '#'.htmlspecialchars('#&ns_mchannel=cpc&ns_source=priceru&ns_campaign={campaign_id}&utm_medium=cpc&utm_source=priceru&utm_campaign={campaign_id}'));
+define('LINK_COUNTER_APPENDIX_GOOGLE', '#'.htmlspecialchars('&ns_mchannel=cpc&ns_source=google&ns_campaign=SHOP&utm_medium=cpc&utm_source=google&utm_campaign={campaignid}&utm_content={adtype}{adgroupid}{product_channel}{productid}{product_partition_id}'));
+define('LINK_COUNTER_APPENDIX_YANDEX', '#'.htmlspecialchars('&utm_source=YandexMarket&utm_medium=cpc'));
 
 define('DB_HOST', 'localhost');
 define('DB_BASE', '');

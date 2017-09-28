@@ -27,10 +27,8 @@ if ($oldTimestamp < $timestamp) {
 	$client->get(FEED_URL);
 
 	@unlink(FEED_YANDEX_PATH);
-	@unlink(FEED_GOOGLE_PATH);
 
 	file_put_contents(FEED_YANDEX_PATH, $client->response);
-	file_put_contents(FEED_GOOGLE_PATH, $client->response);
 	file_put_contents(TIMEFILE_PATH, $timestamp);
 
 	$client->close();

@@ -6,6 +6,9 @@ set_time_limit(0);
 require_once __DIR__.'/../bootstrap.php';
 
 $parser = new Kiabi\YandexParser(
+    FEED_YANDEX_PATH,
+    YANDEX_CATEGORIES_PATH,
+    LINK_COUNTER_APPENDIX_YANDEX,
 	new \Kiabi\Cutter([]),
 	new \Kiabi\Replacer(json_decode(file_get_contents(YANDEX_COLORS_PATH), true))
 );

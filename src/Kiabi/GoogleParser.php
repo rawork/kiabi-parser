@@ -11,6 +11,8 @@ class GoogleParser
 	protected $deliveryPrice = 299;
 	protected $morphy;
 	protected $feedPath;
+	protected $utmMark;
+	protected $addUtmMark;
 
 	protected $titles = [
 		'балетки', 'бейсболка', 'берет', 'бермуды-чинос', 'бермуды', 'блузка', 'боди', 'болеро', 'борсалино', 'босоножки',
@@ -371,9 +373,12 @@ class GoogleParser
 		5625 => 'шапк|Шапк|шапочк|Шапочк',
 	];
 
-	public function __construct($path)
+	public function __construct($feedPath, $utmMark = '', $addUtmMark = false)
 	{
-		$this->feedPath = $path;
+		$this->feedPath = $feedPath;
+        $this->utmMark = $utmMark;
+        $this->addUtmMark = $addUtmMark;
+
 		$this->getCategories();
 		$this->morphy = new Morphy('ru');
 	}
@@ -685,7 +690,7 @@ class GoogleParser
 		<g:id>'.$reference['item_group_id'][0].'-'.$sku['code'][0].'</g:id>
 		<g:title>'.$currentTitle.'</g:title>
 		<g:description>'.$description.'</g:description>
-		<g:link>'.$reference['link_https'][0].'</g:link>
+		<g:link>'.$reference['link_https'][0].($this->addUtmMark ? $this->utmMark : '').'</g:link>
 		<g:mobile_link>'.$reference['mobile_link'][0].'</g:mobile_link>
 		<g:image_link>'.$reference['image_link_https'][0].'</g:image_link>
 		<g:condition>'.$node->condition.'</g:condition>

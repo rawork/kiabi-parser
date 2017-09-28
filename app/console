@@ -1,0 +1,14 @@
+#!/usr/bin/env php
+<?php
+
+require_once 'bootstrap.php';
+
+use Symfony\Component\Console\Application;
+
+$application = new Application();
+
+$application->add(new \Kiabi\Command\YandexParseCommand());
+$application->add(new \Kiabi\Command\GoogleParseCommand());
+$application->add(new \Kiabi\Command\AvitoParseCommand());
+
+$application->run();
