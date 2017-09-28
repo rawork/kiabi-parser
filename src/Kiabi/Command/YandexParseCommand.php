@@ -25,7 +25,7 @@ class YandexParseCommand extends Command
         set_time_limit(0);
 
         $output->writeln([
-            'Start build '.$input->getOption('target').' feed '.($input->getOption('utm') ? 'with UTM' : 'w/o UTM') ,
+            'Start build "'.$input->getOption('target').'" feed '.($input->getOption('utm') ? 'with UTM' : 'w/o UTM') ,
             '============',
             '',
         ]);
