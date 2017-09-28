@@ -21,6 +21,12 @@ class YandexCategoryParseCommand extends Command
     {
         set_time_limit(0);
 
+        $output->writeln([
+            'Start parse Yandex categories',
+            '============',
+            '',
+        ]);
+
         $categories = [];
         if (file_exists(YANDEX_CATEGORIES_PATH)) {
             $categories = json_decode(file_get_contents(YANDEX_CATEGORIES_PATH), true);
@@ -32,5 +38,7 @@ class YandexCategoryParseCommand extends Command
 
         @unlink(YANDEX_CATEGORIES_PATH);
         @file_put_contents(YANDEX_CATEGORIES_PATH, $parser->getJson());
+
+        $output->writeln('Categories parsed');
     }
 }

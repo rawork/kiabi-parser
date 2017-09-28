@@ -1,0 +1,46 @@
+<?php
+// src/Kiabi/Command/YandexColorParseCommand.php
+namespace Kiabi\Command;
+
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+
+class YandexColorParseCommand extends Command
+{
+    protected function configure()
+    {
+        $this
+            ->setName('parse:yandex:color')
+            ->setDescription('Build yandex colors json.')
+            ->setHelp('This command allows you to build yandex colors json')
+        ;
+    }
+
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+        set_time_limit(0);
+
+        $output->writeln([
+            'Start parse Yandex colors',
+            '============',
+            '',
+        ]);
+
+        $colors = [];
+        if (file_exists(YANDEX_COLORS_PATH)) {
+            $colors = json_decode(file_get_contents(YANDEX_COLORS_PATH), true);
+        }
+
+        $parser = new \Kiabi\Parser\ColorParser(new \Kiabi\Replacer());
+
+        $parser->parse();
+
+        $colors = array_merge($parser->getColors(), $colors);
+
+        @unlink(YANDEX_COLORS_PATH);
+        @file_put_contents(YANDEX_COLORS_PATH, json_encode($colors));
+
+        $output->writeln('Colors parsed');
+    }
+}

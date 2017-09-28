@@ -1,7 +1,8 @@
 <?php
 
-namespace Kiabi;
+namespace Kiabi\Parser;
 
+use Kiabi\Replacer;
 
 class ColorParser
 {
