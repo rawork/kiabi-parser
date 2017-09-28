@@ -244,7 +244,7 @@ class AvitoDividedParser
 				$referenceSizes[] = $size;
 
 				$this->rootCategories[$rootCategoryKey]['content'] .= '<offer id="'.$sku['code'][0].'" available="'.$available.'">
-                <url>'.$reference['link_https'][0].($this->addUtmMark ? $this->utmMark : '').'</url>  
+                <url>'.$reference['link_coloris_https'][0].($this->addUtmMark ? $this->utmMark : '').'</url>  
                 <price>'.$price.'</price>'
                 .$oldprice.
                 '<currencyId>RUR</currencyId>
