@@ -12,7 +12,7 @@ class AvitoParseCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('parse:avito')
+            ->setName('avito:parse')
             ->setDescription('Build avito feed.')
             ->setHelp('This command allows you to build avito feed (divided on categories) from original feed')
             ->addOption('utm', 'u', InputOption::VALUE_NONE, 'Add UTM counter to links')

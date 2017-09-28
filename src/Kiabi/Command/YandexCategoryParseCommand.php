@@ -11,7 +11,7 @@ class YandexCategoryParseCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('parse:yandex:category')
+            ->setName('yandex:category:parse')
             ->setDescription('Build yandex categories json.')
             ->setHelp('This command allows you to build yandex categories json')
         ;

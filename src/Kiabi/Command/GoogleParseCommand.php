@@ -12,7 +12,7 @@ class GoogleParseCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('parse:google')
+            ->setName('google:parse')
             ->setDescription('Build google feed.')
             ->setHelp('This command allows you to build google feed from original feed')
             ->addOption('utm', 'u', InputOption::VALUE_NONE, 'Add UTM counter to links')

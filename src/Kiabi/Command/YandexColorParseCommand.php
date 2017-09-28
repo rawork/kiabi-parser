@@ -11,7 +11,7 @@ class YandexColorParseCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('parse:yandex:color')
+            ->setName('yandex:color:parse')
             ->setDescription('Build yandex colors json.')
             ->setHelp('This command allows you to build yandex colors json')
         ;

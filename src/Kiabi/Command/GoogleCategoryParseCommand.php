@@ -11,7 +11,7 @@ class GoogleCategoryParseCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('parse:google:category')
+            ->setName('google:category:parse')
             ->setDescription('Build google categories json.')
             ->setHelp('This command allows you to build google categories json & xlsx')
         ;

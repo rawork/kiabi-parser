@@ -12,7 +12,7 @@ class YandexParseCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('parse:yandex')
+            ->setName('yandex:parse')
             ->setDescription('Build yandex, mail, price, push4site, avito feeds.')
             ->setHelp('This command allows you to build correct feeds from original feed')
             ->addOption('utm', 'u', InputOption::VALUE_NONE, 'Add UTM counter to links')

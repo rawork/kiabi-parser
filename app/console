@@ -12,6 +12,7 @@ $application->add(new \Kiabi\Command\YandexParseCommand());
 $application->add(new \Kiabi\Command\GoogleParseCommand());
 $application->add(new \Kiabi\Command\AvitoParseCommand());
 $application->add(new \Kiabi\Command\GoogleCategoryParseCommand());
+$application->add(new \Kiabi\Command\GoogleCategoryCompleteCommand());
 $application->add(new \Kiabi\Command\YandexCategoryParseCommand());
 $application->add(new \Kiabi\Command\YandexColorParseCommand());
 
