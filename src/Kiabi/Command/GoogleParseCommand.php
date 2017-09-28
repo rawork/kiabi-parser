@@ -1,5 +1,5 @@
 <?php
-// src/Kiabi/Command/YandexParseCommand.php
+// src/Kiabi/Command/GoogleParseCommand.php
 namespace Kiabi\Command;
 
 use Symfony\Component\Console\Command\Command;

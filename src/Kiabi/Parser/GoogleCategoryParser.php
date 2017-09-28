@@ -1,6 +1,6 @@
 <?php
 
-namespace Kiabi;
+namespace Kiabi\Parser;
 
 class GoogleCategoryParser
 {
