@@ -11,5 +11,6 @@ $application->add(new \Kiabi\Command\FeedDownloadCommand());
 $application->add(new \Kiabi\Command\YandexParseCommand());
 $application->add(new \Kiabi\Command\GoogleParseCommand());
 $application->add(new \Kiabi\Command\AvitoParseCommand());
+$application->add(new \Kiabi\Command\YandexCategoryParseCommand());
 
 $application->run();
