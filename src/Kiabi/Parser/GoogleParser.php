@@ -1,6 +1,6 @@
 <?php
 
-namespace Kiabi;
+namespace Kiabi\Parser;
 
 use cijic\phpMorphy\Morphy;
 

@@ -40,7 +40,7 @@ class GoogleParseCommand extends Command
                 $feedPath = FEED_CONVERTED_GOOGLE_PATH;
         }
 
-        $parser = new \Kiabi\GoogleParser(
+        $parser = new \Kiabi\Parser\GoogleParser(
             FEED_YANDEX_PATH,
             $utm,
             $input->getOption('utm')

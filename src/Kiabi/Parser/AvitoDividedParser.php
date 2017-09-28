@@ -1,12 +1,20 @@
 <?php
 
-namespace Kiabi;
+namespace Kiabi\Parser;
 
+use Kiabi\Cutter;
+use Kiabi\Replacer;
 
-class MailParser
+class AvitoDividedParser
 {
+    protected $feedPath;
+    protected $categoriesPath;
+    protected $utmMark;
+    protected $addUtmMark;
+
 	protected $content = '';
 	protected $categories;
+	protected $rootCategories;
 	protected $types = [];
 	protected $j = 0;
 	protected $cutter;
@@ -37,21 +45,24 @@ class MailParser
 	];
 	protected $titles2 = [];
 
-	public function __construct(Cutter $cutter, Replacer $replacer)
+	public function __construct($feedPath, $categoriesPath, $utmMark,  Cutter $cutter, Replacer $replacer, $addUtmMark = true)
 	{
-		$this->cutter = $cutter;
+        $this->feedPath = $feedPath;
+        $this->categoriesPath = $categoriesPath;
+        $this->utmMark = $utmMark;
+        $this->addUtmMark = $addUtmMark;
+	    $this->cutter = $cutter;
 		$this->replacer = $replacer;
 
 		$this->titles2 = array_map( function($a) { return mb_convert_case($a, MB_CASE_TITLE); }, $this->titles);
 	}
 
-	protected function getHeader()
+	protected function getHeader($rootKey)
 	{
 		$date = date('Y-m-d H:i');
 
 		$content = '<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE yml_catalog SYSTEM "shops.dtd">
-<torg_price date="'.$date.'"> 
+<yml_catalog date="'.$date.'"> 
   <shop>
 	<name>'.STORE_TITLE.'</name>
 	<company>'.COMPANY_TITLE.'</company>
@@ -62,23 +73,28 @@ class MailParser
 	<categories>
 		';
 
-		foreach ($this->categories as $category) {
+		foreach ($this->getCategories() as $category) {
+			if (!isset($category['root_key']) || $rootKey != $category['root_key']) {
+				continue;
+			}
+
 			if ($category['parent_key']) {
-				$content .= '		<category id="'.$category['id'].'" parentId="'.$this->categories[$category['parent_key']]['id'].'">'.$category['title'].'</category>
+				$content .= '<category id="'.$category['id'].'" parentId="'.$this->categories[$category['parent_key']]['id'].'">'.$category['title'].'</category>
 				';
 			} else {
-				$content .= '		<category id="'.$category['id'].'">'.$category['title'].'</category>
+				$content .= '<category id="'.$category['id'].'">'.$category['title'].'</category>
 				';
 			}
 		}
 
 		$content .= '	</categories>
-	<offers>
+	';
+//	    $content .= '<delivery-options>
+//		<option cost="'.$this->deliveryPrice.'" days="1-2" order-before="24"/>
+//	</delivery-options>
+//	';
+        $content .= '    <offers>
 ';
-
-//		<delivery-options>
-//	   		<option cost="0" days="1-2" order-before="24"/>
-//		</delivery-options>
 
 		return $content;
 	}
@@ -110,11 +126,11 @@ class MailParser
 	{
 		$title = ''.$title;
 
-		if (preg_match("/".implode('|', $this->titles)."/", $title, $matches)) {
-			$title = mb_convert_case($matches[0], MB_CASE_TITLE);
-		} else if (preg_match('/'.implode('|', $this->titles2).'/', $title, $matches)) {
-			$title = $matches[0];
-		}
+//		if (preg_match("/".implode('|', $this->titles)."/", $title, $matches)) {
+//			$title = mb_convert_case($matches[0], MB_CASE_TITLE);
+//		} else if (preg_match('/'.implode('|', $this->titles2).'/', $title, $matches)) {
+//			$title = $matches[0];
+//		}
 
 		return htmlspecialchars($title);
 	}
@@ -137,10 +153,13 @@ class MailParser
 		$references = $this->sxiToArray($node->references->children());
 
 		$shipping = '';
-
-		if (isset($node->shipping)) {
-			$shipping = '<local_delivery_cost>'.$this->deliveryPrice.'</local_delivery_cost>';
-		}
+//		if (isset($node->shipping)) {
+//			$shipping = '
+//				<delivery-options>
+//                	<option cost="'.$node->shipping->price.'" days="1-2" order-before="24"/>
+//            	</delivery-options>
+//  				';
+//		}
 
 		$product_type = str_replace(' / ', '|', $node->product_type);
 		$genderParam = '';
@@ -161,6 +180,13 @@ class MailParser
 		}
 
 		$categories = $this->getCategories();
+
+		$category = $categories[md5($product_type)];
+		$rootCategoryKey = $category['root_key'];
+
+		if (!array_key_exists($rootCategoryKey, $this->getRootCategories())) {
+			echo 'Root category with given key not found: '.$rootCategoryKey."\n";
+		}
 
 		foreach ($references['reference'] as $reference) {
 			$skus = $reference['skus'][0]['sku'];
@@ -186,8 +212,6 @@ class MailParser
 
 				$available = $sku['availability'][0] == 'in stock' ? 'true' : 'false';
 
-				$category = $categories[md5($product_type)];
-
 				$categoryId = $category['id'];
 
 				if (isset($sku['sale_price']) && floatval($sku['sale_price'][0]) < floatval($sku['price'][0])) {
@@ -199,10 +223,6 @@ class MailParser
 					$price = $sku['price'][0];
 					$oldprice = '';
 				}
-
-//				if (strpos($sku['size'][0], 'a')) {
-//					var_dump($sku['size'][0]);
-//				}
 
 				$sizes = explode('/', $sku['size'][0]);
 
@@ -223,8 +243,8 @@ class MailParser
 
 				$referenceSizes[] = $size;
 
-				$content .= '<offer id="'.$sku['code'][0].'" available="'.$available.'">
-                <url>'.$reference['link_https'][0].LINK_COUNTER_APPENDIX.'</url>
+				$this->rootCategories[$rootCategoryKey]['content'] .= '<offer id="'.$sku['code'][0].'" available="'.$available.'">
+                <url>'.$reference['link_https'][0].($this->addUtmMark ? $this->utmMark : '').'</url>  
                 <price>'.$price.'</price>'
                 .$oldprice.
                 '<currencyId>RUR</currencyId>
@@ -252,34 +272,57 @@ class MailParser
 			}
 		}
 
-		return $content;
 	}
 
 	public function getXML()
 	{
-		return $this->getHeader().$this->content.$this->getFooter();
+		foreach ($this->rootCategories as $key => &$category) {
+			$category['content'] = $category['content'] != ''
+				? $this->getHeader($key).$category['content'].$this->getFooter()
+				: '';
+		}
+		unset($category);
+
+		return $this->rootCategories;
 	}
 
 	public function getCategories()
 	{
 		if (!$this->categories) {
-			$this->categories = json_decode(file_get_contents(YANDEX_CATEGORIES_PATH), true);
+			$this->categories = json_decode(file_get_contents($this->categoriesPath), true);
 		}
 
 		return $this->categories;
 	}
 
+	public function getRootCategories() {
+		if (!$this->rootCategories) {
+			$this->rootCategories = array_filter($this->getCategories(), function($v) {
+				return isset($v['is_root']) && $v['is_root'];
+			});
+
+			foreach ($this->rootCategories as &$category) {
+				$category['content'] = '';
+			}
+			unset($category);
+		}
+
+		return $this->rootCategories;
+	}
+
 	public function parse()
 	{
+		$this->getRootCategories();
+
 		$reader = new \XMLReader();
-		$reader->open(FEED_YANDEX_PATH);
+		$reader->open($this->feedPath);
 		$i = 0;
 
 		while($reader->read()) {
 			if($reader->nodeType == \XMLReader::ELEMENT) {
 				if($reader->localName == 'googleShoppingProduct') {
 					$i++;
-					$this->content .= $this->generateItem(new \SimpleXMLIterator($reader->readOuterXml()));
+					$this->generateItem(new \SimpleXMLIterator($reader->readOuterXml()));
 				}
 			}
 		}

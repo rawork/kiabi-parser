@@ -57,7 +57,7 @@ class YandexParseCommand extends Command
         }
 
 
-        $parser = new \Kiabi\YandexParser(
+        $parser = new \Kiabi\Parser\YandexParser(
             FEED_YANDEX_PATH,
             YANDEX_CATEGORIES_PATH,
             $utm,

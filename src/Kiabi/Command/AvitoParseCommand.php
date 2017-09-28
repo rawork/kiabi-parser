@@ -29,7 +29,7 @@ class AvitoParseCommand extends Command
             '',
         ]);
 
-        $parser = new \Kiabi\AvitoDividedParser(
+        $parser = new \Kiabi\Parser\AvitoDividedParser(
             FEED_YANDEX_PATH,
             YANDEX_CATEGORIES_PATH,
             LINK_COUNTER_APPENDIX_AVITO,

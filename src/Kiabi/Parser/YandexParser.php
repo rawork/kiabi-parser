@@ -1,11 +1,18 @@
 <?php
 
-namespace Kiabi;
+namespace Kiabi\Parser;
 
+use Kiabi\Cutter;
+use Kiabi\Replacer;
 
-class PriceParser
+class YandexParser
 {
-	protected $content = '';
+	protected $feedPath;
+	protected $categoriesPath;
+	protected $utmMark;
+	protected $addUtmMark;
+
+    protected $content = '';
 	protected $categories;
 	protected $types = [];
 	protected $j = 0;
@@ -18,6 +25,11 @@ class PriceParser
 	protected $monthSizes = ['m', 'M'];
 	protected $ages = ['Муж' => 'Взрослый', 'Жен' => 'Взрослый', 'Малыш' => 'Для малышей', 'Дев' => 'Детский', 'Мальч' => 'Детский'];
 	protected $gender = ['Муж' => 'Мужской', 'Жен' => 'Женский', 'Дев' => 'Женский', 'Мальч' => 'Мужской'];
+
+    /**
+     *  Перечень существительных-товаров
+     * @var array
+     */
 	protected $titles = [
 		'балетки', 'боди', 'болеро', 'борсалино', 'ботинки', 'брюки', 'бюстгальтер',
 		'бетровка', 'водолазка', 'галстук-бабочка', 'галстук', 'джеггинсы', 'джегинсы',
@@ -36,6 +48,10 @@ class PriceParser
 		'шляпа', 'шортики', 'шорты', 'юбка'
 	];
 
+    /**
+     *  Перечень видов материалов
+     * @var array
+     */
 	protected $materials = [
 		'ХЛОПОК',
 		'ПОЛИЭСТЕР',
@@ -62,9 +78,13 @@ class PriceParser
 
 	protected $titles2 = [];
 
-	public function __construct(Cutter $cutter, Replacer $replacer)
+	public function __construct($feedPath, $categoriesPath, $utmMark,  Cutter $cutter, Replacer $replacer, $addUtmMark = true)
 	{
-		$this->cutter = $cutter;
+		$this->feedPath = $feedPath;
+        $this->categoriesPath = $categoriesPath;
+        $this->utmMark = $utmMark;
+        $this->addUtmMark = $addUtmMark;
+	    $this->cutter = $cutter;
 		$this->replacer = $replacer;
 
 		$this->titles2 = array_map( function($a) { return mb_convert_case($a, MB_CASE_TITLE); }, $this->titles);
@@ -97,16 +117,15 @@ class PriceParser
 			}
 		}
 
-		$content .= '	</categories>
+		$content .= '	</categories>';
+
+		// информация о локальной доставке для все товаров отключена (настройки в личном кабинете)
+        /*$content .= '
 	<delivery-options>
 	   	<option cost="'.$this->deliveryPrice.'" days="1-2" order-before="24"/>
-	</delivery-options>
-	<offers>
-';
+	</delivery-options>';*/
 
-//		<delivery-options>
-//	   		<option cost="0" days="1-2" order-before="24"/>
-//		</delivery-options>
+        $content .= '	<offers>';
 
 		return $content;
 	}
@@ -138,11 +157,12 @@ class PriceParser
 	{
 		$title = ''.$title;
 
-		if (preg_match("/".implode('|', $this->titles)."/", $title, $matches)) {
-			$title = mb_convert_case($matches[0], MB_CASE_TITLE);
-		} else if (preg_match('/'.implode('|', $this->titles2).'/', $title, $matches)) {
-			$title = $matches[0];
-		}
+		// Отключена обрезка заголовков товаров
+//		if (preg_match("/".implode('|', $this->titles)."/", $title, $matches)) {
+//			$title = mb_convert_case($matches[0], MB_CASE_TITLE);
+//		} else if (preg_match('/'.implode('|', $this->titles2).'/', $title, $matches)) {
+//			$title = $matches[0];
+//		}
 
 		return htmlspecialchars($title);
 	}
@@ -150,6 +170,16 @@ class PriceParser
 	public function generateItem(\SimpleXMLIterator $node)
 	{
 		$content = '';
+        $shipping = '';
+
+        // Информация о локальной доставке конкретного товара ОТКЛЮЧЕНА (настройки в партнерском кабинете)
+//		if (isset($node->shipping)) {
+//			$shipping = '
+//				<delivery-options>
+//                	<option cost="'.$this->deliveryPrice.'" days="1-2" order-before="24"/>
+//            	</delivery-options>
+//  				';
+//		}
 
         if (preg_match('/[а-яё]/iu', $node->title)) {
 
@@ -164,19 +194,7 @@ class PriceParser
 		$description = trim($node->description);
 		$description = htmlspecialchars($description ? $node->title."\n".$description : $node->title);
 		
-		//		$title = $this->cutter->cut($node->title);
-
 		$references = $this->sxiToArray($node->references->children());
-
-		$shipping = '';
-
-		if (isset($node->shipping)) {
-			$shipping = '
-				<delivery-options>
-                	<option cost="'.$this->deliveryPrice.'" days="1-2" order-before="24"/>
-            	</delivery-options>
-  				';
-		}
 
 		$product_type = str_replace(' / ', '|', $node->product_type);
 		$genderParam = '';
@@ -225,9 +243,6 @@ class PriceParser
 
 			}
 
-//			echo $reference['material'][0]."\n";
-
-
 			$pictures = '';
 			for ($i = 1; $i <= 5; $i++) {
 				if (!empty($reference['additionnal_image_link'.$i.'_https'][0])) {
@@ -263,10 +278,6 @@ class PriceParser
 					$oldprice = '';
 				}
 
-//				if (strpos($sku['size'][0], 'a')) {
-//					var_dump($sku['size'][0]);
-//				}
-
 				$sizes = explode('/', $sku['size'][0]);
 
 				$size = trim(count($sizes) > 0 ? $sizes[0] : $sku['size'][0]);
@@ -287,7 +298,7 @@ class PriceParser
 				$referenceSizes[] = $size;
 
 				$content .= '<offer id="'.$sku['code'][0].'" available="'.$available.'">
-                <url>'.$reference['link_https'][0].LINK_COUNTER_APPENDIX_PRICE.'</url>
+                <url>'.$reference['link_https'][0].($this->addUtmMark ? $this->utmMark : '').'</url>
                 <price>'.$price.'</price>'
                 .$oldprice.
                 '<currencyId>RUR</currencyId>
@@ -326,7 +337,7 @@ class PriceParser
 	public function getCategories()
 	{
 		if (!$this->categories) {
-			$this->categories = json_decode(file_get_contents(YANDEX_CATEGORIES_PATH), true);
+			$this->categories = json_decode(file_get_contents($this->categoriesPath), true);
 		}
 
 		return $this->categories;
@@ -335,7 +346,7 @@ class PriceParser
 	public function parse()
 	{
 		$reader = new \XMLReader();
-		$reader->open(FEED_YANDEX_PATH);
+		$reader->open($this->feedPath);
 		$i = 0;
 
 		while($reader->read()) {
