@@ -19,6 +19,7 @@ define('FEED_YANDEX_PATH', __DIR__.'/../../files/feed_original_for_yandex.xml');
 
 define('FEED_CONVERTED_YANDEX_PATH', __DIR__.'/../../files/feed_converted_yandex.xml');
 define('FEED_CONVERTED_YANDEX0_PATH', __DIR__.'/../../files/feed_converted_yandex0.xml');
+define('FEED_CONVERTED_YANDEX_SMARTBANNER_PATH', __DIR__.'/../../files/feed_converted_yandex_smartbanner.xml');
 define('FEED_CONVERTED_AVITO_PATH', __DIR__.'/../../files/feed_converted_avito.xml');
 define('FEED_CONVERTED_PRICE_PATH', __DIR__.'/../../files/feed_converted_price.xml');
 define('FEED_CONVERTED_PUSH4SITE_PATH', __DIR__.'/../../files/feed_converted_push4site.xml');
@@ -35,6 +36,7 @@ define('LINK_COUNTER_APPENDIX_AVITO', '#'.htmlspecialchars('&utm_source=avito&ut
 define('LINK_COUNTER_APPENDIX_PRICE', '#'.htmlspecialchars('#&ns_mchannel=cpc&ns_source=priceru&ns_campaign={campaign_id}&utm_medium=cpc&utm_source=priceru&utm_campaign={campaign_id}'));
 define('LINK_COUNTER_APPENDIX_GOOGLE', '#'.htmlspecialchars('&ns_mchannel=cpc&ns_source=google&ns_campaign=SHOP&utm_medium=cpc&utm_source=google&utm_campaign={campaignid}&utm_content={adtype}{adgroupid}{product_channel}{productid}{product_partition_id}'));
 define('LINK_COUNTER_APPENDIX_YANDEX', '#'.htmlspecialchars('&utm_source=YandexMarket&utm_medium=cpc'));
+define('LINK_COUNTER_APPENDIX_YANDEX_SMARTBANNER', '#'.htmlspecialchars('&utm_source=yandex&utm_medium=cpc&utm_campaign=Smart_Banner&utm_content={ad_id}&utm_term={keyword}_{source}&ns_mchannel=cpc&ns_source=yandex&ns_campaign=hbrand'));
 
 define('DB_HOST', 'localhost');
 define('DB_BASE', '');
