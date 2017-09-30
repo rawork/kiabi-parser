@@ -33,16 +33,19 @@ class GoogleParseCommand extends Command
         switch ($input->getOption('target')) {
             case 'criteo':
                 $utm = '';
+                $utmMobile = '';
                 $feedPath = FEED_CONVERTED_CRITEO_PATH;
                 break;
             default:
                 $utm = LINK_COUNTER_APPENDIX_GOOGLE;
+                $utmMobile = LINK_COUNTER_APPENDIX_GOOGLE_MOBILE;
                 $feedPath = FEED_CONVERTED_GOOGLE_PATH;
         }
 
         $parser = new \Kiabi\Parser\GoogleParser(
             FEED_YANDEX_PATH,
             $utm,
+            $utmMobile,
             $input->getOption('utm')
         );
 
