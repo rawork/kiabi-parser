@@ -378,6 +378,7 @@ class GoogleParser
 	{
 		$this->feedPath = $feedPath;
         $this->utmMark = $utmMark;
+        $this->utmMarkMobile = $utmMarkMobile;
         $this->addUtmMark = $addUtmMark;
 
 		$this->getCategories();
