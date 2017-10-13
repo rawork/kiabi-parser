@@ -78,13 +78,9 @@ class AvitoDividedParser
 				continue;
 			}
 
-			if ($category['parent_key']) {
-				$content .= '<category id="'.$category['id'].'" parentId="'.$this->categories[$category['parent_key']]['id'].'">'.$category['title'].'</category>
-				';
-			} else {
-				$content .= '<category id="'.$category['id'].'">'.$category['title'].'</category>
-				';
-			}
+            $parentText = $category['parent_key'] ? ' parentId="'.$this->categories[$category['parent_key']]['id'].'"' : '';
+            $content .= '		<category id="'.$category['id'].'"'.$parentText.'>'.htmlspecialchars($category['title']).'</category>
+            ';
 		}
 
 		$content .= '	</categories>
