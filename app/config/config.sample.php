@@ -19,6 +19,7 @@ define('FEED_YANDEX_PATH', __DIR__.'/../../files/feed_original_for_yandex.xml');
 
 define('FEED_CONVERTED_YANDEX_PATH', __DIR__.'/../../files/feed_converted_yandex.xml');
 define('FEED_CONVERTED_YANDEX0_PATH', __DIR__.'/../../files/feed_converted_yandex0.xml');
+define('FEED_CONVERTED_YANDEX0_MAIL_PATH', __DIR__.'/../../files/feed_converted_yandex0_mail.xml');
 define('FEED_CONVERTED_YANDEX_SMARTBANNER_PATH', __DIR__.'/../../files/feed_converted_yandex_smartbanner.xml');
 define('FEED_CONVERTED_YANDEX_REMARKETING_PATH', __DIR__.'/../../files/feed_converted_yandex_remarketing.xml');
 define('FEED_CONVERTED_AVITO_PATH', __DIR__.'/../../files/feed_converted_avito.xml');
