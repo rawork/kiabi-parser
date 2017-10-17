@@ -530,6 +530,8 @@ class GoogleParser
 			$product_type = str_replace('&gt;', ' &gt; ', $product_type);
 		}
 
+		$product_type = htmlspecialchars($product_type);
+
 		$key = md5(implode('|', $types0));
 
 		$googleProductCategory = '';
