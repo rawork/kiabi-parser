@@ -692,7 +692,7 @@ class GoogleParser
 			foreach ($skus as $sku) {
 				$content .= '<entry>
 		<g:id>'.$reference['item_group_id'][0].'-'.$sku['code'][0].'</g:id>
-		<g:title>'.$currentTitle.'</g:title>
+		<g:title>'.htmlspecialchars($currentTitle).'</g:title>
 		<g:description>'.$description.'</g:description>
 		<g:link>'.$reference['link_coloris_https'][0].($this->addUtmMark ? $this->utmMark : '').'</g:link>
 		<g:mobile_link>'.$reference['mobile_link'][0].($this->addUtmMark ? $this->utmMarkMobile : '').'</g:mobile_link>
