@@ -32,7 +32,7 @@ class MailParseCommand extends Command
 
         switch ($input->getOption('target')) {
             default:
-                $utm = '';
+                $utm = LINK_COUNTER_APPENDIX_YANDEX0_MAIL;
                 $feedPath = FEED_CONVERTED_YANDEX0_MAIL_PATH;
         }
 

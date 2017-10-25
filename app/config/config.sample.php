@@ -42,6 +42,8 @@ define('LINK_COUNTER_APPENDIX_YANDEX', '#'.htmlspecialchars('&utm_source=YandexM
 define('LINK_COUNTER_APPENDIX_YANDEX_SMARTBANNER', '#'.htmlspecialchars('&utm_source=yandex&utm_medium=cpc&utm_campaign=Smart_Banner&utm_content={ad_id}&utm_term={keyword}_{source}&ns_mchannel=cpc&ns_source=yandex&ns_campaign=hbrand'));
 define('LINK_COUNTER_APPENDIX_YANDEX_REMARKETING', '#'.htmlspecialchars('&utm_source=yandex&utm_medium=cpc&utm_campaign=Din_remarketing&utm_content={ad_id}&utm_term={adtarget_id}_{adtarget_name}&ns_mchannel=cpc&ns_source=yandex&ns_campaign=hbrand'));
 
+define('LINK_COUNTER_APPENDIX_YANDEX0_MAIL', '?#'.htmlspecialchars('&amp;utm_source=mytarget&utm_medium=cpc&utm_campaign=dinremarketing&utm_content={{campaign_name}}'));
+
 
 define('DB_HOST', 'localhost');
 define('DB_BASE', '');
