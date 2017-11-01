@@ -523,12 +523,16 @@ class GoogleParser
 		$product_type = str_replace(' / ', '&gt;', $node->product_type);
 		$types  = $types0 = array_map('trim', explode('&gt;', $product_type));
 
+
+
 		if (count($types) > 1 && strpos($types[1], trim($types[0])) !== false) {
 			unset($types[1]);
 			$product_type = implode(' &gt; ', array_map('ucfirst', $types));
 		} else {
 			$product_type = str_replace('&gt;', ' &gt; ', $product_type);
 		}
+
+        $currentProductType = array_pop($types);
 
 		$product_type = htmlspecialchars($product_type);
 
@@ -692,7 +696,7 @@ class GoogleParser
 			foreach ($skus as $sku) {
 				$content .= '<entry>
 		<g:id>'.$reference['item_group_id'][0].'-'.$sku['code'][0].'</g:id>
-		<g:title>'.htmlspecialchars($currentTitle).'</g:title>
+		<g:title>'.htmlspecialchars($currentProductType.' '.$node->brand.'. '.$currentTitle).'</g:title>
 		<g:description>'.$description.'</g:description>
 		<g:link>'.$reference['link_coloris_https'][0].($this->addUtmMark ? $this->utmMark : '').'</g:link>
 		<g:mobile_link>'.$reference['mobile_link'][0].($this->addUtmMark ? $this->utmMarkMobile : '').'</g:mobile_link>
