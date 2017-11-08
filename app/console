@@ -11,6 +11,7 @@ $application->add(new \Kiabi\Command\FeedDownloadCommand());
 $application->add(new \Kiabi\Command\YandexParseCommand());
 $application->add(new \Kiabi\Command\MailParseCommand());
 $application->add(new \Kiabi\Command\GoogleParseCommand());
+$application->add(new \Kiabi\Command\CriteoParseCommand());
 $application->add(new \Kiabi\Command\AvitoParseCommand());
 $application->add(new \Kiabi\Command\GoogleCategoryParseCommand());
 $application->add(new \Kiabi\Command\GoogleCategoryCompleteCommand());
