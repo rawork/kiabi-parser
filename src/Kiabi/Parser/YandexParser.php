@@ -309,6 +309,7 @@ class YandexParser
                 <description>'.$description.'</description>
                 <sales_notes>Оплата наличными и банковской картой.</sales_notes>
                 <name>'.$title.'</name>
+                <model>'.trim($node->id).'</model>
                 
                 <param name="Цвет">'.$color.'</param>
                 <param name="Размер" unit="'.$sizeSystem.'">'.$size.'</param>
