@@ -280,9 +280,7 @@ class YandexParser
 
 				if (in_array($size, $this->intSizes)) {
 					$sizeSystem = 'INT';
-				}
-
-				if (in_array(substr($size, -1), $this->monthSizes) ) {
+				} elseif (in_array(substr($size, -1), $this->monthSizes) && strlen($size) > 1 ) {
 					$sizeSystem = 'Months';
 					$size = preg_replace('/'.$this->monthSizes[0].'/i', '', $size);
 				}
