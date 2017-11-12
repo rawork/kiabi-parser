@@ -11,6 +11,9 @@ define('YANDEX_CATEGORIES_PATH', __DIR__.'/../../files/categories_yandex.json');
 define('YANDEX_COLORS_PATH', __DIR__.'/../../files/colors_yandex.json');
 define('CP_CATEGORIES_PATH', __DIR__.'/../../files/channel_pilot_categories.xml');
 
+define('RBF_GOODS_PATH', __DIR__.'/../../files/rbf_goods.json');
+define('RBF_GOODS_RAW_PATH', __DIR__.'/../../files/rbf_goods_raw.json');
+
 define('GOOGLE_CATEGORIES_JSON_PATH', __DIR__.'/../../files/categories_google.json');
 define('GOOGLE_CATEGORIES_XSLX_PATH', __DIR__.'/../../files/categories_google.xlsx');
 define('GOOGLE_TAXONOMY_PATH', __DIR__.'/../../public/files/taxonomy_google.xls');
@@ -18,6 +21,7 @@ define('GOOGLE_TAXONOMY_PATH', __DIR__.'/../../public/files/taxonomy_google.xls'
 define('FEED_YANDEX_PATH', __DIR__.'/../../files/feed_original_for_yandex.xml');
 
 define('FEED_CONVERTED_YANDEX_PATH', __DIR__.'/../../files/feed_converted_yandex.xml');
+define('FEED_CONVERTED_RBF_PATH', __DIR__.'/../../files/feed_converted_rbf.xml');
 define('FEED_CONVERTED_YANDEX0_PATH', __DIR__.'/../../files/feed_converted_yandex0.xml');
 define('FEED_CONVERTED_YANDEX0_MAIL_PATH', __DIR__.'/../../files/feed_converted_yandex0_mail.xml');
 define('FEED_CONVERTED_YANDEX_SMARTBANNER_PATH', __DIR__.'/../../files/feed_converted_yandex_smartbanner.xml');
@@ -39,6 +43,7 @@ define('LINK_COUNTER_APPENDIX_PRICE', '#'.htmlspecialchars('#&ns_mchannel=cpc&ns
 define('LINK_COUNTER_APPENDIX_GOOGLE', '');
 define('LINK_COUNTER_APPENDIX_GOOGLE_MOBILE', '#'.htmlspecialchars('#&ns_mchannel=sea&ns_source=google&ns_campaign=pla&utm_medium=cpc&utm_source=google&utm_campaign=MOBILKA&utm_content={adgroupid}'));
 define('LINK_COUNTER_APPENDIX_YANDEX', '#'.htmlspecialchars('&utm_source=YandexMarket&utm_medium=cpc'));
+define('LINK_COUNTER_APPENDIX_RBF', '');
 define('LINK_COUNTER_APPENDIX_YANDEX_SMARTBANNER', '#'.htmlspecialchars('&utm_source=yandex&utm_medium=cpc&utm_campaign=Smart_Banner&utm_content={ad_id}&utm_term={keyword}_{source}&ns_mchannel=cpc&ns_source=yandex&ns_campaign=hbrand'));
 define('LINK_COUNTER_APPENDIX_YANDEX_REMARKETING', '#'.htmlspecialchars('&utm_source=yandex&utm_medium=cpc&utm_campaign=Din_remarketing&utm_content={ad_id}&utm_term={adtarget_id}_{adtarget_name}&ns_mchannel=cpc&ns_source=yandex&ns_campaign=hbrand'));
 

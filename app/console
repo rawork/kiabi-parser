@@ -13,6 +13,8 @@ $application->add(new \Kiabi\Command\MailParseCommand());
 $application->add(new \Kiabi\Command\GoogleParseCommand());
 $application->add(new \Kiabi\Command\CriteoParseCommand());
 $application->add(new \Kiabi\Command\AvitoParseCommand());
+$application->add(new \Kiabi\Command\RBFParseCommand());
+$application->add(new \Kiabi\Command\RBFConvertCommand());
 $application->add(new \Kiabi\Command\GoogleCategoryParseCommand());
 $application->add(new \Kiabi\Command\GoogleCategoryCompleteCommand());
 $application->add(new \Kiabi\Command\GoogleTaxonomyParseCommand());
