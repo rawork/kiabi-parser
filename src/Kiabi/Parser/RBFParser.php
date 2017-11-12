@@ -339,6 +339,7 @@ class RBFParser
             </offer>	
 	';
 				$this->j++;
+                break;
 			}
 		}
 
