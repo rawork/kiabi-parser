@@ -319,9 +319,7 @@ class RBFParser
                 .$oldprice.
                 '<currencyId>RUR</currencyId>
                 <categoryId>'.$categoryId.'</categoryId>
-                <picture>'.$reference['image_link_https'][0].'</picture>
-                '.$pictures
-				.'	
+                <picture>'.$rbfGood['Photo'].'</picture>	
                 <store>true</store>
                 <pickup>true</pickup>
                 <delivery>true</delivery>'.
