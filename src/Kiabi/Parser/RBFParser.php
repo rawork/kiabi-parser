@@ -310,7 +310,7 @@ class RBFParser
             <oldprice>'.$sku['price'][0].'</oldprice>
 ';
                 $price = $sku['sale_price'][0];
-                $price = $sku['price'][0] / 100 * intval(str_replace('%', '', $rbfGood['Discount']));
+                $price = number_format($sku['price'][0] / 100 * intval(str_replace('%', '', $rbfGood['Discount'])), 2, '.');
 
 				$content .= '<offer id="'.$sku['code'][0].'" available="'.$available.'">
                 <url>'.$reference['link_coloris_https'][0].($this->addUtmMark ? $this->utmMark : '').'</url>
