@@ -302,15 +302,16 @@ class RBFParser
 
                 $rbfGood = $rbfGoods[md5($reference['link_coloris_https'][0])];
                 $this->r++;
-				echo 'Found', '['.$this->r.'] '.$rbfGood['Link']."\n";
-                echo 'RBF Price = '.$sku['price'][0] / 100 * intval(str_replace('%', '', $rbfGood['Discount']))."\n";
-                echo 'Feed sale price = '.$sku['sale_price'][0]."\n";
 
                 $oldprice = '
             <oldprice>'.$sku['price'][0].'</oldprice>
 ';
                 $price = $sku['sale_price'][0];
-                $price = number_format($sku['price'][0] / 100 * intval(str_replace('%', '', $rbfGood['Discount'])), 2, '.');
+                $price = number_format($sku['price'][0] / 100 * intval(str_replace('%', '', $rbfGood['Discount'])), 2, '.', '');
+
+                echo 'Found', '['.$this->r.'] '.$rbfGood['Link']."\n";
+                echo 'RBF Price = '.$price."\n";
+                echo 'Feed sale price = '.$sku['sale_price'][0]."\n";
 
 				$content .= '<offer id="'.$sku['code'][0].'" available="'.$available.'">
                 <url>'.$reference['link_coloris_https'][0].($this->addUtmMark ? $this->utmMark : '').'</url>
