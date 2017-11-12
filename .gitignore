@@ -3,6 +3,8 @@
 
 /files/*
 !/files/channel_pilot_categories.xml
+!/files/rbf_goods_raw.json
+!/files/rbf_goods.json
 /app/config/config.php
 /vendor
 composer.lock
