@@ -32,6 +32,7 @@ class RBFConvertCommand extends Command
         $indexed = [];
 
         foreach ($raw as $item) {
+            $item['Link'] = trim($item['Link']);
             $indexed[md5($item['Link'])] = $item;
         }
 

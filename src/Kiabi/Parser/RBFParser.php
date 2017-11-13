@@ -218,7 +218,7 @@ class RBFParser
 		$categories = $this->getCategories();
         $rbfGoods = $this->getRBFGoods();
 
-        echo 'RBF count = '. count($rbfGoods). "\n";
+//        echo 'RBF count = '. count($rbfGoods). "\n";
 
 		foreach ($references['reference'] as $reference) {
 			$skus = $reference['skus'][0]['sku'];
@@ -305,7 +305,7 @@ class RBFParser
 				    return '';
                 }
 
-                $this->foundLinks[] = $reference['link_coloris_https'][0];
+                //$this->foundLinks[] = $reference['link_coloris_https'][0];
 
                 $rbfGood = $rbfGoods[md5($reference['link_coloris_https'][0])];
                 $this->r++;
