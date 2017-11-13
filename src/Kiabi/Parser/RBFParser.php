@@ -221,6 +221,17 @@ class RBFParser
 //        echo 'RBF count = '. count($rbfGoods). "\n";
 
 		foreach ($references['reference'] as $reference) {
+            if (!array_key_exists(md5($reference['link_coloris_https'][0]), $rbfGoods)
+                || in_array($reference['link_coloris_https'][0], $this->foundLinks)
+            ) {
+                continue;
+            }
+
+            $this->foundLinks[] = $reference['link_coloris_https'][0];
+
+            $rbfGood = $rbfGoods[md5($reference['link_coloris_https'][0])];
+            $this->r++;
+
 			$skus = $reference['skus'][0]['sku'];
 
 			$material = $reference['material'][0];
@@ -245,15 +256,6 @@ class RBFParser
 //					echo 'Not found: '.$material."\n";
 				}
 
-			}
-
-			$pictures = '';
-			for ($i = 1; $i <= 5; $i++) {
-				if (!empty($reference['additionnal_image_link'.$i.'_https'][0])) {
-					$pictures .= '
-					<picture>'.$reference['additionnal_image_link'.$i.'_https'][0].'</picture>
-					';
-				}
 			}
 
 			$color = $reference['color'][0];
@@ -299,17 +301,6 @@ class RBFParser
 
 				$referenceSizes[] = $size;
 
-				if (!array_key_exists(md5($reference['link_coloris_https'][0]), $rbfGoods)
-                    || in_array($reference['link_coloris_https'][0], $this->foundLinks)
-                ) {
-				    return '';
-                }
-
-                //$this->foundLinks[] = $reference['link_coloris_https'][0];
-
-                $rbfGood = $rbfGoods[md5($reference['link_coloris_https'][0])];
-                $this->r++;
-
                 $oldprice = '
             <oldprice>'.$sku['price'][0].'</oldprice>
 ';
@@ -340,7 +331,6 @@ class RBFParser
                 <model>'.trim($node->id).'</model>
                 
                 <param name="Цвет">'.$color.'</param>
-                <param name="Размер" unit="'.$sizeSystem.'">'.$size.'</param>
                 '.$genderParam.$ageParam.$materialTag
 				.'
             </offer>	
