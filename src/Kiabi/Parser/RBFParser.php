@@ -316,7 +316,8 @@ class RBFParser
                 $price = $sku['sale_price'][0];
                 $price = number_format($sku['price'][0] / 100 * (100 - intval(str_replace('%', '', $rbfGood['Discount']))), 2, '.', '');
 
-                echo 'Found', '['.$this->r.'] '.$rbfGood['Link']."\n";
+                echo 'Found'. '['.$this->r.'] '.$rbfGood['Link']."\n";
+                echo $reference['link_coloris_https'][0]."\n";
                 echo 'RBF Price = '.$price."\n";
                 echo 'Feed sale price = '.$sku['sale_price'][0]."\n";
 
@@ -345,6 +346,7 @@ class RBFParser
             </offer>	
 	';
 				$this->j++;
+				break;
 			}
 		}
 
