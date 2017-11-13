@@ -12,6 +12,7 @@ class RBFParser
     protected $rbfGoodsPath;
 	protected $utmMark;
 	protected $addUtmMark;
+	protected $foundLinks = [];
 
     protected $content = '';
 	protected $categories;
@@ -296,9 +297,13 @@ class RBFParser
 
 				$referenceSizes[] = $size;
 
-				if (!array_key_exists(md5($reference['link_coloris_https'][0]), $rbfGoods)) {
+				if (!array_key_exists(md5($reference['link_coloris_https'][0]), $rbfGoods)
+                    && !in_array($reference['link_coloris_https'][0], $this->foundLinks)
+                ) {
 				    return '';
                 }
+
+                $this->foundLinks[] = $reference['link_coloris_https'][0];
 
                 $rbfGood = $rbfGoods[md5($reference['link_coloris_https'][0])];
                 $this->r++;
@@ -338,7 +343,6 @@ class RBFParser
             </offer>	
 	';
 				$this->j++;
-                break;
 			}
 		}
 
