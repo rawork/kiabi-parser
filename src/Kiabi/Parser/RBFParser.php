@@ -309,6 +309,7 @@ class RBFParser
 
                 echo 'Found'. '['.$this->r.'] '.$rbfGood['Link']."\n";
                 echo $reference['link_coloris_https'][0]."\n";
+                echo 'Feed price = '.$sku['price'][0]."\n";
                 echo 'RBF Price = '.$price."\n";
                 echo 'Feed sale price = '.$sku['sale_price'][0]."\n";
 
