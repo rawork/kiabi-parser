@@ -298,7 +298,7 @@ class RBFParser
 				$referenceSizes[] = $size;
 
 				if (!array_key_exists(md5($reference['link_coloris_https'][0]), $rbfGoods)
-                    && !in_array($reference['link_coloris_https'][0], $this->foundLinks)
+                    || in_array($reference['link_coloris_https'][0], $this->foundLinks)
                 ) {
 				    return '';
                 }
