@@ -218,6 +218,8 @@ class RBFParser
 		$categories = $this->getCategories();
         $rbfGoods = $this->getRBFGoods();
 
+        echo 'RBF count = '. count($rbfGoods). "\n";
+
 		foreach ($references['reference'] as $reference) {
 			$skus = $reference['skus'][0]['sku'];
 
