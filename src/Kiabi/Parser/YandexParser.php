@@ -100,7 +100,7 @@ class YandexParser
   <shop>
 	<name>'.STORE_TITLE.'</name>
 	<company>'.COMPANY_TITLE.'</company>
-	<url>'.STORE_URL.'</url>
+	<url>'.STORE_URL.(FEED_CONVERTED_YANDEX_PATH == $this->feedPath ? '?utm_source=YandexMarket' : '').'</url>
 	<currencies>
 		<currency id="RUR" rate="1"/>
 	</currencies>
