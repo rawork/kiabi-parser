@@ -32,15 +32,17 @@ define('FEED_CONVERTED_PUSH4SITE_PATH', __DIR__.'/../../files/feed_converted_pus
 define('FEED_CONVERTED_MAIL_PATH', __DIR__.'/../../files/feed_converted_mail.xml');
 define('FEED_CONVERTED_GOOGLE_PATH', __DIR__.'/../../files/feed_converted_google.xml');
 define('FEED_CONVERTED_CRITEO_PATH', __DIR__.'/../../files/feed_converted_criteo.xml');
+define('FEED_CONVERTED_FACEBOOK_PATH', __DIR__.'/../../files/feed_converted_facebook.xml');
 
 define('STORE_TITLE', 'Kiabi');
 define('COMPANY_TITLE', 'Kiabi Europe SAS');
-define('STORE_URL', 'http://www.kiabi.ru');
+define('STORE_URL', 'https://www.kiabi.ru');
 
 define('LINK_COUNTER_APPENDIX', '#'.htmlspecialchars('&ns_mchannel=cpc&ns_source=yandexmarket&ns_campaign={campaign_id}&utm_medium=cpc&utm_source=yandexmarket&utm_campaign={campaign_id}'));
 define('LINK_COUNTER_APPENDIX_AVITO', '#'.htmlspecialchars('&utm_source=avito&utm_medium=cpc&utm_campaign={campaign_id}&utm_content={id}_{platform}_{pos}&ns_mchannel=display&ns_source=avito&ns_campaign=pma5'));
 define('LINK_COUNTER_APPENDIX_PRICE', '#'.htmlspecialchars('#&ns_mchannel=cpc&ns_source=priceru&ns_campaign={campaign_id}&utm_medium=cpc&utm_source=priceru&utm_campaign={campaign_id}'));
 define('LINK_COUNTER_APPENDIX_GOOGLE', '');
+define('LINK_COUNTER_APPENDIX_FACEBOOK', htmlspecialchars('#&utm_source=facebook&utm_medium=cpc&utm_campaign={reference_id}'));
 define('LINK_COUNTER_APPENDIX_GOOGLE_MOBILE', '#'.htmlspecialchars('#&ns_mchannel=sea&ns_source=google&ns_campaign=pla&utm_medium=cpc&utm_source=google&utm_campaign=MOBILKA&utm_content={adgroupid}'));
 define('LINK_COUNTER_APPENDIX_YANDEX', '#'.htmlspecialchars('&utm_source=YandexMarket&utm_medium=cpc'));
 define('LINK_COUNTER_APPENDIX_RBF', '');
