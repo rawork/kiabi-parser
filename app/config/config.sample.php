@@ -53,6 +53,12 @@ define('LINK_COUNTER_APPENDIX_YANDEX_REMARKETING', '#'.htmlspecialchars('&utm_so
 
 define('LINK_COUNTER_APPENDIX_YANDEX0_MAIL', '?#'.htmlspecialchars('&utm_source=mytarget&utm_medium=cpc&utm_campaign=dinremarketing&utm_content={{campaign_name}}'));
 
+/*
+ * todo try use rawurlencode () for utm
+ */
+
+
+
 
 define('DB_HOST', 'localhost');
 define('DB_BASE', '');
