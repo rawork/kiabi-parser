@@ -224,6 +224,7 @@ class RBFParser
             if (!array_key_exists(md5($reference['link_coloris_https'][0]), $rbfGoods)
                 || in_array($reference['link_coloris_https'][0], $this->foundLinks)
             ) {
+                echo '[NOT FOUND] ' . $rbfGood['Link'] . "\n";
                 continue;
             }
 
@@ -307,11 +308,11 @@ class RBFParser
                 $price = $sku['sale_price'][0];
                 $price = number_format($sku['price'][0] / 100 * (100 - intval(str_replace('%', '', $rbfGood['Discount']))), 2, '.', '');
 
-                echo 'Found'. '['.$this->r.'] '.$rbfGood['Link']."\n";
-                echo $reference['link_coloris_https'][0]."\n";
-                echo 'Feed price = '.$sku['price'][0]."\n";
-                echo 'RBF Price = '.$price."\n";
-                echo 'Feed sale price = '.$sku['sale_price'][0]."\n";
+                //echo 'Found'. '['.$this->r.'] '.$rbfGood['Link']."\n";
+                //echo $reference['link_coloris_https'][0]."\n";
+                //echo 'Feed price = '.$sku['price'][0]."\n";
+                //echo 'RBF Price = '.$price."\n";
+                //echo 'Feed sale price = '.$sku['sale_price'][0]."\n";
 
 				$content .= '<offer id="'.$sku['code'][0].'" available="'.$available.'">
                 <url>'.$reference['link_coloris_https'][0].($this->addUtmMark ? $this->utmMark : '').'</url>
