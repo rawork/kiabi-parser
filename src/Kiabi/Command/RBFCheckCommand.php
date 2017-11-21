@@ -48,7 +48,7 @@ class RBFCheckCommand extends Command
         $emptyGoods = array_diff($rawGoods, $feedGoods);
 
         foreach ($emptyGoods as $code) {
-            $output->writeln($rawGoods[$code]);
+            $output->writeln($code . '-' .$rawGoods[$code]);
         }
         $output->writeln("Not found ".count($emptyGoods)." offers");
     }
