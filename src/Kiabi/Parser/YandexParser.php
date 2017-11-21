@@ -291,7 +291,7 @@ class YandexParser
 
 				$referenceSizes[] = $size;
 
-				$currentUtm = ($this->addUtmMark ? str_replace('{offer_id}', $sku['code'][0], $this->utmMark) : '');
+				$currentUtm = ($this->addUtmMark ? rawurlencode(str_replace('{offer_id}', $sku['code'][0], $this->utmMark)) : '');
 
 				$content .= '<offer id="'.$sku['code'][0].'" available="'.$available.'">
                 <url>'.$reference['link_coloris_https'][0].$currentUtm.'</url>
