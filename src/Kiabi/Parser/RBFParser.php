@@ -224,7 +224,7 @@ class RBFParser
             if (!array_key_exists(md5($reference['link_coloris_https'][0]), $rbfGoods)
                 || in_array($reference['link_coloris_https'][0], $this->foundLinks)
             ) {
-                echo '[NOT FOUND] ' . $rbfGood['Link'] . "\n";
+                // echo '[NOT FOUND] ' . $rbfGood['Link'] . "\n";
                 continue;
             }
 
