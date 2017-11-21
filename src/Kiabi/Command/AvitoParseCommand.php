@@ -30,7 +30,7 @@ class AvitoParseCommand extends Command
         ]);
 
         $parser = new \Kiabi\Parser\AvitoDividedParser(
-            FEED_YANDEX_PATH,
+            FEED_ORIGINAL_PATH,
             YANDEX_CATEGORIES_PATH,
             LINK_COUNTER_APPENDIX_AVITO,
             new \Kiabi\Cutter([]),

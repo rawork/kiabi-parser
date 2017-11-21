@@ -33,7 +33,7 @@ class RBFParseCommand extends Command
         $feedPath = FEED_CONVERTED_RBF_PATH;
 
         $parser = new \Kiabi\Parser\RBFParser(
-            FEED_YANDEX_PATH,
+            FEED_ORIGINAL_PATH,
             YANDEX_CATEGORIES_PATH,
             $utm,
             new \Kiabi\Cutter([]),

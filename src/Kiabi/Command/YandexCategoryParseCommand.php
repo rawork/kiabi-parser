@@ -32,7 +32,7 @@ class YandexCategoryParseCommand extends Command
             $categories = json_decode(file_get_contents(YANDEX_CATEGORIES_PATH), true);
         }
 
-        $parser = new \Kiabi\Parser\YandexCategoryParser(FEED_YANDEX_PATH, $categories);
+        $parser = new \Kiabi\Parser\YandexCategoryParser(FEED_ORIGINAL_PATH, $categories);
 
         $parser->parse();
 

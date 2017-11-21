@@ -18,7 +18,7 @@ define('GOOGLE_CATEGORIES_JSON_PATH', __DIR__.'/../../files/categories_google.js
 define('GOOGLE_CATEGORIES_XSLX_PATH', __DIR__.'/../../files/categories_google.xlsx');
 define('GOOGLE_TAXONOMY_PATH', __DIR__.'/../../public/files/taxonomy_google.xls');
 
-define('FEED_YANDEX_PATH', __DIR__.'/../../files/feed_original_for_yandex.xml');
+define('FEED_ORIGINAL_PATH', __DIR__.'/../../files/feed_original_for_yandex.xml');
 
 define('FEED_CONVERTED_YANDEX_PATH', __DIR__.'/../../files/feed_converted_yandex.xml');
 define('FEED_CONVERTED_RBF_PATH', __DIR__.'/../../files/feed_converted_rbf.xml');
@@ -31,6 +31,7 @@ define('FEED_CONVERTED_PRICE_PATH', __DIR__.'/../../files/feed_converted_price.x
 define('FEED_CONVERTED_PUSH4SITE_PATH', __DIR__.'/../../files/feed_converted_push4site.xml');
 define('FEED_CONVERTED_MAIL_PATH', __DIR__.'/../../files/feed_converted_mail.xml');
 define('FEED_CONVERTED_GOOGLE_PATH', __DIR__.'/../../files/feed_converted_google.xml');
+define('FEED_CONVERTED_GOOGLE2_PATH', __DIR__.'/../../files/feed_converted_google2.xml');
 define('FEED_CONVERTED_CRITEO_PATH', __DIR__.'/../../files/feed_converted_criteo.xml');
 define('FEED_CONVERTED_FACEBOOK_PATH', __DIR__.'/../../files/feed_converted_facebook.xml');
 
@@ -42,6 +43,7 @@ define('LINK_COUNTER_APPENDIX', '#'.htmlspecialchars('&ns_mchannel=cpc&ns_source
 define('LINK_COUNTER_APPENDIX_AVITO', '#'.htmlspecialchars('&utm_source=avito&utm_medium=cpc&utm_campaign={campaign_id}&utm_content={id}_{platform}_{pos}&ns_mchannel=display&ns_source=avito&ns_campaign=pma5'));
 define('LINK_COUNTER_APPENDIX_PRICE', '#'.htmlspecialchars('#&ns_mchannel=cpc&ns_source=priceru&ns_campaign={campaign_id}&utm_medium=cpc&utm_source=priceru&utm_campaign={campaign_id}'));
 define('LINK_COUNTER_APPENDIX_GOOGLE', '');
+define('LINK_COUNTER_APPENDIX_GOOGLE2', htmlspecialchars('#&utm_source=google&utm_medium=cpc&utm_campaign={campaignid}-Din-rem-v2&fversion=v1'));
 define('LINK_COUNTER_APPENDIX_FACEBOOK', htmlspecialchars('#&utm_source=facebook&utm_medium=cpc&utm_campaign={reference_id}'));
 define('LINK_COUNTER_APPENDIX_GOOGLE_MOBILE', '#'.htmlspecialchars('#&ns_mchannel=sea&ns_source=google&ns_campaign=pla&utm_medium=cpc&utm_source=google&utm_campaign=MOBILKA&utm_content={adgroupid}'));
 define('LINK_COUNTER_APPENDIX_YANDEX', '#'.htmlspecialchars('&utm_source=YandexMarket&utm_medium=cpc'));

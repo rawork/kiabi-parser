@@ -38,7 +38,7 @@ class MailParseCommand extends Command
 
 
         $parser = new \Kiabi\Parser\MailParser(
-            FEED_YANDEX_PATH,
+            FEED_ORIGINAL_PATH,
             YANDEX_CATEGORIES_PATH,
             $utm,
             new \Kiabi\Cutter([]),

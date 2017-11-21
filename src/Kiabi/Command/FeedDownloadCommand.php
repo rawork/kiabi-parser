@@ -42,7 +42,7 @@ class FeedDownloadCommand extends Command
             $oldTimestamp = intval(file_get_contents(TIMEFILE_PATH));
         }
 
-        if ($oldTimestamp < $timestamp || !file_exists(FEED_YANDEX_PATH) || filesize(FEED_YANDEX_PATH) == 0) {
+        if ($oldTimestamp < $timestamp || !file_exists(FEED_ORIGINAL_PATH) || filesize(FEED_ORIGINAL_PATH) == 0) {
 
 //            $ch = curl_init();
 //            curl_setopt($ch, CURLOPT_URL, FEED_URL);
@@ -52,19 +52,19 @@ class FeedDownloadCommand extends Command
 //            $error = curl_error($ch);
 //            curl_close ($ch);
 //
-//            @unlink(FEED_YANDEX_PATH);
+//            @unlink(FEED_ORIGINAL_PATH);
 //
 //            var_dump($data);
 //            var_dump($error);
 //
-//            $file = fopen(FEED_YANDEX_PATH, "w+");
+//            $file = fopen(FEED_ORIGINAL_PATH, "w+");
 //            fputs($file, $data);
 //            fclose($file);
 
 //            $client = new \Kiabi\Curl();
 //            $client->get(FEED_URL);
 //
-            file_put_contents(FEED_YANDEX_PATH, file_get_contents(FEED_URL));
+            file_put_contents(FEED_ORIGINAL_PATH, file_get_contents(FEED_URL));
             file_put_contents(TIMEFILE_PATH, $timestamp);
 
 //            $client->close();

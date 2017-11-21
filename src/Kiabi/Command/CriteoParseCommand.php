@@ -32,7 +32,7 @@ class CriteoParseCommand extends Command
         $feedPath = FEED_CONVERTED_CRITEO_PATH;
 
         $parser = new \Kiabi\Parser\CriteoParser(
-            FEED_YANDEX_PATH,
+            FEED_ORIGINAL_PATH,
             '',
             '',
             $input->getOption('utm')

@@ -43,7 +43,7 @@ class GoogleParseCommand extends Command
         }
 
         $parser = new \Kiabi\Parser\GoogleParser(
-            FEED_YANDEX_PATH,
+            FEED_ORIGINAL_PATH,
             $utm,
             $utmMobile,
             $input->getOption('utm')

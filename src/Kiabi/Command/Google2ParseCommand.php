@@ -1,5 +1,5 @@
 <?php
-// src/Kiabi/Command/FacebookParseCommand.php
+// src/Kiabi/Command/Google2ParseCommand.php
 namespace Kiabi\Command;
 
 use Symfony\Component\Console\Command\Command;
@@ -7,14 +7,14 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputOption;
 
-class FacebookParseCommand extends Command
+class Google2ParseCommand extends Command
 {
     protected function configure()
     {
         $this
-            ->setName('facebook:parse')
-            ->setDescription('Build facebook (google style) feed.')
-            ->setHelp('This command allows you to build facebook (google style) feed from original feed')
+            ->setName('google2:parse')
+            ->setDescription('Build short Google feed, w/o sku information in offers.')
+            ->setHelp('This command allows you to build short Google feed from original feed')
             ->addOption('utm', 'u', InputOption::VALUE_NONE, 'Add UTM counter to links')
         ;
     }
@@ -24,16 +24,16 @@ class FacebookParseCommand extends Command
         set_time_limit(0);
 
         $output->writeln([
-            'Start build "Facebook" feed '.($input->getOption('utm') ? 'with UTM' : 'w/o UTM') ,
+            'Start build "Short Google" feed '.($input->getOption('utm') ? 'with UTM' : 'w/o UTM') ,
             '============',
             '',
         ]);
 
-        $utm = LINK_COUNTER_APPENDIX_FACEBOOK;
-        $utmMobile = LINK_COUNTER_APPENDIX_FACEBOOK;
-        $feedPath = FEED_CONVERTED_FACEBOOK_PATH;
+        $utm = LINK_COUNTER_APPENDIX_GOOGLE2;
+        $utmMobile = LINK_COUNTER_APPENDIX_GOOGLE2;
+        $feedPath = FEED_CONVERTED_GOOGLE2_PATH;
 
-        $parser = new \Kiabi\Parser\FacebookParser(
+        $parser = new \Kiabi\Parser\Google2Parser(
             FEED_ORIGINAL_PATH,
             $utm,
             $utmMobile,

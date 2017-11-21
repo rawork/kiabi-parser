@@ -65,7 +65,7 @@ class ColorParser
 	public function parse()
 	{
 		$reader = new \XMLReader();
-		$reader->open(FEED_YANDEX_PATH);
+		$reader->open(FEED_ORIGINAL_PATH);
 		$i = 0;
 
 		while($reader->read()) {
