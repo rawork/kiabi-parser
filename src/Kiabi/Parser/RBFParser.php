@@ -330,6 +330,9 @@ class RBFParser
                 <description>'.$description.'</description>
                 <sales_notes>Оплата наличными и банковской картой.</sales_notes>
                 <name>'.$title.'</name>
+                <model>'.trim($node->id).'</model>
+                
+                <param name="Цвет">'.$color.'</param>
                 '.$genderParam.$ageParam.$materialTag
 				.'
             </offer>	
