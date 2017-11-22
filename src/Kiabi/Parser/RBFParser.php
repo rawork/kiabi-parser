@@ -320,7 +320,7 @@ class RBFParser
                 .$oldprice.
                 '<currencyId>RUR</currencyId>
                 <categoryId>'.$categoryId.'</categoryId>
-                <picture>'.$rbfGood['Photo'].'</picture>	
+                <picture>'.$reference['image_link_https'][0].'</picture>
                 <store>true</store>
                 <pickup>true</pickup>
                 <delivery>true</delivery>'.
@@ -330,9 +330,6 @@ class RBFParser
                 <description>'.$description.'</description>
                 <sales_notes>Оплата наличными и банковской картой.</sales_notes>
                 <name>'.$title.'</name>
-                <model>'.trim($node->id).'</model>
-                
-                <param name="Цвет">'.$color.'</param>
                 '.$genderParam.$ageParam.$materialTag
 				.'
             </offer>	
