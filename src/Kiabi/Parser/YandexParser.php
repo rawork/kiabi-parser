@@ -185,7 +185,10 @@ class YandexParser
         }
 
 		$title = $this->getTitle($node->title);
-		$title .= ' '.$node->brand;
+
+        if ($this->utmMark != LINK_COUNTER_APPENDIX_YANDEX_SMARTBANNER) {
+            $title .= ' '.$node->brand;
+        }
 
 		$description = trim($node->description);
 		$description = htmlspecialchars($description ? $node->title."\n".$description : $node->title);
