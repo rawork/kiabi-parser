@@ -16,6 +16,7 @@ $application->add(new \Kiabi\Command\FacebookParseCommand());
 $application->add(new \Kiabi\Command\CriteoParseCommand());
 $application->add(new \Kiabi\Command\AvitoParseCommand());
 $application->add(new \Kiabi\Command\RBFParseCommand());
+$application->add(new \Kiabi\Command\RBF2ParseCommand());
 $application->add(new \Kiabi\Command\RBFConvertCommand());
 $application->add(new \Kiabi\Command\RBFCheckCommand());
 $application->add(new \Kiabi\Command\GoogleCategoryParseCommand());
