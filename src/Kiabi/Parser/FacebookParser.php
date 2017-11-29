@@ -585,7 +585,15 @@ class FacebookParser
 		$description = trim($node->description);
 		$description = htmlspecialchars($description ? $description : $node->title);
 
+		$currentRefs = [];
+
 		foreach ($references['reference'] as $reference) {
+		    if (in_array($reference['item_group_id'][0], $currentRefs)) {
+		        continue;
+            }
+
+            $currentRefs[] = $reference['item_group_id'][0];
+
 			$skus = $reference['skus'][0]['sku'];
 
 			$material = $reference['material'][0];
@@ -716,7 +724,7 @@ class FacebookParser
 	';
             $this->skuAmount++;
 
-            break;
+//            break;
 		}
 
 		return $content;
