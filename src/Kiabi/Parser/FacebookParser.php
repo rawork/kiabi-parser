@@ -715,6 +715,8 @@ class FacebookParser
 	</entry>
 	';
             $this->skuAmount++;
+
+            break;
 		}
 
 		return $content;
