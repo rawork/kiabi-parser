@@ -698,7 +698,7 @@ class FacebookParser
             $currentUtmMark = $this->addUtmMark ? str_replace('{reference_id}', $node->id, $this->utmMark) : '';
 
             $content .= '<entry>
-		<g:id>'.htmlspecialchars('["'.$node->id.'"]').'</g:id>
+		<g:id>'.htmlspecialchars('["'.$reference['item_group_id'][0].'"]').'</g:id>
 		<g:title>'.htmlspecialchars($currentTitle).'</g:title>
 		<g:description>'.$description.'</g:description>
 		<g:link>'.$reference['link_coloris_https'][0].$currentUtmMark.'</g:link>
