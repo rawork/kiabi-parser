@@ -702,7 +702,7 @@ class FacebookParser
 		<g:title>'.htmlspecialchars($currentTitle).'</g:title>
 		<g:description>'.$description.'</g:description>
 		<g:link>'.$reference['link_coloris_https'][0].$currentUtmMark.'</g:link>
-		<g:mobile_link>'.$reference['mobile_link'][0].($this->addUtmMark ? $this->utmMarkMobile : '').'</g:mobile_link>
+		<g:mobile_link>'.$reference['mobile_link'][0].$currentUtmMark.'</g:mobile_link>
 		<g:image_link>'.$reference['image_link_https'][0].'</g:image_link>
 		<g:condition>'.$node->condition.'</g:condition>
 		<g:availability>'.$sku['availability'][0].'</g:availability>
