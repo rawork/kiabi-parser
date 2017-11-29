@@ -695,7 +695,7 @@ class FacebookParser
 
             $sku = array_shift($skus);
 
-            $currentUtmMark = $this->addUtmMark ? str_replace('{reference_id}', $node->id, $this->utmMark) : '';
+            $currentUtmMark = $this->addUtmMark ? str_replace('{reference_id}', $reference['item_group_id'][0], $this->utmMark) : '';
 
             $content .= '<entry>
 		<g:id>'.'["'.$reference['item_group_id'][0].'"]'.'</g:id>
