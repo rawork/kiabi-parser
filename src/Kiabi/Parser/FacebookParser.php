@@ -705,7 +705,7 @@ class FacebookParser
 
             $currentUtmMark = $this->addUtmMark ? str_replace('{reference_id}', $reference['item_group_id'][0], $this->utmMark) : '';
 
-            $type = rand(1,4);
+            $type = 1; //rand(1,4);
             switch ($type) {
                 case 4:
                     $currentId = '["'.$reference['item_group_id'][0].'"]';
