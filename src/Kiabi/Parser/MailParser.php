@@ -102,7 +102,7 @@ class MailParser
 	<company>'.COMPANY_TITLE.'</company>
 	<url>'.STORE_URL.'</url>
 	<currencies>
-		<currency id="RUB" rate="1"/>
+		<currency id="RUR" rate="1"/>
 	</currencies>
 	<categories>
 		';
@@ -305,7 +305,7 @@ class MailParser
                 <url>'.$reference['link_coloris_https'][0].($this->addUtmMark ? $this->utmMark : '').'</url>
                 <price>'.$price.'</price>'
                 .$oldprice.
-                '<currencyId>RUB</currencyId>
+                '<currencyId>RUR</currencyId>
                 <categoryId>'.$categoryId.'</categoryId>
                 <picture>'.$reference['image_link_https'][0].'</picture>
                 '.$pictures

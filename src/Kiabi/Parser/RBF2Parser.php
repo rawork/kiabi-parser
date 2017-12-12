@@ -105,7 +105,7 @@ class RBF2Parser
 	<company>'.COMPANY_TITLE.'</company>
 	<url>'.STORE_URL.'</url>
 	<currencies>
-		<currency id="RUB" rate="1"/>
+		<currency id="RUR" rate="1"/>
 	</currencies>
 	<categories>
 		';
@@ -301,7 +301,7 @@ class RBF2Parser
                 <url>'.$reference['link_coloris_https'][0].$currentUtm.'</url>
                 <price>'.$price.'</price>'
                 .$oldprice.
-                '<currencyId>RUB</currencyId>
+                '<currencyId>RUR</currencyId>
                 <categoryId>'.$categoryId.'</categoryId>
                 <picture>'.$reference['image_link_https'][0].'</picture>
                 <store>true</store>
