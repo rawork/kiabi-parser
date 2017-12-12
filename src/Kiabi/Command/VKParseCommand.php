@@ -24,7 +24,7 @@ class VKParseCommand extends Command
         set_time_limit(0);
 
         $output->writeln([
-            'Start build "'.$input->getOption('target').'" feed '.($input->getOption('utm') ? 'with UTM' : 'w/o UTM') ,
+            'Start build "VK" feed '.($input->getOption('utm') ? 'with UTM' : 'w/o UTM') ,
             '============',
             '',
         ]);
@@ -32,7 +32,6 @@ class VKParseCommand extends Command
 
         $utm = LINK_COUNTER_APPENDIX_YANDEX_VK;
         $feedPath = FEED_CONVERTED_YANDEX_VK_PATH;
-
 
         $parser = new \Kiabi\Parser\YandexParser(
             FEED_ORIGINAL_PATH,
