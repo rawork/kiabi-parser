@@ -24,5 +24,6 @@ $application->add(new \Kiabi\Command\GoogleCategoryCompleteCommand());
 $application->add(new \Kiabi\Command\GoogleTaxonomyParseCommand());
 $application->add(new \Kiabi\Command\YandexCategoryParseCommand());
 $application->add(new \Kiabi\Command\YandexColorParseCommand());
+$application->add(new \Kiabi\Command\VKParseCommand());
 
 $application->run();
