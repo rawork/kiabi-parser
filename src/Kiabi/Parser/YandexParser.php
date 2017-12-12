@@ -102,7 +102,7 @@ class YandexParser
 	<company>'.COMPANY_TITLE.'</company>
 	<url>'.STORE_URL.(LINK_COUNTER_APPENDIX_YANDEX == $this->utmMark ? '?utm_source=YandexMarket' : '').'</url>
 	<currencies>
-		<currency id="RUR" rate="1"/>
+		<currency id="RUB" rate="1"/>
 	</currencies>
 	<categories>
 		';
@@ -300,7 +300,7 @@ class YandexParser
                 <url>'.$reference['link_coloris_https'][0].$currentUtm.'</url>
                 <price>'.$price.'</price>'
                 .$oldprice.
-                '<currencyId>RUR</currencyId>
+                '<currencyId>RUB</currencyId>
                 <categoryId>'.$categoryId.'</categoryId>
                 <picture>'.$reference['image_link_https'][0].'</picture>
                 '.$pictures
