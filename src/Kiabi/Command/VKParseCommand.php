@@ -33,7 +33,7 @@ class VKParseCommand extends Command
         $utm = LINK_COUNTER_APPENDIX_YANDEX_VK;
         $feedPath = FEED_CONVERTED_YANDEX_VK_PATH;
 
-        $parser = new \Kiabi\Parser\YandexParser(
+        $parser = new \Kiabi\Parser\VKParser(
             FEED_ORIGINAL_PATH,
             YANDEX_CATEGORIES_PATH,
             $utm,
