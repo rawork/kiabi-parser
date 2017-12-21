@@ -259,8 +259,6 @@ class YandexParser
 			$referenceSizes = [];
 
 			foreach ($skus as $sku) {
-				$sizeSystem = $node->system_size;
-
 				$available = $sku['availability'][0] == 'in stock' ? 'true' : 'false';
 
 				$category = $categories[md5($product_type)];
@@ -277,8 +275,11 @@ class YandexParser
 					$oldprice = '';
 				}
 
-				$sizes = explode('/', $sku['size'][0]);
+                $sizeSystem = $node->system_size;
+                $sizeSystem = 'RU';
 
+				// обрабатываем размеры перечисленные через / , должен быть один размер
+				$sizes = explode('/', $sku['size'][0]);
 				$size = trim(count($sizes) > 0 ? $sizes[0] : $sku['size'][0]);
 
 				if (in_array($size, $this->intSizes)) {
@@ -291,6 +292,11 @@ class YandexParser
 				if (in_array($size, $referenceSizes)) {
 					continue;
 				}
+
+				$sizeUnits = ' unit="'.$sizeSystem.'"';
+				if (in_array($this->utmMark, array(LINK_COUNTER_APPENDIX_YANDEX_SMARTBANNER, LINK_COUNTER_APPENDIX_YANDEX_SMARTBANNER2))) {
+				    $sizeUnits = '';
+                }
 
 				$referenceSizes[] = $size;
 
@@ -315,7 +321,7 @@ class YandexParser
                 <sales_notes>Оплата наличными и банковской картой.</sales_notes>
                 <name>'.$title.'</name>
                 <param name="Цвет">'.$color.'</param>
-                <param name="Размер" unit="'.$sizeSystem.'">'.$size.'</param>
+                <param name="Размер"'.$sizeUnits.'>'.$size.'</param>
                 '.$genderParam.$ageParam.$materialTag
 				.'
             </offer>	
