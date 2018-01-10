@@ -63,6 +63,18 @@ class YandexParseCommand extends Command
                 $utm = LINK_COUNTER_APPENDIX_YANDEX_REMARKETING;
                 $feedPath = FEED_CONVERTED_YANDEX_REMARKETING_PATH;
                 break;
+            case 'smartbanner-rf':
+                $utm = LINK_COUNTER_APPENDIX_YANDEX_SMARTBANNER_RF;
+                $feedPath = FEED_CONVERTED_YANDEX_SMARTBANNER_RF_PATH;
+                break;
+            case 'smartbanner2-rf':
+                $utm = LINK_COUNTER_APPENDIX_YANDEX_SMARTBANNER2_RF;
+                $feedPath = FEED_CONVERTED_YANDEX_SMARTBANNER2_RF_PATH;
+                break;
+            case 'remarketing-rf':
+                $utm = LINK_COUNTER_APPENDIX_YANDEX_REMARKETING_RF;
+                $feedPath = FEED_CONVERTED_YANDEX_REMARKETING_RF_PATH;
+                break;
             default:
                 $utm = LINK_COUNTER_APPENDIX_YANDEX;
                 $feedPath = FEED_CONVERTED_YANDEX_PATH;
