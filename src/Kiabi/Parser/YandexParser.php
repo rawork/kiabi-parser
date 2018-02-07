@@ -23,6 +23,7 @@ class YandexParser
 
 	protected $intSizes = ['2XS', 'XS', 'S', 'M', 'L', 'XL', 'XXL', '2XL', 'XXXL', '3XL'];
 	protected $monthSizes = ['m', 'M'];
+	protected $sisiSizes = ['A', 'B', 'C', 'D', 'E'];
 	protected $ages = ['Муж' => 'Взрослый', 'Жен' => 'Взрослый', 'Малыш' => 'Для малышей', 'Дев' => 'Детский', 'Мальч' => 'Детский'];
 	protected $gender = ['Муж' => 'Мужской', 'Жен' => 'Женский', 'Дев' => 'Женский', 'Мальч' => 'Мужской'];
 
@@ -198,6 +199,7 @@ class YandexParser
 		$product_type = str_replace(' / ', '|', $node->product_type);
 		$genderParam = '';
 		$ageParam = '';
+		$ageValue = false;
 
 		foreach ($this->gender as $key => $gender) {
 			if (mb_strpos($product_type, $key) !== false) {
@@ -209,6 +211,7 @@ class YandexParser
 		foreach ($this->ages as $key => $age) {
 			if (mb_strpos($product_type, $key) !== false) {
 				$ageParam = '<param name="Возраст">'.$age.'</param>';
+                $ageValue = $age;
 				break;
 			}
 		}
@@ -281,22 +284,41 @@ class YandexParser
 				// обрабатываем размеры перечисленные через / , должен быть один размер
 				$sizes = explode('/', $sku['size'][0]);
 				$size = trim(count($sizes) > 0 ? $sizes[0] : $sku['size'][0]);
-
+                $complexSize = '';
 				if (in_array($size, $this->intSizes)) {
 					$sizeSystem = 'INT';
 				} elseif (in_array(substr($size, -1), $this->monthSizes) && strlen($size) > 1 ) {
 					$sizeSystem = 'Months';
 					$size = preg_replace('/'.$this->monthSizes[0].'/i', '', $size);
-				}
+				} elseif ($ageValue == 'Для малышей' && intval($size) > 50 ) {
+                    $sizeSystem = 'Height';
+                } elseif ($ageValue == 'Детский' && intval($size) > 80 ) {
+                    $sizeSystem = 'Рост';
+                } elseif (strpos($title, 'носк')) {
+                    $sizeSystem = 'EU';
+                } elseif (in_array(substr($size, -1), $this->sisiSizes) && strlen($size) > 1) {
+				    $sizeSystem = false;
+				    $size0 = substr($size, -1);
+				    $size1 = str_replace($size0, '', $size);
+				    $complexSize = '<param name="Чашка" unit="RU">'.$size0.'</param><param name="Обхват груди" unit="см">'.$size1.'</param>';
+                }
 
 				if (in_array($size, $referenceSizes)) {
 					continue;
 				}
 
-				$sizeUnits = ' unit="'.$sizeSystem.'"';
-				if (in_array($this->utmMark, array(LINK_COUNTER_APPENDIX_YANDEX_SMARTBANNER, LINK_COUNTER_APPENDIX_YANDEX_SMARTBANNER2))) {
-				    $sizeUnits = '';
+                $sizeUnits = ' unit="'.$sizeSystem.'"';
+
+                if (in_array($this->utmMark, array(LINK_COUNTER_APPENDIX_YANDEX_SMARTBANNER, LINK_COUNTER_APPENDIX_YANDEX_SMARTBANNER2))) {
+                    $sizeUnits = '';
                 }
+
+				if ($sizeSystem) {
+				    $sizeParam = '<param name="Размер"'.$sizeUnits.'>'.$size.'</param>';
+                } else {
+                    $sizeParam = $complexSize;
+                }
+
 
 				$referenceSizes[] = $size;
 
@@ -320,9 +342,8 @@ class YandexParser
                 <description>'.$description.'</description>
                 <sales_notes>Оплата наличными и банковской картой.</sales_notes>
                 <name>'.$title.'</name>
-                <param name="Цвет">'.$color.'</param>
-                <param name="Размер"'.$sizeUnits.'>'.$size.'</param>
-                '.$genderParam.$ageParam.$materialTag
+                <param name="Цвет">'.$color.'</param> 
+                '.$sizeParam.$genderParam.$ageParam.$materialTag
 				.'
             </offer>	
 	';
