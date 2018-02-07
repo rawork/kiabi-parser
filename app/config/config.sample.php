@@ -18,6 +18,7 @@ define('GOOGLE_CATEGORIES_XSLX_PATH', __DIR__.'/../../files/categories_google.xl
 define('GOOGLE_TAXONOMY_PATH', __DIR__.'/../../public/files/taxonomy_google.xls');
 
 define('FEED_ORIGINAL_PATH', __DIR__.'/../../files/feed_original.xml');
+define('FEED_ARCHIVE_PATH', __DIR__.'/../../files/archive/');
 
 define('FEED_CONVERTED_YANDEX_PATH', __DIR__.'/../../files/feed_converted_yandex.xml');
 define('FEED_CONVERTED_RBF_PATH', __DIR__.'/../../files/feed_converted_rbf.xml');

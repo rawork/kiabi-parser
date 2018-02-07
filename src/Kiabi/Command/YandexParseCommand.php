@@ -91,7 +91,9 @@ class YandexParseCommand extends Command
         );
 
         $parser->parse();
+        $pathInfo = pathinfo(realpath($feedPath));
 
+        @copy($feedPath, FEED_ARCHIVE_PATH.$pathInfo['filename'].'-'.date ("Y-m-d_H-i", filemtime($feedPath)).'.'.$pathInfo['extension']);
         @unlink($feedPath);
         @file_put_contents($feedPath, $parser->getXML());
     }
