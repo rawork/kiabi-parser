@@ -108,7 +108,7 @@ class YandexParser
 	<categories>
 		';
 
-		foreach ($this->categories as $category) {
+		foreach ($this->getCategories() as $category) {
 		    $parentText = $category['parent_key'] ? ' parentId="'.$this->categories[$category['parent_key']]['id'].'"' : '';
             $content .= '		<category id="'.$category['id'].'"'.$parentText.'>'.htmlspecialchars($category['title']).'</category>
             ';
