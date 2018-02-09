@@ -248,9 +248,7 @@ class YandexParser
 			$pictures = '';
 			for ($i = 1; $i <= 5; $i++) {
 				if (!empty($reference['additionnal_image_link'.$i.'_https'][0])) {
-					$pictures .= '
-					<picture>'.$reference['additionnal_image_link'.$i.'_https'][0].'</picture>
-					';
+					$pictures .= '<picture>'.$reference['additionnal_image_link'.$i.'_https'][0].'</picture>';
 				}
 			}
 
@@ -324,29 +322,7 @@ class YandexParser
 
 				$currentUtm = ($this->addUtmMark ? str_replace('{offer_id}', $sku['code'][0], $this->utmMark) : '');
 
-				$content .= '<offer id="'.$sku['code'][0].'" available="'.$available.'">
-                <url>'.$reference['link_coloris_https'][0].$currentUtm.'</url>
-                <price>'.$price.'</price>'
-                .$oldprice.
-                '<currencyId>RUR</currencyId>
-                <categoryId>'.$categoryId.'</categoryId>
-                <picture>'.$reference['image_link_https'][0].'</picture>
-                '.$pictures
-				.'	
-                <store>true</store>
-                <pickup>true</pickup>
-                <delivery>true</delivery>'.
-					$shipping
-					.'<vendor>'.$node->brand.'</vendor>
-				<vendorCode>'.trim($node->id).'</vendorCode>	
-                <description>'.$description.'</description>
-                <sales_notes>Оплата наличными и банковской картой.</sales_notes>
-                <name>'.$title.'</name>
-                <param name="Цвет">'.$color.'</param> 
-                '.$sizeParam.$genderParam.$ageParam.$materialTag
-				.'
-            </offer>	
-	';
+				$content .= '<offer id="'.$sku['code'][0].'" available="'.$available.'"><url>'.$reference['link_coloris_https'][0].$currentUtm.'</url><price>'.$price.'</price>'.$oldprice.'<currencyId>RUR</currencyId><categoryId>'.$categoryId.'</categoryId><picture>'.$reference['image_link_https'][0].'</picture>'.$pictures.'<store>true</store><pickup>true</pickup><delivery>true</delivery>'.$shipping.'<vendor>'.$node->brand.'</vendor><vendorCode>'.trim($node->id).'</vendorCode><description>'.$description.'</description><sales_notes>Оплата наличными и банковской картой.</sales_notes><name>'.$title.'</name><param name="Цвет">'.$color.'</param> '.$sizeParam.$genderParam.$ageParam.$materialTag .'</offer>'."\n";
 				$this->j++;
 			}
 		}
