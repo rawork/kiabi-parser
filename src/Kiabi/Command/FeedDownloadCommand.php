@@ -68,8 +68,11 @@ class FeedDownloadCommand extends Command
             file_put_contents(TIMEFILE_PATH, $timestamp);
 
 //            $client->close();
+            $output->writeln('Feed downloaded');
+        } else {
+            $output->writeln('Feed not downloaded. Time:'.$timestamp.'. Oldtime:'.$oldTimestamp);
         }
 
-        $output->writeln('Feed downloaded');
+
     }
 }
