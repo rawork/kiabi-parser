@@ -77,7 +77,7 @@ class FeedDownloadCommand extends Command
 //            $client->close();
             $output->writeln('Feed downloaded');
         } else {
-            $output->writeln('Feed not downloaded. Time:'.$timestamp.'. Oldtime:'.$oldTimestamp);
+            $output->writeln('Feed not downloaded. New feed time:'.$timestamp.'. Old feed time:'.$oldTimestamp);
         }
 
 
