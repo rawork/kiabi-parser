@@ -6,6 +6,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\NullOutput;
 
 class RBFCheckCommand extends Command
 {
@@ -15,12 +16,17 @@ class RBFCheckCommand extends Command
             ->setName('rbf:check')
             ->setDescription('Check not found goods.')
             ->setHelp('This command allows you to check which RBF goods not found in original feed')
+            ->addOption('quiet', 'q', InputOption::VALUE_NONE, 'Disable all output of the program.')
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         set_time_limit(0);
+
+        if (true === $input->getOption('quiet')) {
+            $output = new NullOutput();
+        }
 
         $output->writeln([
             'Search not found goods in "Real BlackFriday" feed',

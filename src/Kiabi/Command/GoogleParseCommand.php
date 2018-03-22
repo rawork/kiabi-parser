@@ -6,6 +6,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\NullOutput;
 
 class GoogleParseCommand extends Command
 {
@@ -16,13 +17,18 @@ class GoogleParseCommand extends Command
             ->setDescription('Build google feed.')
             ->setHelp('This command allows you to build google feed from original feed')
             ->addOption('utm', 'u', InputOption::VALUE_NONE, 'Add UTM counter to links')
-            ->addOption('target', 't', InputOption::VALUE_REQUIRED, 'Add UTM counter to links', 'google');
+            ->addOption('target', 't', InputOption::VALUE_REQUIRED, 'Add UTM counter to links', 'google')
+            ->addOption('quiet', 'q', InputOption::VALUE_NONE, 'Disable all output of the program.');
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         set_time_limit(0);
+
+        if (true === $input->getOption('quiet')) {
+            $output = new NullOutput();
+        }
 
         $output->writeln([
             'Start build "'.$input->getOption('target').'" feed '.($input->getOption('utm') ? 'with UTM' : 'w/o UTM') ,

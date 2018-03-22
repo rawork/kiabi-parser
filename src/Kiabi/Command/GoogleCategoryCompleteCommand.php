@@ -5,6 +5,7 @@ namespace Kiabi\Command;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Output\NullOutput;
 
 class GoogleCategoryCompleteCommand extends Command
 {
@@ -14,12 +15,17 @@ class GoogleCategoryCompleteCommand extends Command
             ->setName('google:category:complete')
             ->setDescription('Complete google categories json with google taxomony data.')
             ->setHelp('This command allows you to complete google categories json with google taxomony data')
+            ->addOption('quiet', 'q', InputOption::VALUE_NONE, 'Disable all output of the program.')
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         set_time_limit(0);
+
+        if (true === $input->getOption('quiet')) {
+            $output = new NullOutput();
+        }
 
         $output->writeln([
             'Start complete Google categories',
