@@ -9,6 +9,7 @@ $application = new Application();
 
 $application->add(new \Kiabi\Command\FeedDownloadCommand());
 $application->add(new \Kiabi\Command\YandexParseCommand());
+$application->add(new \Kiabi\Command\YandexCityParseCommand());
 $application->add(new \Kiabi\Command\MailParseCommand());
 $application->add(new \Kiabi\Command\GoogleParseCommand());
 $application->add(new \Kiabi\Command\Google2ParseCommand());
