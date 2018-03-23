@@ -52,10 +52,17 @@ class YandexCityParseCommand extends Command
         $feedPathTemplate = FEED_CONVERTED_YANDEX_CITY_PATH;
 
         foreach ($cities as $city) {
+            $output->writeln([
+                'City ' . $city['name']
+            ]);
             $utm = str_replace('{city_num}', $city['num'], $utmTemplate);
             $utm = str_replace('{city_name}', $city['name'], $utm);
 
             $feedPath = str_replace('{city_id}', $city['name'], $feedPathTemplate);
+
+            $output->writeln([
+                $feedPath
+            ]);
 
             $parser = new \Kiabi\Parser\YandexParser(
                 FEED_ORIGINAL_PATH,
