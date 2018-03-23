@@ -36,20 +36,20 @@ class FeedDownloadCommand extends Command
 
         $oldTimestamp = 0;
 
-        $ch = curl_init(FEED_URL);  /* create URL handler */
-        curl_setopt($ch, CURLOPT_NOBODY, TRUE); /* don't retrieve body contents */
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE); /* follow redirects */
-        curl_setopt($ch, CURLOPT_HEADER, FALSE); /* retrieve last modification time */
-        curl_setopt($ch, CURLOPT_FILETIME, TRUE); /* get timestamp */
-        $res = curl_exec($ch);
-        $timestamp = curl_getinfo($ch, CURLINFO_FILETIME);
-        curl_close($ch);
+//        $ch = curl_init(FEED_URL);  /* create URL handler */
+//        curl_setopt($ch, CURLOPT_NOBODY, TRUE); /* don't retrieve body contents */
+//        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE); /* follow redirects */
+//        curl_setopt($ch, CURLOPT_HEADER, FALSE); /* retrieve last modification time */
+//        curl_setopt($ch, CURLOPT_FILETIME, TRUE); /* get timestamp */
+//        $res = curl_exec($ch);
+//        $timestamp = curl_getinfo($ch, CURLINFO_FILETIME);
+//        curl_close($ch);
+//
+//        if (file_exists(TIMEFILE_PATH)) {
+//            $oldTimestamp = intval(file_get_contents(TIMEFILE_PATH));
+//        }
 
-        if (file_exists(TIMEFILE_PATH)) {
-            $oldTimestamp = intval(file_get_contents(TIMEFILE_PATH));
-        }
-
-        if ($oldTimestamp < $timestamp || !file_exists(FEED_ORIGINAL_PATH) || filesize(FEED_ORIGINAL_PATH) == 0) {
+//        if ($oldTimestamp < $timestamp || !file_exists(FEED_ORIGINAL_PATH) || filesize(FEED_ORIGINAL_PATH) == 0) {
 
 //            $ch = curl_init();
 //            curl_setopt($ch, CURLOPT_URL, FEED_URL);
@@ -72,13 +72,13 @@ class FeedDownloadCommand extends Command
 //            $client->get(FEED_URL);
 //
             file_put_contents(FEED_ORIGINAL_PATH, file_get_contents(FEED_URL));
-            file_put_contents(TIMEFILE_PATH, $timestamp);
+//            file_put_contents(TIMEFILE_PATH, $timestamp);
 
 //            $client->close();
             $output->writeln('Feed downloaded');
-        } else {
-            $output->writeln('Feed not downloaded. New feed time:'.$timestamp.'. Old feed time:'.$oldTimestamp);
-        }
+//        } else {
+//            $output->writeln('Feed not downloaded. New feed time:'.$timestamp.'. Old feed time:'.$oldTimestamp);
+//        }
 
 
     }
