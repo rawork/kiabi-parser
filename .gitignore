@@ -7,5 +7,5 @@
 !/files/rbf_goods.json
 /app/config/config.php
 /vendor
-composer.lock
+
 passwords
