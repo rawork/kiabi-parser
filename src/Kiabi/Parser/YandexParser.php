@@ -194,9 +194,9 @@ class YandexParser
 		$description = trim($node->description);
 		$description = $description ? $description : $node->title;
 
-        $description = str_replace('Перед такой ценой устоять невозможно, поэтому рекомендуем взять
- сразу несколько расцветок, чтобы разнообразить гардероб малыша.', '', $description);
+        $description = str_replace('Перед такой ценой устоять невозможно, поэтому рекомендуем взять сразу несколько расцветок, чтобы разнообразить гардероб малыша.', '', $description);
         $description = str_replace('Перед такой ценой устоять невозможно!', '', $description);
+        $description = str_replace('Перед такой ценой и расцветками устоять невозможно!', '', $description);
         $description = str_replace('по доступной цене', '', $description);
         $description = str_replace('по выгодной цене', '', $description);
 		$description = str_replace('по низкой цене', '', $description);
