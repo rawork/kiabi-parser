@@ -309,10 +309,12 @@ class YandexParser
                 } elseif (strpos($title, 'носк')) {
                     $sizeSystem = 'EU';
                 } elseif (in_array(substr($size, -1), $this->sisiSizes) && strlen($size) > 1) {
-				    $sizeSystem = false;
 				    $size0 = substr($size, -1);
 				    $size1 = str_replace($size0, '', $size);
-				    $complexSize = '<param name="Чашка" unit="RU">'.$size0.'</param><param name="Обхват груди" unit="см">'.$size1.'</param>';
+				    if ((int)$size1 >= 60) {
+                        $sizeSystem = false;
+                        $complexSize = '<param name="Чашка" unit="RU">'.$size0.'</param><param name="Обхват груди" unit="см">'.$size1.'</param>';
+                    }
                 }
 
 				if (in_array($size, $referenceSizes)) {
