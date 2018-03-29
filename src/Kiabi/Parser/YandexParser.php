@@ -194,6 +194,7 @@ class YandexParser
 		$description = trim($node->description);
 		$description = $description ? $description : $node->title;
 
+        $description = str_replace('по доступной цене', '', $description);
 		$description = str_replace('по низкой цене', '', $description);
         $description = str_replace('по низким ценам', '', $description);
         $description = str_replace('низкой цене', '', $description);
