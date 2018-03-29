@@ -7,7 +7,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\NullOutput;
-use PHPExcel_Style_Alignment;
 
 class GoogleCategoryParseCommand extends Command
 {
@@ -80,7 +79,7 @@ class GoogleCategoryParseCommand extends Command
             $objPHPExcel->getActiveSheet()->getStyle('A1:A'.$objPHPExcel->getActiveSheet()->getHighestRow())
                 ->getAlignment()->setWrapText(true);
             $objPHPExcel->getActiveSheet()->getStyle('B2:B'.$objPHPExcel->getActiveSheet()->getHighestRow())
-                ->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
+                ->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
             $objPHPExcel->getActiveSheet()->getStyle('C1:C'.$objPHPExcel->getActiveSheet()->getHighestRow())
                 ->getAlignment()->setWrapText(true);
 
