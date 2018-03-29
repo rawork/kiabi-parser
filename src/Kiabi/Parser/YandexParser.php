@@ -195,10 +195,12 @@ class YandexParser
 		$description = $description ? $description : $node->title;
 
 		$description = str_replace('по низкой цене', '', $description);
+        $description = str_replace('по низким ценам', '', $description);
         $description = str_replace('низкой цене', '', $description);
         $description = str_replace('низкая цена', '', $description);
         $description = str_replace('низкой ценой', '', $description);
         $description = str_replace('низкую цену', '', $description);
+        $description = str_replace('низким ценам', '', $description);
 		
 		$references = $this->sxiToArray($node->references->children());
 
