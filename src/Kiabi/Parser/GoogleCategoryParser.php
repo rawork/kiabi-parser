@@ -34,7 +34,7 @@ class GoogleCategoryParser
 	public function parse()
 	{
 		$reader = new \XMLReader();
-		$reader->open(FEED_GOOGLE_PATH);
+		$reader->open(FEED_ORIGINAL_PATH);
 
 		while($reader->read()) {
 			if($reader->nodeType == \XMLReader::ELEMENT) {
