@@ -36,16 +36,16 @@ class YandexCityParseCommand extends Command
         ]);
 
         $cities = [
-            ['num' => 'num', 'name' => 'moscow'],
-            ['num' => 'num', 'name' => 'peterburg'],
-            ['num' => 'num', 'name' => 'voronej'],
-            ['num' => 'num', 'name' => 'ekaterinburg'],
-            ['num' => 'num', 'name' => 'kazan'],
-            ['num' => 'num', 'name' => 'krasnodar'],
-            ['num' => 'num', 'name' => 'samara'],
-            ['num' => 'num', 'name' => 'toliatti'],
-            ['num' => 'num', 'name' => 'ufa'],
-            ['num' => 'num', 'name' => 'russia'],
+            ['num' => '21349594', 'name' => 'moscow'],
+            ['num' => '21349592', 'name' => 'peterburg'],
+            ['num' => '21462438', 'name' => 'voronej'],
+            ['num' => '21349783', 'name' => 'ekaterinburg'],
+            ['num' => '21349786', 'name' => 'kazan'],
+            ['num' => '21349602', 'name' => 'krasnodar'],
+            ['num' => '21349600', 'name' => 'samara'],
+            ['num' => '21463403', 'name' => 'toliatti'],
+            ['num' => '21349598', 'name' => 'ufa'],
+            ['num' => '21349386', 'name' => 'russia'],
         ];
 
         $utmTemplate = LINK_COUNTER_APPENDIX_YANDEX_CITY;
