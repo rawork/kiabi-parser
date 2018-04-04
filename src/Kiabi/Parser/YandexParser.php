@@ -313,7 +313,7 @@ class YandexParser
 				    $size1 = str_replace($size0, '', $size);
 				    if ((int)$size1 >= 60) {
                         $sizeSystem = false;
-                        $complexSize = '<param name="Чашка" unit="RU">'.$size0.'</param><param name="Обхват груди" unit="см">'.$size1.'</param>';
+                        $complexSize = '<param name="Чашка" unit="RU">'.$size0.'</param><param name="Обхват под грудью" unit="RU">'.$size1.'</param>';
                     }
                 }
 
@@ -338,7 +338,7 @@ class YandexParser
 
 				$currentUtm = ($this->addUtmMark ? str_replace('{offer_id}', $sku['code'][0], $this->utmMark) : '');
 
-				$content .= '<offer id="'.$sku['code'][0].'" available="'.$available.'"><url>'.$reference['link_coloris_https'][0].$currentUtm.'</url><price>'.$price.'</price>'.$oldprice.'<currencyId>RUR</currencyId><categoryId>'.$categoryId.'</categoryId><picture>'.$reference['image_link_https'][0].'</picture>'.$pictures.'<store>true</store><pickup>true</pickup><delivery>true</delivery>'.$shipping.'<name>'.$title.'</name><vendor>'.$node->brand.'</vendor><description><![CDATA['.$description.']]></description><sales_notes>Оплата наличными и банковской картой.</sales_notes><param name="Цвет">'.$color.'</param> '.$sizeParam.$genderParam.$ageParam.$materialTag .'</offer>'."\n";
+				$content .= '<offer id="'.$sku['code'][0].'" available="'.$available.'"><url>'.$reference['link_coloris_https'][0].$currentUtm.'</url><price>'.$price.'</price>'.$oldprice.'<currencyId>RUR</currencyId><categoryId>'.$categoryId.'</categoryId><picture>'.$reference['image_link_https'][0].'</picture>'.$pictures.'<store>true</store><pickup>true</pickup><delivery>true</delivery>'.$shipping.'<name>'.$title.'</name><vendor>'.$node->brand.'</vendor><description><![CDATA['.$description.']]></description><sales_notes>Оплата наличными и банковской картой.</sales_notes><group_id>'.$node->id.'</group_id><param name="Цвет">'.$color.'</param> '.$sizeParam.$genderParam.$ageParam.$materialTag .'</offer>'."\n";
 				$this->j++;
 			}
 		}
