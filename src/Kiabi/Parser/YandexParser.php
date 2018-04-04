@@ -187,8 +187,8 @@ class YandexParser
             return '';
         }
 
-        if (!array_key_exists($node->id, $this->nodeIds)) {
-            $this->nodeIds[$node->id] = $this->idKey;
+        if (!array_key_exists(strval($node->id), $this->nodeIds)) {
+            $this->nodeIds[strval($node->id)] = $this->idKey;
             $this->idKey++;
         }
 
