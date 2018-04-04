@@ -19,6 +19,8 @@ class YandexParser
 	protected $cutter;
 	protected $replacer;
 	protected $k = 0;
+    protected $idKey = 1;
+    protected $nodeIds = array();
 	protected $deliveryPrice = 299;
 
 	protected $intSizes = ['2XS', 'XS', 'S', 'M', 'L', 'XL', 'XXL', '2XL', 'XXXL', '3XL'];
@@ -185,6 +187,11 @@ class YandexParser
             return '';
         }
 
+        if (!array_key_exists($node->id, $this->nodeIds)) {
+            $this->nodeIds[$node->id] = $this->idKey;
+            $this->idKey++;
+        }
+
 		$title = $this->getTitle($node->title);
 
         if ($this->utmMark != LINK_COUNTER_APPENDIX_YANDEX_SMARTBANNER) {
@@ -338,7 +345,7 @@ class YandexParser
 
 				$currentUtm = ($this->addUtmMark ? str_replace('{offer_id}', $sku['code'][0], $this->utmMark) : '');
 
-				$content .= '<offer id="'.$sku['code'][0].'" available="'.$available.'"><url>'.$reference['link_coloris_https'][0].$currentUtm.'</url><price>'.$price.'</price>'.$oldprice.'<currencyId>RUR</currencyId><categoryId>'.$categoryId.'</categoryId><picture>'.$reference['image_link_https'][0].'</picture>'.$pictures.'<store>true</store><pickup>true</pickup><delivery>true</delivery>'.$shipping.'<name>'.$title.'</name><vendor>'.$node->brand.'</vendor><description><![CDATA['.$description.']]></description><sales_notes>Оплата наличными и банковской картой.</sales_notes><param name="Цвет">'.$color.'</param> '.$sizeParam.$genderParam.$ageParam.$materialTag .'</offer>'."\n";
+				$content .= '<offer id="'.$sku['code'][0].'" available="'.$available.'"><url>'.$reference['link_coloris_https'][0].$currentUtm.'</url><price>'.$price.'</price>'.$oldprice.'<currencyId>RUR</currencyId><categoryId>'.$categoryId.'</categoryId><picture>'.$reference['image_link_https'][0].'</picture>'.$pictures.'<store>true</store><pickup>true</pickup><delivery>true</delivery>'.$shipping.'<name>'.$title.'</name><vendor>'.$node->brand.'</vendor><description><![CDATA['.$description.']]></description><sales_notes>Оплата наличными и банковской картой.</sales_notes><group_id>'.$this->nodeIds[$node->id].'</group_id><param name="Цвет">'.$color.'</param> '.$sizeParam.$genderParam.$ageParam.$materialTag .'</offer>'."\n";
 				$this->j++;
 			}
 		}
