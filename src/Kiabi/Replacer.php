@@ -25,11 +25,7 @@ class Replacer
 
 	public function analize($text)
 	{
-		if (!in_array(trim($text), self::$colors)) {
-			return true;
-		}
-
-		return false;
+	    return !in_array(trim($text), self::$colors);
 	}
 
 	public function replace($text)
